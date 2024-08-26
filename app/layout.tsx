@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import StoreProvider from '@/app/redux/StoreProvider';
 import { ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import ShowLogin from "./components/ShowLogin";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
         <StoreProvider>
           <body className={`${inter.className} flex flex-col min-h-screen`}>
             <Navbar />
+            <ShowLogin />
             <main className="flex-grow">{children}</main>
             <Footer />
           </body>

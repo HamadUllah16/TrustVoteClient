@@ -62,7 +62,7 @@ function Login() {
                 p={"10px"}
                 borderRadius={2}
                 gap={3}
-                boxShadow={20}
+                boxShadow={10}
             >
                 <Grid
                     p={"50px"}

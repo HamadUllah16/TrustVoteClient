@@ -33,6 +33,7 @@ export const loginUser = createAsyncThunk(
         try {
             // Use the axiosInstance that already handles token and response
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login`, data);
+
             // The interceptor will have already processed the response,
             // so we just return the response data directly
             if (response.status === 200) {

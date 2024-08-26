@@ -10,6 +10,7 @@ import DateInputField from "./DateInputField";
 import Loading from './Loading';
 import { updateProfile } from '../redux/features/profileCompletionSlice';
 import dayjs from 'dayjs';
+import withAuth from '../utils/withAuth';
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
@@ -298,4 +299,4 @@ function CompleteProfile() {
     )
 }
 
-export default CompleteProfile;
+export default withAuth(CompleteProfile);

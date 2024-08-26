@@ -16,7 +16,7 @@ function ProfileMenu() {
     const pathName = usePathname();
     const paths = [
         { path: '/user/dashboard', label: 'Dashboard' },
-        { path: '/update-profile', label: 'Edit Profile' },
+        { path: '/user/update-profile', label: 'Edit Profile' },
         { path: '/user/settings', label: 'Settings' }
     ]
 
@@ -66,7 +66,7 @@ function ProfileMenu() {
                 display={'flex'}
                 flexDirection={'column'}
                 top={50}
-                left={-50}
+                right={0}
                 border={'1px solid #DADADA'}
                 borderRadius={4}
                 width={'fit-content'}

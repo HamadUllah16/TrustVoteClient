@@ -37,7 +37,6 @@ function Footer() {
                             variant='h4'
                             fontWeight={"bold"}
                             p={1}
-                            border={'1px solid black'}
                         >
                             TRUSTxVOTE
                         </Typography>

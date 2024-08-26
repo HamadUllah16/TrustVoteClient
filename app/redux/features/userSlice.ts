@@ -13,7 +13,9 @@ const initialState = {
 
     loading: false,
     message: '',
-    error: ''
+    error: '',
+
+    showLogin: false,
 }
 
 export const getUserProfile = createAsyncThunk(
@@ -22,6 +24,7 @@ export const getUserProfile = createAsyncThunk(
         try {
             const response = await axiosInstance.get('/user/get-user-profile')
             dispatch(setIsAuthenticated(true))
+            dispatch(setShowLogin(false))
             return response.data
         } catch (error) {
             return rejectWithValue(error);
@@ -33,6 +36,9 @@ const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
+        setShowLogin: (state, action) => {
+            state.showLogin = action.payload;
+        }
 
     },
 
@@ -55,3 +61,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer;
+export const { setShowLogin } = userSlice.actions;

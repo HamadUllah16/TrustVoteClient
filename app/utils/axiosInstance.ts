@@ -27,7 +27,8 @@ axiosInstance.interceptors.request.use(async (req) => {
     const token = localStorage.getItem('x_auth_token');
 
     if (!token || isTokenExpired(token)) {
-        console.error('No valid token found. Request is blocked.');
+        console.error('No valid token found.');
+        // Redirect to login page
         // Block the request
         return Promise.reject('No valid token found.');
     }
@@ -42,8 +43,7 @@ axiosInstance.interceptors.response.use(
     response => response.data,
     error => {
         if (error.response && error.response.status === 401) {
-            // You can handle the redirection to login externally
-            console.error('Unauthorized. Handle redirection outside.');
+            console.error('Unauthorized.');
         }
         return Promise.reject(error.response?.data || 'An unknown error occurred');
     }
