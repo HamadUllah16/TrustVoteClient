@@ -12,9 +12,6 @@ function UnauthorizedPage() {
                 <Typography variant="h4" textAlign={'center'}>
                     Unauthorized
                 </Typography>
-                <Typography variant="subtitle2" textAlign={'center'}>
-                    hope you're not lost
-                </Typography>
                 <Image
                     src={'/thisisfine.gif'}
                     alt='dog in a burning house saying its fine -meme'

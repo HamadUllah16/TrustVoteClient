@@ -136,7 +136,7 @@ function Register() {
                     >
                         <Checkbox onClick={() => setAgree(!agree)} />
                         <Typography variant='caption'>
-                            I agree to TrustVote's terms and conditions.
+                            I agree to TrustVote&aposs terms and conditions.
                         </Typography>
 
                     </Grid>

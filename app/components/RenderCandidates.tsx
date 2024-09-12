@@ -17,7 +17,7 @@ function RenderCandidates() {
             {allCandidates &&
                 allCandidates.map((candidate: any) => {
                     return (
-                        <TableRow>
+                        <TableRow key={candidate._id}>
                             <TableCell>{loading ? <Skeleton /> : candidate._id}</TableCell>
                             <TableCell>{loading ? <Skeleton /> : `${candidate.firstName}  ${candidate.lastName}`}</TableCell>
                             <TableCell sx={{ textTransform: 'capitalize' }}>{loading ? <Skeleton /> : candidate.constituencyType}</TableCell>

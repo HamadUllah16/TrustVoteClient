@@ -6,7 +6,7 @@ import { getCandidateProfile } from '../redux/features/candidateSlice';
 import { useRouter } from 'next/navigation';
 
 function withCompleteCandidateProfile(Component: any) {
-    return function withCompleteProfileProps(props: any) {
+    return function WithCompleteProfileProps(props: any) {
         const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile);
         const { isAuthenticated } = useSelector((state: RootState) => state.auth);
         const router = useRouter();
