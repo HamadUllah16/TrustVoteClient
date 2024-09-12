@@ -6,27 +6,20 @@ import React from 'react'
 function Footer() {
     return (
         <Grid
-            backgroundColor={"white"}
-            borderTop={"1px solid #DADADA"}
+            backgroundColor={"primary.200"}
+            px={"75px"}
+            py={"15px"}
         >
             <Grid
-                px={"75px"}
-                py={"50px"}
                 display={"flex"}
                 flexDirection={"column"}
-                gap={"30px"}
+                justifyContent={'center'}
+                gap={4}
+                px={3}
+                py={4}
+                borderRadius={2}
+                bgcolor={'primary.contrastText'}
             >
-
-                <Grid
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-
-                >
-                    <IconButton href='#facebook'><Facebook /></IconButton>
-                    <IconButton href='#twitter'><Twitter /></IconButton>
-                    <IconButton href='#youtube'><YouTube /></IconButton>
-                </Grid>
 
                 <Grid
                     display={"flex"}
@@ -35,10 +28,12 @@ function Footer() {
                     <Grid item={1} display={"flex"} alignItems={"center"}>
                         <Typography
                             variant='h4'
-                            fontWeight={"bold"}
+                            fontWeight={"bolder"}
+                            color={'primary.main'}
                             p={1}
+                            sx={{ WebkitTextStroke: '1px black' }}
                         >
-                            TRUSTxVOTE
+                            trust vote
                         </Typography>
                     </Grid>
                     <Grid item={1} display={"flex"} flexDirection={"column"} gap={"30px"}>

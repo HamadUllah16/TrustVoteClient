@@ -1,26 +1,38 @@
 "use client"
-import { Box, Button, Grid, IconButton, InputLabel, MenuItem, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { AccountCircleOutlined, Logout, Settings } from '@mui/icons-material';
+import { Grid, Stack, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import ProfileMenu from './ProfileMenu';
 import NavItems from './NavItems';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from '../redux/features/userSlice';
 
 
 function Navbar() {
     const { isAuthenticated } = useSelector(state => state.auth)
-    const [toggle, setToggle] = useState(false)
+    const userProfile = useSelector(state => state.user.userProfile)
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('x_auth_token');
+        if (token) {
+            dispatch(getUserProfile())
+        }
+    }, [isAuthenticated])
     return (
-        <Grid
-            backgroundColor={"white"}
+        <Stack
+            bgcolor={'primary.200'}
             px={"75px"}
             py={"15px"}
             transition={"all 0.3s ease"}
-            borderBottom={"1px solid #DADADA"}
         >
             <Grid
                 container
+                bgcolor='primary.contrastText'
+                borderRadius={2}
+                px={2}
+                py={1}
                 display={"flex"}
                 justifyContent={"space-between"}
                 alignItems={"center"}
@@ -28,10 +40,12 @@ function Navbar() {
                 <Link href={'/'}>
                     <Typography
                         variant='h4'
-                        fontWeight={"bold"}
+                        fontWeight={"bolder"}
+                        color={'primary.main'}
                         p={1}
+                        sx={{ WebkitTextStroke: '1px black' }}
                     >
-                        TRUSTxVOTE
+                        trust vote
                     </Typography>
                 </Link>
 
@@ -42,58 +56,21 @@ function Navbar() {
                     alignItems={'center'}
                     position={'relative'}
                 >
+
+                    {/* Login Register for non-auth */}
                     <NavItems />
+
+
+
                     {isAuthenticated &&
                         <>
                             <ProfileMenu />
-                            <Grid
-                                position={'absolute'}
-                                display={'flex'}
-                                p={1}
-                                flexDirection={'column'}
-                                top={50}
-                                left={-100}
-                                border={'1px solid #DADADA'}
-                                borderRadius={4}
-                                overflow={'hidden'}
-                                sx={{
-                                    transform: toggle ? 'scale(1)' : 'scale(0)',
-                                    transition: '0.2s all',
-                                    backgroundColor: 'primary.contrastText'
-                                }}
-                            >
-                                <MenuItem
-                                    sx={{
-                                        display: "flex",
-                                        gap: 1,
-                                        borderRadius: 2
-                                    }}
-                                >
-                                    Name
-                                </MenuItem>
-                                <MenuItem
-                                    sx={{
-                                        display: "flex",
-                                        gap: 1,
-                                        borderRadius: 2
-                                    }}
-                                >
-                                    <Settings /> Settings
-                                </MenuItem>
-                                <MenuItem
-                                    sx={{
-                                        display: "flex",
-                                        gap: 1,
-                                        borderRadius: 2
-                                    }}
-                                ><Logout /> Logout</MenuItem>
-                            </Grid>
                         </>
                     }
                 </Grid>
 
             </Grid>
-        </Grid >
+        </Stack>
     )
 }
 

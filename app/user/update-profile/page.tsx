@@ -1,17 +1,20 @@
 import React from 'react'
 import CompleteProfile from '@/app/components/CompleteProfile';
-import { Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 
 function UpdateProfile() {
     return (
-        <Grid
+        <Stack
             display={'flex'}
             justifyContent={'center'}
+            gap={2}
             alignItems={'center'}
-            p={5}
+            px={'75px'}
+            py={'15px'}
+            width={'100%'}
         >
             <CompleteProfile />
-        </Grid>
+        </Stack>
     )
 }
 

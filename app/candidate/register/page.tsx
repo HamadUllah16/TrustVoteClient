@@ -1,4 +1,4 @@
-import CandidateRegister from '@/app/components/CandidateRegister'
+import CandidateRegister from '@/app/components/Candidate/CandidateRegister'
 import React from 'react'
 
 function CandidateRegisterationPage() {

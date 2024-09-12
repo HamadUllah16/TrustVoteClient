@@ -11,9 +11,11 @@ import Loading from './Loading';
 import { updateProfile } from '../redux/features/profileCompletionSlice';
 import dayjs from 'dayjs';
 import withAuth from '../utils/withAuth';
+import { useRouter } from 'next/navigation';
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
+    const router = useRouter();
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -39,6 +41,7 @@ function CompleteProfile() {
                 ...otherValues,
                 dateOfBirth: dayjs(date).format('YYYY-MM-DD')
             }))
+            router.push('/')
         },
         validate: values => {
             const errors = {};
@@ -114,13 +117,12 @@ function CompleteProfile() {
                     flexDirection={"column"}
                     justifyContent={"space-between"}
                     gap={3}
-                    borderRadius={5}
                     p={3}
                     width={"fit-content"}
                     sx={{
                         backgroundColor: "white",
-                        border: "1px solid #DBDBDB"
                     }}
+                    borderRadius={2}
                 >
                     <Grid
                         display={'flex'}
@@ -134,23 +136,12 @@ function CompleteProfile() {
                             flexDirection={'column'}
                         >
                             <Typography
-                                variant='h6'
-                                border={'1px solid black'}
-                                p={1}
-                                textAlign={'center'}
-                            >
-                                TRUSTxVOTE
-                            </Typography>
-
-                            <Typography
-                                variant='h6'
+                                variant='h4'
+                                fontWeight={'bold'}
                             >
                                 Complete your profile
                             </Typography>
                         </Grid>
-
-                        <Divider />
-
                     </Grid>
 
                     <Box
@@ -245,34 +236,35 @@ function CompleteProfile() {
                                 Upload document snaps
                             </Typography>
                         </Box>
-
-                        <NationalityVerification formik={formik} />
-
-                        {formik.errors.cnicFront &&
-                            <Typography
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 0.5
-                                }}
-                                variant='body2'
-                                color={"error"}>
-                                <Error fontSize="small" /> {formik.errors.cnicFront}
-                            </Typography>
-                        }
-                        {formik.errors.cnicBack &&
-                            <Typography
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 0.5
-                                }}
-                                variant='body2'
-                                color={"error"}>
-                                <Error fontSize="small" /> {formik.errors.cnicBack}
-                            </Typography>
-                        }
                     </Grid>
+
+                    <NationalityVerification formik={formik} />
+
+                    {formik.errors.cnicFront &&
+                        <Typography
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.5
+                            }}
+                            variant='body2'
+                            color={"error"}>
+                            <Error fontSize="small" /> {formik.errors.cnicFront}
+                        </Typography>
+                    }
+                    {formik.errors.cnicBack &&
+                        <Typography
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.5
+                            }}
+                            variant='body2'
+                            color={"error"}>
+                            <Error fontSize="small" /> {formik.errors.cnicBack}
+                        </Typography>
+                    }
+
                     <Grid
                         display={"flex"}
                         justifyContent={"space-between"}

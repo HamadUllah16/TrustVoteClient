@@ -27,6 +27,28 @@ export const logoutUser = createAsyncThunk(
     }
 )
 
+
+export const loginCandidate = createAsyncThunk(
+    'auth/loginCandidate',
+    async (data: any, { rejectWithValue, dispatch }) => {
+        try {
+            // Use the axiosInstance that already handles token and response
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login-candidate`, data);
+
+            // The interceptor will have already processed the response,
+            // so we just return the response data directly
+            if (response.status === 200) {
+                // dispatch()
+                return response.data;
+            }
+        } catch (error: any) {
+            // The interceptor should already handle the response error,
+            // but you can still reject the error with a meaningful message
+            return rejectWithValue(error.message || 'An error occurred during login');
+        }
+    }
+);
+
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async (data: any, { rejectWithValue }) => {
@@ -52,8 +74,7 @@ export const registerUser = createAsyncThunk(
     'auth/registerUser',
     async (data: any, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post('/user/register', data.credentials);
-
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/register`, data);
             if (response.status === 200) {
                 return response.data
             }
@@ -100,6 +121,22 @@ const authSlice = createSlice({
         })
         builder.addCase(registerUser.rejected, state => {
             state.error = 'User registeration failed.'
+        })
+
+        // login candidate builder
+        builder.addCase(loginCandidate.pending, state => {
+            state.loading = true;
+            state.error = '';
+        })
+        builder.addCase(loginCandidate.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload;
+            localStorage.setItem('x_auth_token', action.payload?.token);
+            state.isAuthenticated = true;
+        })
+        builder.addCase(loginCandidate.rejected, (state, action) => {
+            state.error = action.error.message || 'Error while logging in';
+            state.loading = false;
         })
     },
 }

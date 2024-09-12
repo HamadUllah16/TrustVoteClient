@@ -4,6 +4,7 @@ import { setIsAuthenticated } from "./authSlice";
 
 const initialState = {
     userProfile: {
+        role: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -38,6 +39,9 @@ const userSlice = createSlice({
     reducers: {
         setShowLogin: (state, action) => {
             state.showLogin = action.payload;
+        },
+        setUserProfile: (state, action) => {
+            state.userProfile = action.payload;
         }
 
     },
@@ -61,4 +65,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer;
-export const { setShowLogin } = userSlice.actions;
+export const { setShowLogin, setUserProfile } = userSlice.actions;

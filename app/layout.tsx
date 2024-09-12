@@ -7,6 +7,7 @@ import StoreProvider from '@/app/redux/StoreProvider';
 import { ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import ShowLogin from "./components/ShowLogin";
+import { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,10 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider theme={theme}>
         <StoreProvider>
-          <body className={`${inter.className} flex flex-col min-h-screen`}>
+          <body style={{ backgroundColor: "#f2f2f2" }} className={`${inter.className} flex flex-col min-h-screen`}>
             <Navbar />
             <ShowLogin />
-            <main className="flex-grow">{children}</main>
+            <Toaster position="top-center" />
+            <main className="flex flex-grow">{children}</main>
             <Footer />
           </body>
         </StoreProvider>

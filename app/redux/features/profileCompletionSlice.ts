@@ -39,11 +39,11 @@ const profileCompletionSlice = createSlice({
         builder.addCase(updateProfile.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
-            state.message = action.payload.message || 'User updated!'
+            state.message = action.payload?.message || 'User updated!'
         })
         builder.addCase(updateProfile.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message || 'We were not able to update user.'
+            state.error = action.error?.message || 'We were not able to update user.'
         })
 
     },

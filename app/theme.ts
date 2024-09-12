@@ -11,18 +11,26 @@ const inter = Inter({
 const theme = createTheme({
     typography: {
         fontFamily: inter.style.fontFamily,
+        subtitle1: { fontSize: '18px' }
     },
     palette: {
         mode: 'light',
         primary: {
-            main: '#3b3b3b',
+            main: '#404a56',
+            "100": '#ffca43',
+            '200': '#f2f2f2',
+            contrastText: 'white',
         },
         secondary: {
-            main: '#b9b9b9',
+            main: '#404a56',
+            '100': '#ebecf0',
+        },
+        background: {
+            default: '#f2f3f7'
         },
     },
     shape: {
-        borderRadius: 0,
+        borderRadius: 10,
     },
 });
 
