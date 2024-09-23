@@ -9,7 +9,7 @@ function AllCandidatesPage() {
         <Stack
             direction={'row'}
             gap={3}
-            pr={'75px'}
+            px={'75px'}
         >
             <Sidebar>
                 <AdminRoutes />

@@ -28,43 +28,30 @@ export const logoutUser = createAsyncThunk(
 )
 
 
-export const loginCandidate = createAsyncThunk(
+export const loginCandidate = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'auth/loginCandidate',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            // Use the axiosInstance that already handles token and response
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login-candidate`, data);
-
-            // The interceptor will have already processed the response,
-            // so we just return the response data directly
             if (response.status === 200) {
-                // dispatch()
                 return response.data;
             }
         } catch (error: any) {
-            // The interceptor should already handle the response error,
-            // but you can still reject the error with a meaningful message
-            return rejectWithValue(error.message || 'An error occurred during login');
+            return rejectWithValue({ message: error.response?.data?.message || 'An error occurred during login' });
         }
     }
 );
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'auth/loginUser',
     async (data: any, { rejectWithValue }) => {
         try {
-            // Use the axiosInstance that already handles token and response
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login`, data);
-
-            // The interceptor will have already processed the response,
-            // so we just return the response data directly
             if (response.status === 200) {
                 return response.data;
             }
         } catch (error: any) {
-            // The interceptor should already handle the response error,
-            // but you can still reject the error with a meaningful message
-            return rejectWithValue(error.message || 'An error occurred during login');
+            return rejectWithValue({ message: error.response?.data?.message || 'An error occurred during login' });
         }
     }
 );
@@ -93,6 +80,8 @@ const authSlice = createSlice({
         }
     },
     extraReducers(builder) {
+        // login user builder
+
         builder.addCase(loginUser.pending, state => {
             state.loading = true;
             state.error = '';
@@ -101,10 +90,11 @@ const authSlice = createSlice({
             state.loading = false;
             state.message = action.payload;
             localStorage.setItem('x_auth_token', action.payload?.x_auth_token);
+            localStorage.setItem('role', action.payload?.role);
             state.isAuthenticated = true;
         })
         builder.addCase(loginUser.rejected, (state, action) => {
-            state.error = action.error.message || 'Error while logging in';
+            state.error = action.payload?.message || 'Error while logging in';
             state.loading = false;
         })
 
@@ -132,12 +122,14 @@ const authSlice = createSlice({
             state.loading = false;
             state.message = action.payload;
             localStorage.setItem('x_auth_token', action.payload?.token);
+            localStorage.setItem('role', action.payload?.role)
             state.isAuthenticated = true;
         })
         builder.addCase(loginCandidate.rejected, (state, action) => {
-            state.error = action.error.message || 'Error while logging in';
+            state.error = action.payload?.message || 'Error while logging in';
             state.loading = false;
         })
+
     },
 }
 )

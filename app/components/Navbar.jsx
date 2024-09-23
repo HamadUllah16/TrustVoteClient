@@ -6,20 +6,32 @@ import ProfileMenu from './ProfileMenu';
 import NavItems from './NavItems';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from '../redux/features/userSlice';
+import { getCandidateProfile } from '../redux/features/candidateSlice';
+import { getAdminProfile } from '../redux/features/adminSlice';
+import { Toaster } from 'react-hot-toast';
 
 
 function Navbar() {
-    const { isAuthenticated } = useSelector(state => state.auth)
-    const userProfile = useSelector(state => state.user.userProfile)
-    const dispatch = useDispatch();
+    // const { isAuthenticated } = useSelector(state => state.auth)
+    // const userProfile = useSelector(state => state.user.userProfile)
+    // const dispatch = useDispatch();
 
 
-    useEffect(() => {
-        const token = localStorage.getItem('x_auth_token');
-        if (token) {
-            dispatch(getUserProfile())
-        }
-    }, [isAuthenticated])
+    // useEffect(() => {
+    //     const token = localStorage.getItem('x_auth_token');
+    //     const role = localStorage.getItem('role');
+    //     if (token && userProfile.email === '') {
+    //         if (role === 'voter') {
+    //             dispatch(getUserProfile())
+    //         }
+    //         else if (role === 'candidate') {
+    //             dispatch(getCandidateProfile())
+    //         }
+    //         else if (role === 'admin') {
+    //             dispatch(getAdminProfile());
+    //         }
+    //     }
+    // }, [isAuthenticated])
     return (
         <Stack
             bgcolor={'primary.200'}
@@ -62,11 +74,11 @@ function Navbar() {
 
 
 
-                    {isAuthenticated &&
+                    {/* {isAuthenticated &&
                         <>
                             <ProfileMenu />
                         </>
-                    }
+                    } */}
                 </Grid>
 
             </Grid>

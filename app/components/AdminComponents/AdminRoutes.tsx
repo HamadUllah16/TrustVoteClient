@@ -1,4 +1,4 @@
-import { HowToReg, RecentActors } from '@mui/icons-material'
+import { HowToReg, PendingActions, RecentActors } from '@mui/icons-material'
 import { Stack, Typography, MenuItem } from '@mui/material'
 import Link from 'next/link'
 
@@ -19,20 +19,22 @@ function AdminRoutes() {
             <Stack
                 gap={0.3}
             >
-                <MenuItem >
-                    <Link href={'/admin/dashboard/candidates/list'}>
+                <Link href={'/admin/dashboard/candidates/list'}>
+                    <MenuItem >
                         <Typography variant='body1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
                             <RecentActors fontSize='medium' />
-                            List
+                            Nominated Candidates
                         </Typography>
-                    </Link>
-                </MenuItem>
-                <MenuItem>
-                    <Typography variant='body1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
-                        <HowToReg fontSize='medium' />
-                        Requests
-                    </Typography>
-                </MenuItem>
+                    </MenuItem>
+                </Link>
+                <Link href={'/admin/dashboard/candidates/pending-candidates'}>
+                    <MenuItem >
+                        <Typography variant='body1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
+                            <PendingActions fontSize='medium' />
+                            Pending Candidates
+                        </Typography>
+                    </MenuItem>
+                </Link>
             </Stack>
         </Stack>
     )

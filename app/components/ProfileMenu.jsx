@@ -66,7 +66,7 @@ function ProfileMenu() {
                                 <AccountCircleOutlined />
                                 <Typography display={{ xs: 'none', md: 'block' }}
                                 >
-                                    {firstName}
+                                    {firstName ? firstName : email}
                                 </Typography>
                                 <KeyboardArrowDown sx={{
                                     rotate: show ? '180deg' : '0',
