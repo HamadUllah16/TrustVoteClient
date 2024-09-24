@@ -11,7 +11,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
     const { firstName, lastName, email, role } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <Stack
-            width={400}
+            minWidth={400}
             minHeight={'100%'}
             px={3}
             py={2}
@@ -34,9 +34,8 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                         <Image
                             src={'/avatar.jpg'}
                             alt='profile picture'
-                            width={80}
-                            height={80}
-                            objectFit='contain'
+                            width={100}
+                            height={100}
                         />
                     </Box>
                     <Stack>

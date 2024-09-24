@@ -19,7 +19,10 @@ function PendingCandidatesPage() {
         my={'30px'}
         gap={2}
       >
-        <Typography variant='h6'>All Candidates</Typography>
+        <Stack>
+          <Typography variant='h6'>Pending Candidates</Typography>
+          <Typography variant='body2'>Review the details of pending candidates and perform actions.</Typography>
+        </Stack>
         <Divider />
         <Box
           border={'1px solid #DADADA'}

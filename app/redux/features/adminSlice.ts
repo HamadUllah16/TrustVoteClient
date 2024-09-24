@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 import { setUserProfile } from "./userSlice";
 import { setIsAuthenticated } from "./authSlice";
+import toast from "react-hot-toast";
 
 const initialState = {
     isAuthenticated: '',
@@ -10,6 +11,7 @@ const initialState = {
 
     },
     pendingCandidates: [],
+    allParties: [],
     message: '',
     error: '',
     loading: false
@@ -54,6 +56,34 @@ export const approveOrRejectCandidate = createAsyncThunk(
             return response.data;
         } catch (error) {
             return rejectWithValue(error)
+        }
+    }
+)
+
+export const addPoliticalParty = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'admin/addPoliticalParty',
+    async (data: any, { rejectWithValue, dispatch }) => {
+        try {
+            const response = await axiosInstance.post('/admin/create-political-party', data.party)
+            data.setDisplay(false)
+            dispatch(allPoliticalParties());
+            return response.data;
+        } catch (error: any) {
+            console.log(error.message)
+            return rejectWithValue({ message: error?.message })
+        }
+    }
+)
+
+export const allPoliticalParties = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'admin/allPoliticalParties',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/admin/all-political-parties');
+            console.log(response)
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message })
         }
     }
 )
@@ -104,6 +134,35 @@ const adminSlice = createSlice({
         builder.addCase(getPendingCandidate.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || 'Could not fetch Pending Candidates'
+        })
+
+        // add political party builder
+        builder.addCase(addPoliticalParty.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(addPoliticalParty.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message || 'Political Party added successfully.'
+            toast.success(state.message)
+        })
+        builder.addCase(addPoliticalParty.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error occurred while adding a Political Party.';
+            toast.error(state.error)
+        })
+
+        // all political parties builder
+        builder.addCase(allPoliticalParties.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(allPoliticalParties.fulfilled, (state, action) => {
+            state.loading = false;
+            state.allParties = action.payload?.allParties;
+            state.message = action.payload?.message
+        })
+        builder.addCase(allPoliticalParties.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error occurred while fetching all political parties.';
         })
     },
 })

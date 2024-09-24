@@ -16,6 +16,8 @@ function CandidateCompletion() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter()
 
+    const politicalParties = ['Independent', 'PML-N', 'PPP', 'PTI', 'MQM-P', 'JUI-F'];
+
     const [allValues, setAllValues] = useState({
         firstName: '',
         lastName: '',
@@ -251,8 +253,8 @@ function CandidateCompletion() {
                             error={formikStep2.touched.constituencyType && Boolean(formikStep2.errors.constituencyType)}
                             helperText={formikStep2.touched.constituencyType && formikStep2.errors.constituencyType}
                         >
-                            <MenuItem value="national">National Assembly</MenuItem>
-                            <MenuItem value="provincial">Provincial Assembly</MenuItem>
+                            <MenuItem value="national assembly">National Assembly</MenuItem>
+                            <MenuItem value="provincial assembly">Provincial Assembly</MenuItem>
                         </TextField>
                         <TextField
                             fullWidth
@@ -275,10 +277,11 @@ function CandidateCompletion() {
                             error={formikStep2.touched.partyAffiliation && Boolean(formikStep2.errors.partyAffiliation)}
                             helperText={formikStep2.touched.partyAffiliation && formikStep2.errors.partyAffiliation}
                         >
-                            <MenuItem value="independent">Independent</MenuItem>
-                            <MenuItem value="partyA">Party A</MenuItem>
-                            <MenuItem value="partyB">Party B</MenuItem>
-                            {/* Add more parties as necessary */}
+                            {politicalParties.map((party, index) => {
+                                return (
+                                    <MenuItem key={index} value={party}>{party}</MenuItem>
+                                )
+                            })}
                         </TextField>
                     </Grid>
                     <TextField

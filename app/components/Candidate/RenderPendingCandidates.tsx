@@ -3,7 +3,7 @@ import { getAdminProfile } from '@/app/redux/features/adminSlice';
 import { getPendingCandidates } from '@/app/redux/features/candidateSlice';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { Cancel, Check, OpenInNew } from '@mui/icons-material';
-import { TableBody, TableCell, Stack, TableRow, IconButton, Typography, Button } from '@mui/material'
+import { TableBody, TableCell, Stack, TableRow, IconButton, Typography, Button, Divider } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../Modal';
@@ -57,9 +57,6 @@ function RenderPendingCandidates() {
                                     }>
                                         <OpenInNew />
                                     </IconButton>
-                                    <IconButton color='error'>
-                                        <Cancel />
-                                    </IconButton>
                                     <IconButton color='success'>
                                         <Check />
                                     </IconButton>
@@ -71,16 +68,21 @@ function RenderPendingCandidates() {
             </TableBody>
             {show && selected &&
                 <Modal>
-                    <Stack bgcolor={'white'} p={2} borderRadius={2} boxShadow={5}>
-                        <Stack alignItems={'end'}>
-                            <IconButton onClick={() => setShow(false)}>
+                    <Stack gap={2} bgcolor={'white'} p={2} borderRadius={2} boxShadow={5}>
+                        <Stack direction={'row'} justifyContent={'space-between'}>
+                            <Typography variant='h6'>Review</Typography>
+                            <IconButton sx={{ p: 0 }} onClick={() => setShow(false)}>
                                 <Cancel />
                             </IconButton>
                         </Stack>
 
+                        <Divider />
+
                         <Stack direction={'row'} gap={2}>
-                            <Typography>{selected.firstName + selected.lastName}</Typography>
-                            <Typography>{selected.partyAffiliation}</Typography>
+                            <Stack border={'1px solid #DADADA'} p={2} borderRadius={2}>
+                                <Typography variant='subtitle1' fontWeight={'bold'}>{`${selected.firstName}  ${selected.lastName}`}</Typography>
+                                <Typography>{selected.partyAffiliation}</Typography>
+                            </Stack>
                             <Image
                                 src={selected.manifesto}
                                 width={200}
@@ -90,9 +92,6 @@ function RenderPendingCandidates() {
                         </Stack>
 
                         <Stack justifyContent={'end'} gap={2} direction={'row'}>
-                            <Button variant='outlined' color='error'>
-                                Reject
-                            </Button>
                             <Button variant='contained'>
                                 Approve
                             </Button>
