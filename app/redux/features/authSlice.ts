@@ -6,14 +6,18 @@ interface init {
     loading: boolean,
     isAuthenticated: boolean,
     message: any,
-    error: any
+    error: any,
+    exists: boolean | null,
+    checkExistsLoading: boolean
 }
 
 const initialState: init = {
     loading: false,
     isAuthenticated: false,
     message: '',
-    error: ''
+    error: '',
+    exists: null,
+    checkExistsLoading: false
 }
 export const logoutUser = createAsyncThunk(
     'auth/logoutUser',
@@ -51,7 +55,30 @@ export const loginUser = createAsyncThunk<any, any, { rejectValue: { message: st
                 return response.data;
             }
         } catch (error: any) {
-            return rejectWithValue({ message: error.response?.data?.message || 'An error occurred during login' });
+            return rejectWithValue({ message: error.response?.data?.message });
+        }
+    }
+);
+
+export const loginUserEmailCheck = createAsyncThunk<
+    { message: string; exists: boolean }, // Type for success response
+    string, // Type for the email argument
+    { rejectValue: { message: string; exists: boolean } } // Type for rejection value
+>(
+    'auth/loginUserEmailCheck',
+    async (email: string, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login/email-check`, { email });
+            if (response.status === 200) {
+                return response.data; // response.data must match the shape { message: string, exists: boolean }
+            } else {
+                return rejectWithValue({ message: 'Unexpected status code', exists: false });
+            }
+        } catch (error: any) {
+            return rejectWithValue({
+                message: error.response?.data?.message || error.message || 'Unknown error occurred',
+                exists: error.response?.data?.exists || false
+            });
         }
     }
 );
@@ -61,8 +88,9 @@ export const registerUser = createAsyncThunk(
     'auth/registerUser',
     async (data: any, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/register`, data);
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/register`, data.account);
             if (response.status === 200) {
+                data.router.push('/user/login')
                 return response.data
             }
         } catch (error: any) {
@@ -77,6 +105,9 @@ const authSlice = createSlice({
     reducers: {
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
+        },
+        setExists: (state, action) => {
+            state.exists = action.payload;
         }
     },
     extraReducers(builder) {
@@ -110,6 +141,7 @@ const authSlice = createSlice({
             state.message = action.payload?.message || 'User account creation successful.'
         })
         builder.addCase(registerUser.rejected, state => {
+            state.loading = false;
             state.error = 'User registeration failed.'
         })
 
@@ -130,9 +162,26 @@ const authSlice = createSlice({
             state.loading = false;
         })
 
+        // Redux slice builder
+        builder.addCase(loginUserEmailCheck.pending, (state) => {
+            state.checkExistsLoading = true;
+            state.error = null; // Clear previous errors
+        })
+        builder.addCase(loginUserEmailCheck.fulfilled, (state, action) => {
+            state.checkExistsLoading = false;
+            state.exists = action.payload.exists;
+            state.message = action.payload.message;
+        })
+        builder.addCase(loginUserEmailCheck.rejected, (state, action) => {
+            state.checkExistsLoading = false;
+            state.error = action.payload?.message || 'Something went wrong';
+            state.exists = action.payload?.exists || false;
+        })
+
+
     },
 }
 )
 
 export default authSlice.reducer;
-export const { setIsAuthenticated } = authSlice.actions;
+export const { setIsAuthenticated, setExists } = authSlice.actions;

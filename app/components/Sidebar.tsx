@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
 function Sidebar({ children }: { children: React.ReactNode }) {
-    const { firstName, lastName, email, role } = useSelector((state: RootState) => state.user.userProfile)
+    const { firstName, lastName, email, role, status } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <Stack
             minWidth={400}
@@ -70,7 +70,20 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                         >
                             {email}
                         </Typography>
+
+                        {status &&
+                            <Stack textAlign={'center'} borderRadius={0.5} p={0.5} color={'white'} bgcolor={status === 'approved' ? '#008cff' : 'orange'}>
+                                <Typography>
+                                    {status !== '' &&
+                                        status === 'approved' ? 'Nominated'
+                                        :
+                                        'Pending'
+                                    }
+                                </Typography>
+                            </Stack>
+                        }
                     </Stack>
+
                 </Stack>
 
                 <Divider />

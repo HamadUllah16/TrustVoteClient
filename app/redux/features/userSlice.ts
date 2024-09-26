@@ -9,7 +9,8 @@ const initialState = {
         lastName: '',
         email: '',
         phone: '',
-        profileCompletion: ''
+        profileCompletion: '',
+        status: ''
     },
 
     loading: false,

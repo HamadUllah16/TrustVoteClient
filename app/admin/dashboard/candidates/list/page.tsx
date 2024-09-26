@@ -37,10 +37,13 @@ function AllCandidatesPage() {
                                 <TableCell>Party Affiliation</TableCell>
                                 <TableCell>Constituency Type</TableCell>
                                 <TableCell>Gender</TableCell>
+                                <TableCell>Status</TableCell>
                                 <TableCell>DOB</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
+
+                        {/* render nominated candidates */}
                         <RenderCandidates />
                     </Table>
                 </Box>

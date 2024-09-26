@@ -1,5 +1,5 @@
 'use client'
-import { Box, Grid, TextField, Typography, Button, Divider } from '@mui/material'
+import { Box, Grid, TextField, Typography, Button, Divider, Stack } from '@mui/material'
 import { useFormik } from 'formik'
 import React, { useEffect } from 'react'
 import NationalityVerification from '@/app/components/NationalityVerification';
@@ -12,6 +12,7 @@ import { updateProfile } from '../redux/features/profileCompletionSlice';
 import dayjs from 'dayjs';
 import withAuth from '../utils/withAuth';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
@@ -24,24 +25,30 @@ function CompleteProfile() {
 
     const formik = useFormik({
         initialValues: {
-            firstName: userProfile.firstName || '',
-            lastName: userProfile.lastName || '',
-            email: userProfile?.email || '',
-            phone: userProfile.phone || '',
-            cnic: userProfile.cnic || '',
-            date: userProfile.dateOfBirth || '',
-            cnicFront: userProfile.cnicFront || '',
-            cnicBack: userProfile.cnicBack || ''
+            firstName: userProfile.firstName ?? '',
+            lastName: userProfile.lastName ?? '',
+            email: userProfile?.email ?? '',
+            phone: userProfile.phone ?? '',
+            cnic: userProfile.cnic ?? '',
+            date: userProfile.dateOfBirth ?? '',
+            cnicFront: userProfile.cnicFront ?? '',
+            cnicBack: userProfile.cnicBack ?? ''
         },
         enableReinitialize: true,
         onSubmit: values => {
             console.log(values)
             const { date, ...otherValues } = values;
-            dispatch(updateProfile({
-                ...otherValues,
-                dateOfBirth: dayjs(date).format('YYYY-MM-DD')
-            }))
-            router.push('/')
+            toast.promise(
+                dispatch(updateProfile({
+                    ...otherValues,
+                    dateOfBirth: dayjs(date).format('YYYY-MM-DD')
+                })).unwrap(), {
+                loading: 'Updating profile',
+                success: 'Profile updated',
+                error: err => err?.message
+            }
+            )
+            router.push('/user')
         },
         validate: values => {
             const errors = {};
@@ -90,19 +97,22 @@ function CompleteProfile() {
                 errors.cnic = 'Invalid CNIC Number'
             }
             if (!values.date) {
-                errors.date = 'Date of Birth cannot be empty'
+                errors.date = 'Date of Birth cannot be empty';
+            } else {
+                const today = new Date();
+                const dob = new Date(values.date);
+                const age = today.getFullYear() - dob.getFullYear();
+                const monthDifference = today.getMonth() - dob.getMonth();
+                const dayDifference = today.getDate() - dob.getDate();
+
+                if (
+                    age < 18 ||
+                    (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))
+                ) {
+                    errors.date = 'You must be at least 18 years old';
+                }
             }
-
-            const today = new Date()
-            const dob = new Date(values.date)
-            const age = today.getFullYear() - dob.getFullYear();
-            const monthDifference = today.getMonth() - dob.getMonth();
-            const dayDifference = today.getDate() - dob.getDate();
-
-            if (age < 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))) {
-                errors.date = 'You must be at least 18 years old';
-            }
-
+            console.log(errors)
             return errors;
         }
     })
@@ -213,7 +223,33 @@ function CompleteProfile() {
                             helperText={formik.touched && formik.errors.cnic}
                         />
 
-                        <DateInputField label={'Date of Birth'} formik={formik} />
+                        <Stack>
+
+                            <DateInputField
+                                name='date'
+                                label={'Date of Birth'}
+                                formik={formik}
+                                value={dayjs(formik.values.date)}
+                                error={formik.touched && Boolean(formik.errors.date)}
+                                helperText={formik.touched && formik.errors.date}
+                                onBlur={formik.handleBlur}
+                                onChange={(newValue) => {
+                                    formik.setFieldValue('date', newValue);
+                                }}
+                            />
+                            {formik.errors.date &&
+                                <Typography
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 0.5
+                                    }}
+                                    variant='body2'
+                                    color={"error"}>
+                                    <Error fontSize="small" /> {formik.errors.date}
+                                </Typography>
+                            }
+                        </Stack>
 
                     </Grid>
 

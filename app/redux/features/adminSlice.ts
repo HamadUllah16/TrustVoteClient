@@ -5,7 +5,19 @@ import { setUserProfile } from "./userSlice";
 import { setIsAuthenticated } from "./authSlice";
 import toast from "react-hot-toast";
 
-const initialState = {
+interface initState {
+    isAuthenticated: string,
+    profile: object,
+    pendingCandidates: Array<object>,
+    allParties: Array<object>,
+    message: string,
+    error: string,
+    loading: boolean,
+    toastId: undefined | string
+
+}
+
+const initialState: initState = {
     isAuthenticated: '',
     profile: {
 
@@ -14,7 +26,8 @@ const initialState = {
     allParties: [],
     message: '',
     error: '',
-    loading: false
+    loading: false,
+    toastId: undefined,
 }
 
 export const loginAdmin = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
@@ -41,6 +54,7 @@ export const getAdminProfile = createAsyncThunk(
     async (_, { rejectWithValue, dispatch }) => {
         try {
             const response = await axiosInstance.get('/admin/get-admin-profile')
+            dispatch(setIsAuthenticated(true));
             dispatch(setUserProfile(response.data));
             return response.data;
         } catch (error) {
@@ -48,14 +62,16 @@ export const getAdminProfile = createAsyncThunk(
         }
     })
 
-export const approveOrRejectCandidate = createAsyncThunk(
+export const approveOrRejectCandidate = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'admin/approveOrRejectCandidate',
-    async (id: number, { rejectWithValue }) => {
+    async (data: { id: number, status: string, setShow: React.Dispatch<React.SetStateAction<boolean>> }, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axiosInstance.post(`/candidate/approve-or-reject-candidate/${id}`)
+            const response = await axiosInstance.put(`/admin/candidates/approve-or-reject-candidate/${data.id}`, { status: data.status });
+            data.setShow(false);
+            dispatch(getPendingCandidate());
             return response.data;
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message || 'Request failed.' })
         }
     }
 )
@@ -89,6 +105,7 @@ export const allPoliticalParties = createAsyncThunk<any, void, { rejectValue: { 
 )
 
 
+
 export const getPendingCandidate = createAsyncThunk(
     'admin/getPendingCandidates',
     async (_, { rejectWithValue }) => {
@@ -108,19 +125,21 @@ const adminSlice = createSlice({
 
     },
     extraReducers(builder) {
-        builder.addCase(loginAdmin.pending, state => {
+        builder.addCase(loginAdmin.pending, (state) => {
             state.loading = true;
-        })
+        });
         builder.addCase(loginAdmin.fulfilled, (state, action) => {
             state.loading = false;
-            state.message = 'Admin login successful'
-            localStorage.setItem('x_auth_token', action.payload.token)
-            localStorage.setItem('role', action.payload.role)
-        })
+            state.message = 'Authenticated!';
+            localStorage.setItem('x_auth_token', action.payload.token);
+            localStorage.setItem('role', action.payload.role);
+        });
+
         builder.addCase(loginAdmin.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload?.message || 'Error authenticating Admin'
-        })
+            state.error = action.payload?.message || 'Authentication error.';
+        });
+
 
         // get pending candidates builder
         builder.addCase(getPendingCandidate.pending, state => {
@@ -158,11 +177,26 @@ const adminSlice = createSlice({
         builder.addCase(allPoliticalParties.fulfilled, (state, action) => {
             state.loading = false;
             state.allParties = action.payload?.allParties;
-            state.message = action.payload?.message
+            state.message = action.payload?.message;
         })
         builder.addCase(allPoliticalParties.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Error occurred while fetching all political parties.';
+        })
+
+        // approve or reject builder
+        builder.addCase(approveOrRejectCandidate.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(approveOrRejectCandidate.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            toast.success(state.message);
+        })
+        builder.addCase(approveOrRejectCandidate.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error occurred while submitting request.';
+            toast.error(state.error);
         })
     },
 })

@@ -9,9 +9,10 @@ import Loading from "../components/Loading";
 import { AppDispatch, RootState } from "../redux/store";
 import withAuth from "../utils/withAuth";
 import UserSidebarMenus from "../components/UserComponents/UserSidebarMenus";
+import CompleteProfile from "../components/CompleteProfile";
 
 function UserHomePage() {
-    const { firstName } = useSelector((state: RootState) => state.user.userProfile);
+    const { firstName, profileCompletion } = useSelector((state: RootState) => state.user.userProfile);
     const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const [loading, setLoading] = useState(true); // Loading state to block rendering
     const router = useRouter();
@@ -42,6 +43,9 @@ function UserHomePage() {
                 <Typography>
                     Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{firstName}</span>
                 </Typography>
+                {!profileCompletion &&
+                    <CompleteProfile />
+                }
             </Stack>
         </Stack>
     );

@@ -1,5 +1,5 @@
 'use client'
-import { allPoliticalParties, getAdminProfile } from '@/app/redux/features/adminSlice';
+import { getAdminProfile } from '@/app/redux/features/adminSlice';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { IconButton, Stack, TableBody, TableCell, TableRow } from '@mui/material'
 import React, { useEffect } from 'react'
@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getApprovedCandidates } from '@/app/redux/features/candidateSlice';
 import Image from 'next/image';
 import { Delete, Edit } from '@mui/icons-material';
+import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice';
 
 function RenderPoliticalParties() {
-    const { allParties } = useSelector((state: RootState) => state.admin);
+    const { allParties } = useSelector((state: RootState) => state.profileCompletion);
+    const { userProfile } = useSelector((state: RootState) => state.user)
 
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
@@ -25,16 +27,18 @@ function RenderPoliticalParties() {
                         <TableCell>{party.name}</TableCell>
                         <TableCell>{party.abbreviation}</TableCell>
                         <TableCell><Image src={party.symbol} width={50} height={50} alt='party symbol' /> </TableCell>
-                        <TableCell>
-                            <Stack direction={'row'}>
-                                <IconButton>
-                                    <Edit />
-                                </IconButton>
-                                <IconButton>
-                                    <Delete />
-                                </IconButton>
-                            </Stack>
-                        </TableCell>
+                        {userProfile.role === 'admin' &&
+                            <TableCell>
+                                <Stack direction={'row'}>
+                                    <IconButton>
+                                        <Edit />
+                                    </IconButton>
+                                    <IconButton>
+                                        <Delete />
+                                    </IconButton>
+                                </Stack>
+                            </TableCell>
+                        }
                     </TableRow>
                 )
             })}

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { loginCandidate } from '@/app/redux/features/authSlice';
 import LoginForm from '../LoginForm';
+import toast from 'react-hot-toast';
 
 function CandidateLogin() {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,9 +21,13 @@ function CandidateLogin() {
             password: ''
         },
         onSubmit: values => {
-            const { email, password } = values;
-            console.log(email, password)
-            dispatch(loginCandidate({ email, password }));
+            toast.promise(
+                dispatch(loginCandidate(values)).unwrap(), {
+                loading: 'Loading...',
+                success: 'Authenticated',
+                error: err => err.message || 'Authentication Error'
+            }
+            )
         },
         validate: values => {
             const errors: FormikValues = {};
@@ -56,8 +61,8 @@ function CandidateLogin() {
                     <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
                     <Typography variant='caption' color={"secondary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
                 </Link>
-                <Link href='/candidate/login'>
-                    <Typography variant='caption' color={"secondary.main"} >Login as Candidate</Typography>
+                <Link href='/user/login'>
+                    <Typography variant='caption' color={"secondary.main"} >Login as <span style={{ textDecoration: 'underline' }}>Voter</span> instead.</Typography>
                 </Link>
             </Stack>
         </LoginForm>

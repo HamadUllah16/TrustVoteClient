@@ -75,7 +75,7 @@ export const getApprovedCandidates = createAsyncThunk<any, void, { rejectValue: 
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get('/candidate/approved-candidates');
-            return response.data;
+            return response;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data.message || 'error fetching approved candidates.' })
         }
@@ -166,7 +166,7 @@ const candidateSlice = createSlice({
         builder.addCase(getApprovedCandidates.fulfilled, (state, action) => {
             state.loading = false;
             state.message = action.payload?.message;
-            state.approvedCandidates = action.payload;
+            state.approvedCandidates = action.payload?.candidates;
         })
         builder.addCase(getApprovedCandidates.rejected, (state, action) => {
             state.loading = false;

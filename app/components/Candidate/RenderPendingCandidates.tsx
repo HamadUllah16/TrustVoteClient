@@ -1,5 +1,5 @@
 'use client'
-import { getAdminProfile } from '@/app/redux/features/adminSlice';
+import { approveOrRejectCandidate, getAdminProfile } from '@/app/redux/features/adminSlice';
 import { getPendingCandidates } from '@/app/redux/features/candidateSlice';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { Cancel, Check, OpenInNew } from '@mui/icons-material';
@@ -13,6 +13,7 @@ function RenderPendingCandidates() {
     const { pendingCandidates } = useSelector((state: RootState) => state.candidate);
     const [show, setShow] = useState(false);
     const [selected, setSelected] = useState({
+        _id: '',
         firstName: '',
         lastName: '',
         partyAffiliation: '',
@@ -57,9 +58,6 @@ function RenderPendingCandidates() {
                                     }>
                                         <OpenInNew />
                                     </IconButton>
-                                    <IconButton color='success'>
-                                        <Check />
-                                    </IconButton>
                                 </Stack>
                             </TableCell>
                         </TableRow>
@@ -92,7 +90,7 @@ function RenderPendingCandidates() {
                         </Stack>
 
                         <Stack justifyContent={'end'} gap={2} direction={'row'}>
-                            <Button variant='contained'>
+                            <Button variant='contained' onClick={() => dispatch(approveOrRejectCandidate({ id: selected._id, status: 'approved', setShow }))}>
                                 Approve
                             </Button>
                         </Stack>

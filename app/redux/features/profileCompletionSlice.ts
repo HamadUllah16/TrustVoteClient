@@ -1,11 +1,12 @@
 import axiosInstance from "@/app/utils/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getUserProfile } from "./userSlice";
 
 const initialState = {
     user: {
 
     },
-
+    allParties: [],
     loading: false,
     message: '',
     error: ''
@@ -14,14 +15,27 @@ const initialState = {
 
 export const updateProfile = createAsyncThunk(
     'profileCompletion/updateProfile',
-    async (data: any, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, dispatch }) => {
         try {
             const response = await axiosInstance.patch('/user/update-user-profile', data)
+            dispatch(getUserProfile());
             console.log(data);
 
             return response.data;
         } catch (error) {
             return rejectWithValue(error)
+        }
+    }
+)
+export const allPoliticalParties = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'user/allPoliticalParties',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/user/all-political-parties');
+            console.log(response)
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message })
         }
     }
 )
@@ -44,6 +58,20 @@ const profileCompletionSlice = createSlice({
         builder.addCase(updateProfile.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error?.message || 'We were not able to update user.'
+        })
+
+        // all political parties builder
+        builder.addCase(allPoliticalParties.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(allPoliticalParties.fulfilled, (state, action) => {
+            state.loading = false;
+            state.allParties = action.payload?.allParties;
+            state.message = action.payload?.message
+        })
+        builder.addCase(allPoliticalParties.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error occurred while fetching all political parties.';
         })
 
     },

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { loginAdmin } from '@/app/redux/features/adminSlice';
 import LoginForm from '../LoginForm';
+import toast from 'react-hot-toast';
 
 function Login() {
     const { loading, error } = useSelector((state: RootState) => state.admin);
@@ -23,8 +24,13 @@ function Login() {
         },
         enableReinitialize: true,
         onSubmit: values => {
-            const { email, password } = values;
-            dispatch(loginAdmin({ credentials: values, router }));
+            toast.promise(
+                dispatch(loginAdmin({ credentials: values, router })).unwrap(), {
+                loading: 'Logging in...',
+                success: 'Authenticated',
+                error: err => err.message || 'Authentication error'
+            }
+            )
         },
         validate: values => {
             const errors: FormikValues = {};

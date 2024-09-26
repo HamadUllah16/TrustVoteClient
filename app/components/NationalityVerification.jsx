@@ -88,6 +88,7 @@ function NationalityVerification({ formik }) {
             border={"1px solid #D9D9D9"}
             p={2}
             maxWidth={"fit-content"}
+            borderRadius={2}
         >
             <Box>
                 <Typography sx={{ display: "flex", alignItems: "center", gap: 0.5 }} variant='body2' color={"#5A5A5A"}><Info fontSize='' /> Support documents: CNIC</Typography>
@@ -106,6 +107,7 @@ function NationalityVerification({ formik }) {
                     height={"150px"}
                     maxHeight={"200px"}
                     overflow={"hidden"}
+                    borderRadius={2}
                     p={1}
                     display={"flex"}
                     justifyContent={"center"}
@@ -174,6 +176,7 @@ function NationalityVerification({ formik }) {
                     height={"150px"}
                     maxHeight={"200px"}
                     overflow={"hidden"}
+                    borderRadius={2}
                     p={1}
                     display={"flex"}
                     justifyContent={"center"}

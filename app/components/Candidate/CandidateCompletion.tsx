@@ -8,11 +8,13 @@ import { AppDispatch, RootState } from '@/app/redux/store'
 import withCandidateAuth from '@/app/utils/withCandidateAuth'
 import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
     const dispatch = useDispatch<AppDispatch>();
     const { loading } = useSelector((state: RootState) => state.candidate)
+    const { allParties } = useSelector((state: RootState) => state.profileCompletion)
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter()
 
@@ -40,6 +42,7 @@ function CandidateCompletion() {
         if (profileCompletion) {
             router.push('/candidate')
         }
+        dispatch(allPoliticalParties());
     }, [profileCompletion])
 
     const handleNext = async (formik: any) => {
@@ -277,9 +280,9 @@ function CandidateCompletion() {
                             error={formikStep2.touched.partyAffiliation && Boolean(formikStep2.errors.partyAffiliation)}
                             helperText={formikStep2.touched.partyAffiliation && formikStep2.errors.partyAffiliation}
                         >
-                            {politicalParties.map((party, index) => {
+                            {allParties.map((party: any, index: number) => {
                                 return (
-                                    <MenuItem key={index} value={party}>{party}</MenuItem>
+                                    <MenuItem key={index} value={party.name}>{party}</MenuItem>
                                 )
                             })}
                         </TextField>
