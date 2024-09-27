@@ -27,7 +27,7 @@ function UserHomePage() {
         } else {
             router.push('/user/login');
         }
-    }, [dispatch, router]);
+    }, [dispatch, router, profileCompletion]);
 
     if (loading) {
         // Return a loading state or spinner while the auth check is happening
@@ -39,12 +39,15 @@ function UserHomePage() {
             <Sidebar>
                 <UserSidebarMenus />
             </Sidebar>
-            <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
+            <Stack flex={1} borderRadius={2} py={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'secondary.main'} border={'1px solid'} borderColor={'secondary.200'}>
                 <Typography>
                     Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{firstName}</span>
                 </Typography>
                 {!profileCompletion &&
-                    <CompleteProfile />
+                    (
+                        <CompleteProfile />
+                    )
+
                 }
             </Stack>
         </Stack>

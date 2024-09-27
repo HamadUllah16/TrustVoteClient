@@ -1,12 +1,17 @@
 'use client'
 import { Button } from '@mui/material'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
 function LandingPageNavItems() {
     const { isAuthenticated, loading } = useSelector((state: RootState) => state.auth)
+    const [role, setRole] = useState<string | null>('');
+    useEffect(() => {
+        const userRole = localStorage.getItem('role')
+        setRole(userRole)
+    }, [role])
     return (
         <>
             {!isAuthenticated ?
@@ -25,7 +30,18 @@ function LandingPageNavItems() {
                 </>
                 :
                 <>
-                    <Link href={'/home'}>
+                    <Link href={
+                        role === 'voter' ?
+                            '/user'
+                            :
+                            role === 'candidate' ?
+                                '/candidate'
+                                :
+                                role === 'admin' ?
+                                    '/admin'
+                                    :
+                                    '/user/login'}
+                    >
                         <Button variant='contained'>
                             Home
                         </Button>

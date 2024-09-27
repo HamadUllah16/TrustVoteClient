@@ -12,7 +12,6 @@ import UserSidebarMenus from "../components/UserComponents/UserSidebarMenus";
 
 function HomePage() {
     const { firstName } = useSelector((state: RootState) => state.user.userProfile);
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const [loading, setLoading] = useState(true); // Loading state to block rendering
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();

@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider theme={theme}>
         <StoreProvider>
-          <body style={{ backgroundColor: "#f2f2f2" }} className={`${inter.className} flex flex-col min-h-screen`}>
+          <body style={{ backgroundColor: "#101010" }} className={`${inter.className} flex flex-col min-h-screen`}>
             <Navbar />
             <Toaster position="top-center" />
             <main className="flex flex-grow">{children}</main>

@@ -10,6 +10,7 @@ import { getCandidateProfile } from '../redux/features/candidateSlice';
 import { getAdminProfile } from '../redux/features/adminSlice';
 import { Toaster } from 'react-hot-toast';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 
 function Navbar() {
@@ -49,31 +50,34 @@ function Navbar() {
                     null
                     :
                     <Stack
-                        bgcolor={'primary.200'}
+                        bgcolor={'background'}
                         px={"75px"}
                         py={"15px"}
                         transition={"all 0.3s ease"}
                     >
                         <Grid
                             container
-                            bgcolor='primary.contrastText'
+                            bgcolor='secondary.main'
+                            border={'1px solid'}
+                            borderColor={'secondary.200'}
                             borderRadius={2}
                             px={2}
-                            py={1}
+                            py={2}
                             display={"flex"}
                             justifyContent={"space-between"}
                             alignItems={"center"}
                         >
                             <Link href={'/'}>
-                                <Typography
-                                    variant='h4'
-                                    fontWeight={"bolder"}
-                                    color={'primary.main'}
-                                    p={1}
-                                    sx={{ WebkitTextStroke: '1px black' }}
-                                >
-                                    trust vote
-                                </Typography>
+                                <Image
+                                    src={'/logo-dark.jpg'}
+                                    width={50}
+                                    height={50}
+                                    alt='logo'
+                                    style={{
+                                        borderRadius: '12px',
+                                        rotate: '90deg'
+                                    }}
+                                />
                             </Link>
 
                             <Grid

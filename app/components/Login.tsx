@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, loginUserEmailCheck, setExists } from '../redux/features/authSlice';
 import { FormikValues, useFormik } from 'formik';
@@ -20,7 +20,7 @@ function Login() {
     // Navigate to home if authenticated
     useEffect(() => {
         if (isAuthenticated && !loading) {
-            router.push('/home');
+            router.push('/user');
         }
     }, [loading, isAuthenticated, router]);
 
@@ -65,15 +65,32 @@ function Login() {
     // Callback to dispatch email check
     const checkEmailExists = useCallback(() => {
         if (!formik.errors.email && formik.values.email) {
-            dispatch(loginUserEmailCheck(formik.values.email));
+            dispatch(loginUserEmailCheck({ email: formik.values.email, role: 'voter' }));
         }
         else {
             dispatch(setExists(null));
         }
     }, [dispatch, formik.errors.email, formik.values.email]);
 
+    const timeoutRef = useRef<any>();
+
     useEffect(() => {
-        checkEmailExists();
+        // Clear the previous timeout if the input changes
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Set a new timeout
+        timeoutRef.current = setTimeout(() => {
+            checkEmailExists();
+        }, 300); // 300ms delay
+
+        // Cleanup function to clear timeout on unmount or when input changes
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
     }, [formik.values.email, checkEmailExists]);
 
     return (
@@ -82,10 +99,10 @@ function Login() {
                 <hr style={{ color: "#5A5A5A" }}></hr>
                 <Link href="/user/register">
                     <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
-                    <Typography variant='caption' color={"secondary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
+                    <Typography variant='caption' color={"primary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
                 </Link>
                 <Link href='/candidate/login'>
-                    <Typography variant='caption' color={"secondary.main"} >Login as <span style={{ textDecoration: 'underline' }}> Candidate</span> instead.</Typography>
+                    <Typography variant='caption' color={"primary.main"} >Login as <span style={{ textDecoration: 'underline' }}> Candidate</span> instead.</Typography>
                 </Link>
             </Stack>
         </LoginForm>

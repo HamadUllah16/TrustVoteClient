@@ -21,7 +21,7 @@ function Footer() {
                     null
                     :
                     <Grid
-                        backgroundColor={"primary.200"}
+                        backgroundColor={"background"}
                         px={"75px"}
                         py={"15px"}
                     >
@@ -33,7 +33,9 @@ function Footer() {
                             px={3}
                             py={4}
                             borderRadius={2}
-                            bgcolor={'primary.contrastText'}
+                            border={'1px solid'}
+                            borderColor={'secondary.200'}
+                            bgcolor={'secondary.main'}
                         >
 
                             <Grid

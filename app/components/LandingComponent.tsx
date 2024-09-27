@@ -1,5 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material'
-import Link from 'next/link'
+import { Stack, Typography } from '@mui/material'
 import React from 'react'
 import LandingPageNavItems from './LandingPageNavItems'
 
@@ -8,7 +7,9 @@ function LandingComponent() {
         <Stack className='flex-grow' px={'75px'} py={'15px'} flex={1}>
             <Stack
                 className='flex-grow'
-                bgcolor={'primary.contrastText'}
+                bgcolor={'secondary.main'}
+                border={'1px solid'}
+                borderColor={'secondary.200'}
                 alignItems={'center'}
                 justifyContent={'center'}
                 flex={1}

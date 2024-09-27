@@ -1,3 +1,4 @@
+'use client'
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
@@ -62,13 +63,13 @@ export const loginUser = createAsyncThunk<any, any, { rejectValue: { message: st
 
 export const loginUserEmailCheck = createAsyncThunk<
     { message: string; exists: boolean }, // Type for success response
-    string, // Type for the email argument
+    { email: string, role: string }, // Type for the email argument
     { rejectValue: { message: string; exists: boolean } } // Type for rejection value
 >(
     'auth/loginUserEmailCheck',
-    async (email: string, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login/email-check`, { email });
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/auth/login/email-check`, { email: data.email, role: data.role });
             if (response.status === 200) {
                 return response.data; // response.data must match the shape { message: string, exists: boolean }
             } else {

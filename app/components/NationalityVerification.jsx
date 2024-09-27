@@ -85,7 +85,9 @@ function NationalityVerification({ formik }) {
             display={"flex"}
             flexDirection={"column"}
             gap={2}
-            border={"1px solid #D9D9D9"}
+            border={"1px solid"}
+            borderColor={'secondary.200'}
+            bgcolor={'background.default'}
             p={2}
             maxWidth={"fit-content"}
             borderRadius={2}
@@ -101,8 +103,10 @@ function NationalityVerification({ formik }) {
             >
                 {/* Front picture of the card */}
                 <Grid
-                    border={"1px solid #D9D9D9"}
+                    border={"1px solid"}
+                    borderColor={'secondary.200'}
                     width={"250px"}
+                    bgcolor={'secondary.main'}
                     maxWidth={"320px"}
                     height={"150px"}
                     maxHeight={"200px"}
@@ -133,7 +137,7 @@ function NationalityVerification({ formik }) {
                                 maxWidth: "100%",
                                 maxHeight: "100%",
                                 backgroundColor: "#D9D9D9",
-                                objectFit: "contain"
+                                borderRadius: '12px'
 
                             }}
                             width={300}
@@ -170,8 +174,10 @@ function NationalityVerification({ formik }) {
 
                 {/* Back picture of the card */}
                 <Grid
-                    border={"1px solid #D9D9D9"}
+                    border={"1px solid"}
+                    borderColor={'secondary.200'}
                     width={"250px"}
+                    bgcolor={'secondary.main'}
                     maxWidth={"320px"}
                     height={"150px"}
                     maxHeight={"200px"}
@@ -201,7 +207,7 @@ function NationalityVerification({ formik }) {
                                 maxWidth: "100%",
                                 maxHeight: "100%",
                                 backgroundColor: "#D9D9D9",
-                                objectFit: "contain"
+                                borderRadius: '12px'
 
                             }}
                             width={300}

@@ -48,7 +48,6 @@ function ProfileMenu() {
 
                         <InputLabel
                             sx={{
-                                color: "black",
                                 fontSize: "15px",
                                 height: "fit-content",
                                 width: "fit-content",
@@ -58,6 +57,7 @@ function ProfileMenu() {
                             <IconButton
                                 sx={{
                                     border: '1px solid',
+                                    borderColor: 'secondary.200',
                                     borderRadius: 1.5,
                                     gap: 1
                                 }}
@@ -82,7 +82,8 @@ function ProfileMenu() {
                             flexDirection={'column'}
                             top={50}
                             right={0}
-                            border={'1px solid #DADADA'}
+                            border={'1px solid'}
+                            borderColor={'secondary.200'}
                             borderRadius={2}
                             width={'fit-content'}
                             overflow={'hidden'}
@@ -91,7 +92,7 @@ function ProfileMenu() {
                                 opacity: `${show ? 1 : 0}`,
                                 transition: '0.2s all',
                                 transitionDelay: '0.1s',
-                                backgroundColor: 'primary.contrastText',
+                                backgroundColor: 'secondary.main',
                                 p: 1
                             }}
                         >
@@ -100,16 +101,15 @@ function ProfileMenu() {
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'black',
                                 }}
                             >
                                 <MenuItem
                                     sx={{
                                         borderRadius: 1.5,
-                                        backgroundColor: pathName.startsWith('/user/dashboard') && 'primary.main',
-                                        color: pathName.startsWith('/user/dashboard') && 'primary.contrastText',
+                                        backgroundColor: pathName.startsWith('/user/dashboard') ? 'primary.main' : 'secondary.main',
+                                        color: pathName.startsWith('/user/dashboard') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'black'
+                                            color: 'primary.100'
                                         }
                                     }}
                                 >
@@ -148,7 +148,7 @@ function ProfileMenu() {
                                                 sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}
                                             >
                                                 {firstName}
-                                                <Stack borderRadius={2} bgcolor={'primary.100'} px={2} py={0.2}>
+                                                <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
                                                     {role}
                                                 </Stack>
                                             </Typography>
@@ -169,7 +169,7 @@ function ProfileMenu() {
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'black',
+                                    color: 'primary.main',
                                 }}
                             >
                                 <MenuItem
@@ -178,10 +178,10 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith('/user/update-profile') && 'primary.main',
-                                        color: pathName.startsWith('/user/update-profile') && 'primary.contrastText',
+                                        backgroundColor: pathName.startsWith('/user/update-profile') ? 'primary.main' : 'secondary.main',
+                                        color: pathName.startsWith('/user/update-profile') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'black'
+                                            color: 'primary.100'
                                         }
                                     }}
                                 >
@@ -199,7 +199,7 @@ function ProfileMenu() {
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'black',
+                                    color: 'primary.main',
                                 }}
                             >
                                 <MenuItem
@@ -208,10 +208,10 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith('/user/settings') && 'primary.main',
-                                        color: pathName.startsWith('/user/settings') && 'primary.contrastText',
+                                        backgroundColor: pathName.startsWith('/user/settings') ? 'primary.main' : 'secondary.main',
+                                        color: pathName.startsWith('/user/settings') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'black'
+                                            color: 'primary.100'
                                         }
                                     }}
                                 >
@@ -228,7 +228,7 @@ function ProfileMenu() {
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'black',
+                                    color: 'primary.main',
                                 }}
                             >
                                 <MenuItem
@@ -238,10 +238,10 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith('/logout') && 'primary.main',
-                                        color: pathName.startsWith('/logout') && 'primary.contrastText',
+                                        backgroundColor: pathName.startsWith('/logout') ? 'primary.main' : 'secondary.main',
+                                        color: pathName.startsWith('/logout') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'black'
+                                            color: 'primary.100'
                                         }
                                     }}
                                 >

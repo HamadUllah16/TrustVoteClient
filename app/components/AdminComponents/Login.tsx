@@ -1,18 +1,16 @@
 "use client"
-import { Grid, Typography, Box, Button, TextField, Stack } from '@mui/material';
-import React, { useEffect } from 'react';
-import { East } from '@mui/icons-material';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikValues, useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { loginAdmin } from '@/app/redux/features/adminSlice';
 import LoginForm from '../LoginForm';
 import toast from 'react-hot-toast';
+import { loginUserEmailCheck, setExists } from '@/app/redux/features/authSlice';
 
 function Login() {
-    const { loading, error } = useSelector((state: RootState) => state.admin);
+    const { loading, checkExistsLoading, exists } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
@@ -20,7 +18,6 @@ function Login() {
         initialValues: {
             email: '',
             password: '',
-            error: error ?? ''
         },
         enableReinitialize: true,
         onSubmit: values => {
@@ -49,8 +46,41 @@ function Login() {
         }
     });
 
+
+    // Callback to dispatch email check
+    const checkEmailExists = useCallback(() => {
+        if (!formik.errors.email && formik.values.email) {
+            dispatch(loginUserEmailCheck({ email: formik.values.email, role: 'admin' }));
+        }
+        else {
+            dispatch(setExists(null));
+        }
+    }, [dispatch, formik.errors.email, formik.values.email]);
+
+
+    const timeoutRef = useRef<any>();
+
+    useEffect(() => {
+        // Clear the previous timeout if the input changes
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Set a new timeout
+        timeoutRef.current = setTimeout(() => {
+            checkEmailExists();
+        }, 300); // 300ms delay
+
+        // Cleanup function to clear timeout on unmount or when input changes
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [formik.values.email, checkEmailExists]);
+
     return (
-        <LoginForm formik={formik} loading={loading}>
+        <LoginForm checkExistsLoading={checkExistsLoading} exists={exists} formik={formik} loading={loading}>
             {null}
         </LoginForm>
     );

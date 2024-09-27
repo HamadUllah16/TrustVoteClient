@@ -129,10 +129,10 @@ function CompleteProfile() {
                     gap={3}
                     p={3}
                     width={"fit-content"}
-                    sx={{
-                        backgroundColor: "white",
-                    }}
+                    bgcolor={'secondary.main'}
                     borderRadius={2}
+                    border={'1px solid'}
+                    borderColor={'secondary.200'}
                 >
                     <Grid
                         display={'flex'}
@@ -147,6 +147,7 @@ function CompleteProfile() {
                         >
                             <Typography
                                 variant='h4'
+                                color={'primary.main'}
                                 fontWeight={'bold'}
                             >
                                 Complete your profile
@@ -256,10 +257,7 @@ function CompleteProfile() {
                     <Divider />
                     <Grid
                         display={"flex"}
-                        gap={2}
                         flexDirection={"column"}
-                        borderBottom={"1px solid #DBDBDB"}
-                        pb={3}
                     >
                         <Box
                             display={"flex"}
@@ -268,7 +266,7 @@ function CompleteProfile() {
                             gap={0.5}
                             width={"100%"}
                         >
-                            <Typography>
+                            <Typography variant='subtitle1' color={'primary.main'}>
                                 Upload document snaps
                             </Typography>
                         </Box>

@@ -1,12 +1,16 @@
 'use client'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
+import { East, Visibility, VisibilityOff } from '@mui/icons-material'
+import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { completeCandidateProfile, createCandidateProfile } from '../../redux/features/candidateSlice'
 import { useRouter } from 'next/navigation'
+import RegisterForm from '../RegisterForm'
+import Link from 'next/link'
+import Image from 'next/image'
+import toast from 'react-hot-toast'
 
 function CandidateRegister() {
     const [showPassword, setShowPassword] = useState(false);
@@ -38,156 +42,98 @@ function CandidateRegister() {
         validationSchema: validationSchemaStep1,
         onSubmit: (values) => {
             const { email, password } = values;
-            dispatch(createCandidateProfile({ profile: { email, password }, router: router }))
+            toast.promise(
+                dispatch(createCandidateProfile({ profile: { email, password }, router: router })).unwrap(), {
+                loading: 'Loading...',
+                success: 'Authenticated',
+                error: err => err.message
+            }
+            )
         },
     });
 
     return (
-        <Grid
-            display={'flex'}
-            flexDirection={'column'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            px={'75px'}
-            py={'30px'}
+        <Stack
+            direction={'row'}
+            bgcolor={'background.default'}
+            width={'100vw'}
+            height={'100vh'}
+            p={2}
+            border={'1px solid black'}
         >
-            <Grid
-                display={"flex"}
-                justifyContent={"center"}
-                p={'50px'}
-                gap={2}
-                boxShadow={20}
-                borderRadius={2}
-                flexDirection={'column'}
-                width={'100%'}
-                maxWidth={'600px'}
-            >
-
-                <form onSubmit={formikStep1.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <Grid
+            <Stack>
+                <Image
+                    src={'/logo-dark.jpg'}
+                    height={50}
+                    width={50}
+                    alt='logo'
+                />
+                <Grid
+                    px={'75px'}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    gap={2}
+                    flexDirection={'column'}
+                >
+                    <Box
                         display={'flex'}
                         flexDirection={'column'}
                     >
-                        <Typography variant='h4'>Welcome To TrustVote</Typography>
-                        <Typography variant='h6' fontWeight={'light'} color={'#5A5A5A'}>
-                            Create a new candidate account
+                        <Typography variant='h4' fontWeight={'light'} color={'primary.main'}>
+                            Create a new account
                         </Typography>
-                    </Grid>
+                        <Typography variant='body2' fontWeight={'light'} color={'primary.100'}>
+                            Enter your details to register
+                        </Typography>
+                    </Box>
+
                     <Divider />
-                    <Stack>
-                        <TextField
-                            fullWidth
-                            label='Email'
-                            name="email"
-                            value={formikStep1.values.email}
-                            onChange={formikStep1.handleChange}
-                            onBlur={formikStep1.handleBlur}
-                            error={formikStep1.touched.email && Boolean(formikStep1.errors.email)}
-                        />
-                        <Typography
-                            variant='caption'
-                            color={'error'}
-                        >
-                            {formikStep1.touched.email && formikStep1.errors.email}
-                        </Typography>
-                    </Stack>
+
                     <Grid
                         display={'flex'}
-                        gap={2}
-                        justifyContent={'space-between'}
+                        flexDirection={'column'}
+                        gap={3}
                     >
-                        <FormControl sx={{ width: '100%' }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
-                                fullWidth
-                                id="outlined-adornment-password"
-                                name="password"
-                                type={showPassword ? 'text' : 'password'}
-                                value={formikStep1.values.password}
-                                onChange={formikStep1.handleChange}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.errors.password}
-                                error={formikStep1.touched.password && formikStep1.errors.password}
-                                label="Password"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-                            <Typography
-                                variant='caption'
-                                color={'error'}
-                            >
-                                {formikStep1.touched.password && formikStep1.errors.password}
-                            </Typography>
-                        </FormControl>
-                    </Grid>
-                    <Grid
-                    >
-                        <FormControl sx={{ width: '100%' }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-confirm-password">Confirm Password</InputLabel>
-                            <OutlinedInput
-                                fullWidth
-                                id="outlined-adornment-confirm-password"
-                                name="confirmPassword"
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                value={formikStep1.values.confirmPassword}
-                                onChange={formikStep1.handleChange}
-                                onBlur={formikStep1.handleBlur}
-                                error={formikStep1.touched.confirmPassword && Boolean(formikStep1.errors.confirmPassword)} // Corrected here
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Confirm Password"
-                            />
-                            <Typography
-                                variant='caption'
-                                color={'error'}
-                            >
-                                {formikStep1.touched.confirmPassword && formikStep1.errors.confirmPassword}
-                            </Typography>
-                        </FormControl>
+                        {/* ----------------------Registration Form----------------- */}
+                        <RegisterForm
+                            formik={formikStep1}
+                        />
 
                     </Grid>
-                    <Grid display="flex" justifyContent="space-between">
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        onClick={() => setTermsChecked(!termsChecked)}
-                                    />
-                                }
-                                label='You agree to our terms and conditions'
-                            />
-                        </FormGroup>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            disabled={!(termsChecked && formikStep1.isValid && formikStep1.dirty)}
+
+                    <Divider />
+
+                    <Link
+                        href={"/candidate/login"}
+                        className="arrowBox"
+                    >
+                        <Box
+                            width={"fit-content"}
+                            display={"flex"}
+                            justifyContent={"start"}
+                            alignItems={"center"}
+                            gap={"3px"}
+                            sx={{ textDecoration: "none", cursor: "pointer", ":hover": { textDecoration: "underline" } }}
                         >
-                            Create account
-                        </Button>
-                    </Grid>
-                </form>
-            </Grid>
-        </Grid>
+                            <Typography variant='caption' color={"#5A5A5A"}>Already a member?</Typography>
+                            <Typography variant='caption' color={"primary.main"} >Login</Typography>
+                            <Box
+                                className="rightArrow"
+                                display={'flex'}
+                                alignItems={'center'}
+                                sx={{ "&.arrowBox:hover": { transform: "translate(10px)" }, transition: "all 0.3s ease" }}
+                            >
+                                <East color='primary' fontSize='inherit' />
+                            </Box>
+                        </Box>
+                    </Link>
+                </Grid>
+            </Stack>
+
+            <Stack flexGrow={1} borderRadius={2} bgcolor={'primary.main'}>
+
+            </Stack>
+        </Stack>
     )
 }
 

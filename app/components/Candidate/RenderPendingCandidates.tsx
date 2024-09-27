@@ -28,10 +28,10 @@ function RenderPendingCandidates() {
     return (
         <>
             <TableBody>
-                {pendingCandidates && pendingCandidates.map((candidate: any) => {
+                {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
                     return (
-                        <TableRow>
-                            <TableCell>{candidate._id}</TableCell>
+                        <TableRow key={candidate._id}>
+                            <TableCell>{index}</TableCell>
                             <TableCell>{candidate.firstName}</TableCell>
                             <TableCell>{candidate.partyAffiliation}</TableCell>
                             <TableCell>{candidate.constituencyType}</TableCell>
