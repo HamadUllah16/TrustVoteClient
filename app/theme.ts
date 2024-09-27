@@ -11,22 +11,25 @@ const inter = Inter({
 const theme = createTheme({
     typography: {
         fontFamily: inter.style.fontFamily,
-        subtitle1: { fontSize: '18px' }
+        subtitle1: { fontSize: '18px' },
+        h3: {
+            color: '#F85D40'
+        }
     },
     palette: {
-        mode: 'light',
         primary: {
-            main: '#404a56',
-            "100": '#ffca43',
-            '200': '#f2f2f2',
-            contrastText: 'white',
+            main: '#F85D40',
+            '100': '#f2f2f2',
+            contrastText: '#0C0C0C',
+
         },
         secondary: {
-            main: '#404a56',
+            main: '#0C0C0C',
             '100': '#ebecf0',
+            '200': '#2B2B2D'
         },
         background: {
-            default: '#f2f3f7'
+            default: '#1C1C1C',
         },
     },
     shape: {

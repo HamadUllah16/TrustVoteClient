@@ -10,8 +10,10 @@ function CandidateProfileCompletion() {
             justifyContent={'center'}
         >
             <Stack
-                bgcolor={'primary.contrastText'}
+                bgcolor={'secondary.main'}
                 borderRadius={2}
+                border={'1px solid'}
+                borderColor={'secondary.200'}
                 p={4}
             >
                 <CandidateCompletion />

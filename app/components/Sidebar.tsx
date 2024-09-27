@@ -8,16 +8,18 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
 function Sidebar({ children }: { children: React.ReactNode }) {
-    const { firstName, lastName, email, role } = useSelector((state: RootState) => state.user.userProfile)
+    const { firstName, lastName, email, role, status } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <Stack
-            width={400}
+            minWidth={400}
             minHeight={'100%'}
             px={3}
             py={2}
             gap={5}
+            border={'1px solid'}
+            borderColor={'secondary.200'}
             borderRadius={2}
-            bgcolor={'primary.contrastText'}
+            bgcolor={'secondary.main'}
         >
             <Stack gap={4} minHeight={'50vh'}>
                 <Stack
@@ -34,9 +36,8 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                         <Image
                             src={'/avatar.jpg'}
                             alt='profile picture'
-                            width={80}
-                            height={80}
-                            objectFit='contain'
+                            width={100}
+                            height={100}
                         />
                     </Box>
                     <Stack>
@@ -71,7 +72,20 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                         >
                             {email}
                         </Typography>
+
+                        {status &&
+                            <Stack textAlign={'center'} borderRadius={0.5} p={0.5} color={'white'} bgcolor={status === 'approved' ? '#008cff' : 'orange'}>
+                                <Typography>
+                                    {status !== '' &&
+                                        status === 'approved' ? 'Nominated'
+                                        :
+                                        'Pending'
+                                    }
+                                </Typography>
+                            </Stack>
+                        }
                     </Stack>
+
                 </Stack>
 
                 <Divider />

@@ -12,12 +12,12 @@ function ViewCandidatesPage() {
             <Sidebar>
                 <UserSidebarMenus />
             </Sidebar>
-            <Stack flex={1} gap={2} p={3} borderRadius={2} width={'100%'} bgcolor={'primary.contrastText'}>
+            <Stack flex={1} gap={2} p={3} borderRadius={2} border={'1px solid'} borderColor={'secondary.200'} width={'100%'} bgcolor={'primary.contrastText'}>
                 <Box>
-                    <Typography variant='h4' fontWeight={'bold'} color={'secondary.main'}>
+                    <Typography variant='h4' fontWeight={'bold'} color={'primary.main'}>
                         All Candidates
                     </Typography>
-                    <Typography variant='h6' color={'secondary.main'}>
+                    <Typography variant='h6' color={'primary.100'}>
                         Listed below are the approved candidates
                     </Typography>
                 </Box>

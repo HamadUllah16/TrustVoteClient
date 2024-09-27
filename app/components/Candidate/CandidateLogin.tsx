@@ -1,17 +1,19 @@
 "use client"
-import { Grid, Typography, Box, Button, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Grid, Typography, Box, Button, TextField, Stack, Divider } from '@mui/material';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikValues, useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import { loginCandidate } from '@/app/redux/features/authSlice';
+import { loginCandidate, loginUserEmailCheck, setExists } from '@/app/redux/features/authSlice';
+import LoginForm from '../LoginForm';
+import toast from 'react-hot-toast';
 
 function CandidateLogin() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+    const { isAuthenticated, loading, exists, checkExistsLoading } = useSelector((state: RootState) => state.auth)
 
     const formik = useFormik({
         initialValues: {
@@ -19,9 +21,13 @@ function CandidateLogin() {
             password: ''
         },
         onSubmit: values => {
-            const { email, password } = values;
-            console.log(email, password)
-            dispatch(loginCandidate({ email, password }));
+            toast.promise(
+                dispatch(loginCandidate(values)).unwrap(), {
+                loading: 'Loading...',
+                success: 'Authenticated',
+                error: err => err.message || 'Authentication Error'
+            }
+            )
         },
         validate: values => {
             const errors: FormikValues = {};
@@ -46,90 +52,35 @@ function CandidateLogin() {
 
     }, [isAuthenticated])
 
+    const checkEmailExists = useCallback(() => {
+        if (!formik.errors.email && formik.values.email) {
+            dispatch(loginUserEmailCheck({ email: formik.values.email, role: 'candidate' }));
+        }
+        else {
+            dispatch(setExists(null));
+        }
+    }, [dispatch, formik.errors.email, formik.values.email]);
+
+    useEffect(() => {
+        checkEmailExists();
+    }, [formik.values.email, checkEmailExists]);
+
     return (
-        <Grid
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            py={4}
-            width={'100%'}
-        >
-            <form onSubmit={formik.handleSubmit}>
-
-                <Grid
-                    bgcolor={"white"}
-                    display={"flex"}
-                    justifyContent={"center"}
-                    p={"10px"}
-                    borderRadius={2}
-                    gap={3}
-                    boxShadow={10}
-                >
-                    <Grid
-                        p={"50px"}
-                        display={"flex"}
-                        flexDirection={"column"}
-                        gap={3}
-                    >
-                        <Box
-                            display={"flex"}
-                            flexDirection={"column"}
-                            gap="5px"
-                        >
-                            <Typography variant='h3'>Welcome Back!</Typography>
-                            <Typography variant='h6' color={"#5A5A5A"} fontWeight={"light"}>Login with your Candidate account to continue</Typography>
-                        </Box>
-
-                        <TextField
-                            name='email'
-                            label={'Email'}
-                            placeholder='example@email.com'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
-                            required
-                        />
-
-                        <TextField
-                            name='password'
-                            label={'Password'}
-                            placeholder='example123@'
-                            type='password'
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.password && Boolean(formik.errors.password)}
-                            helperText={formik.touched.password && formik.errors.password}
-                            required
-                        />
-
-                        <Button
-                            fullWidth
-                            disabled={!formik.isValid || !formik.dirty}
-                            variant='contained'
-                            type='submit'
-                        >
-                            Continue
-                        </Button>
-
-                        <Box>
-                            <hr style={{ color: "#5A5A5A" }}></hr>
-                            <Link
-                                href={"#login"}
-                                className="arrowBox"
-                                style={{ textDecoration: "none", cursor: "pointer" }}
-                            >
-                                <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
-                                <Typography variant='caption' color={"secondary.main"} >Register as Candidate</Typography>
-
-                            </Link>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </form>
-        </Grid>
+        <LoginForm formik={formik} loading={loading} exists={exists} checkExistsLoading={checkExistsLoading}>
+            <Stack gap={1}>
+                <Divider />
+                <Stack>
+                    <Link
+                        href={"/candidate/register"}>
+                        <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
+                        <Typography variant='caption' color={"primary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
+                    </Link>
+                    <Link href='/user/login'>
+                        <Typography variant='caption' color={"secondary.200"} >Login as <span style={{ textDecoration: 'underline', color: 'white' }}>Voter</span> instead.</Typography>
+                    </Link>
+                </Stack>
+            </Stack>
+        </LoginForm>
     );
 }
 

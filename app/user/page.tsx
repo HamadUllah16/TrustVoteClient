@@ -9,9 +9,11 @@ import Loading from "../components/Loading";
 import { AppDispatch, RootState } from "../redux/store";
 import withAuth from "../utils/withAuth";
 import UserSidebarMenus from "../components/UserComponents/UserSidebarMenus";
+import CompleteProfile from "../components/CompleteProfile";
 
-function HomePage() {
-    const { firstName } = useSelector((state: RootState) => state.user.userProfile);
+function UserHomePage() {
+    const { firstName, profileCompletion } = useSelector((state: RootState) => state.user.userProfile);
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const [loading, setLoading] = useState(true); // Loading state to block rendering
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +27,7 @@ function HomePage() {
         } else {
             router.push('/user/login');
         }
-    }, [dispatch, router]);
+    }, [dispatch, router, profileCompletion]);
 
     if (loading) {
         // Return a loading state or spinner while the auth check is happening
@@ -37,14 +39,20 @@ function HomePage() {
             <Sidebar>
                 <UserSidebarMenus />
             </Sidebar>
-            <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
+            <Stack flex={1} borderRadius={2} py={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'secondary.main'} border={'1px solid'} borderColor={'secondary.200'}>
                 <Typography>
                     Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{firstName}</span>
                 </Typography>
+                {!profileCompletion &&
+                    (
+                        <CompleteProfile />
+                    )
+
+                }
             </Stack>
         </Stack>
     );
 }
 
 
-export default withAuth(HomePage);
+export default withAuth(UserHomePage);

@@ -1,27 +1,33 @@
 "use client"
-import { Grid, Typography, Box, Button, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
-import { East } from '@mui/icons-material';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormikValues, useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { loginAdmin } from '@/app/redux/features/adminSlice';
+import LoginForm from '../LoginForm';
+import toast from 'react-hot-toast';
+import { loginUserEmailCheck, setExists } from '@/app/redux/features/authSlice';
 
 function Login() {
+    const { loading, checkExistsLoading, exists } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
     const formik = useFormik({
         initialValues: {
             email: '',
-            password: ''
+            password: '',
         },
+        enableReinitialize: true,
         onSubmit: values => {
-            const { email, password } = values;
-            console.log(email, password)
-            dispatch(loginAdmin({ credentials: values, router }));
+            toast.promise(
+                dispatch(loginAdmin({ credentials: values, router })).unwrap(), {
+                loading: 'Logging in...',
+                success: 'Authenticated',
+                error: err => err.message || 'Authentication error'
+            }
+            )
         },
         validate: values => {
             const errors: FormikValues = {};
@@ -40,76 +46,43 @@ function Login() {
         }
     });
 
+
+    // Callback to dispatch email check
+    const checkEmailExists = useCallback(() => {
+        if (!formik.errors.email && formik.values.email) {
+            dispatch(loginUserEmailCheck({ email: formik.values.email, role: 'admin' }));
+        }
+        else {
+            dispatch(setExists(null));
+        }
+    }, [dispatch, formik.errors.email, formik.values.email]);
+
+
+    const timeoutRef = useRef<any>();
+
+    useEffect(() => {
+        // Clear the previous timeout if the input changes
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Set a new timeout
+        timeoutRef.current = setTimeout(() => {
+            checkEmailExists();
+        }, 300); // 300ms delay
+
+        // Cleanup function to clear timeout on unmount or when input changes
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [formik.values.email, checkEmailExists]);
+
     return (
-        <Grid
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            py={4}
-        >
-            <form onSubmit={formik.handleSubmit}>
-
-                <Grid
-                    bgcolor={"white"}
-                    display={"flex"}
-                    justifyContent={"center"}
-                    p={"10px"}
-                    borderRadius={2}
-                    gap={3}
-                    boxShadow={10}
-                >
-                    <Grid
-                        p={"50px"}
-                        display={"flex"}
-                        flexDirection={"column"}
-                        gap={3}
-                    >
-                        <Box
-                            display={"flex"}
-                            flexDirection={"column"}
-                            gap="5px"
-                        >
-                            <Typography variant='h3'>Welcome Back!</Typography>
-                            <Typography variant='h6' color={"#5A5A5A"} fontWeight={"light"}>Login as Admin to continue</Typography>
-                        </Box>
-
-                        <TextField
-                            name='email'
-                            label={'Email'}
-                            placeholder='example@email.com'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
-                            required
-                        />
-
-                        <TextField
-                            name='password'
-                            label={'Password'}
-                            placeholder='example123@'
-                            type='password'
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.password && Boolean(formik.errors.password)}
-                            helperText={formik.touched.password && formik.errors.password}
-                            required
-                        />
-
-                        <Button
-                            fullWidth
-                            disabled={!formik.isValid || !formik.dirty}
-                            variant='contained'
-                            type='submit'
-                        >
-                            Continue
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
-        </Grid>
+        <LoginForm checkExistsLoading={checkExistsLoading} exists={exists} formik={formik} loading={loading}>
+            {null}
+        </LoginForm>
     );
 }
 

@@ -6,13 +6,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateCandidateProfile } from '../../redux/features/candidateSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
 import withCandidateAuth from '@/app/utils/withCandidateAuth'
-import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
+import { Error } from '@mui/icons-material'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
     const dispatch = useDispatch<AppDispatch>();
     const { loading } = useSelector((state: RootState) => state.candidate)
+    const { allParties } = useSelector((state: RootState) => state.profileCompletion)
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter()
 
@@ -38,6 +41,7 @@ function CandidateCompletion() {
         if (profileCompletion) {
             router.push('/candidate')
         }
+        dispatch(allPoliticalParties());
     }, [profileCompletion])
 
     const handleNext = async (formik: any) => {
@@ -56,8 +60,22 @@ function CandidateCompletion() {
     const validationSchemaStep1 = Yup.object({
         firstName: Yup.string().required('First Name is required'),
         lastName: Yup.string().required('Last Name is required'),
-        phone: Yup.string().required('Phone Number is required'),
-        dateOfBirth: Yup.date().required('Date of Birth is required'),
+        phone: Yup.string()
+            .required('Phone Number is required')
+            .matches(/^(?:\+92|0)?(3[0-9]{2})[0-9]{7}$/, 'Phone number is not valid'),
+        dateOfBirth: Yup.date()
+            .required('Date of Birth is required')
+            .test('age', 'You must be at least 18 years old', function (value) {
+                if (!value) return false; // No value, return false
+                const today = new Date();
+                const birthDate = new Date(value);
+                const age = today.getFullYear() - birthDate.getFullYear();
+                const monthDifference = today.getMonth() - birthDate.getMonth();
+
+                // Check if the user is at least 18 years old
+                return age > 18 || (age === 18 && monthDifference > 0) ||
+                    (age === 18 && monthDifference === 0 && today.getDate() >= birthDate.getDate());
+            }),
         gender: Yup.string().required('Gender is required'),
     });
 
@@ -154,11 +172,12 @@ function CandidateCompletion() {
         <>
             {step === 1 && (
                 <form onSubmit={formikStep1.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <Typography variant='h4' gutterBottom>
+                    <Typography variant='h4' color={'primary.main'}>
                         Personal Details
                     </Typography>
                     <Divider />
                     <Grid display={'flex'} gap={2}>
+
                         <TextField
                             fullWidth
                             label='First Name'
@@ -166,6 +185,7 @@ function CandidateCompletion() {
                             value={formikStep1.values.firstName}
                             onChange={formikStep1.handleChange}
                             error={formikStep1.touched.firstName && Boolean(formikStep1.errors.firstName)}
+                            onBlur={formikStep1.handleBlur}
                             helperText={formikStep1.touched.firstName && formikStep1.errors.firstName}
                         />
                         <TextField
@@ -175,6 +195,7 @@ function CandidateCompletion() {
                             value={formikStep1.values.lastName}
                             onChange={formikStep1.handleChange}
                             error={formikStep1.touched.lastName && Boolean(formikStep1.errors.lastName)}
+                            onBlur={formikStep1.handleBlur}
                             helperText={formikStep1.touched.lastName && formikStep1.errors.lastName}
                         />
                     </Grid>
@@ -186,6 +207,7 @@ function CandidateCompletion() {
                             value={formikStep1.values.phone}
                             onChange={formikStep1.handleChange}
                             error={formikStep1.touched.phone && Boolean(formikStep1.errors.phone)}
+                            onBlur={formikStep1.handleBlur}
                             helperText={formikStep1.touched.phone && formikStep1.errors.phone}
                         />
                     </Grid>
@@ -199,6 +221,7 @@ function CandidateCompletion() {
                             value={formikStep1.values.dateOfBirth}
                             onChange={formikStep1.handleChange}
                             error={formikStep1.touched.dateOfBirth && Boolean(formikStep1.errors.dateOfBirth)}
+                            onBlur={formikStep1.handleBlur}
                             helperText={formikStep1.touched.dateOfBirth && formikStep1.errors.dateOfBirth}
                         />
                         <TextField
@@ -209,6 +232,7 @@ function CandidateCompletion() {
                             value={formikStep1.values.gender}
                             onChange={formikStep1.handleChange}
                             error={formikStep1.touched.gender && Boolean(formikStep1.errors.gender)}
+                            onBlur={formikStep1.handleBlur}
                             helperText={formikStep1.touched.gender && formikStep1.errors.gender}
                         >
                             <MenuItem value="male">Male</MenuItem>
@@ -217,7 +241,7 @@ function CandidateCompletion() {
                         </TextField>
                     </Grid>
                     <Grid display="flex" justifyContent="end" gap={2}>
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button disabled={!(formikStep1.isValid && formikStep1.dirty)} type="submit" variant="contained" color="primary">
                             Next
                         </Button>
                     </Grid>
@@ -233,6 +257,7 @@ function CandidateCompletion() {
                         <TextField
                             fullWidth
                             label='CNIC Number'
+                            placeholder='17301-1234567-8'
                             name="cnicNumber"
                             value={formikStep2.values.cnicNumber}
                             onChange={formikStep2.handleChange}
@@ -251,12 +276,13 @@ function CandidateCompletion() {
                             error={formikStep2.touched.constituencyType && Boolean(formikStep2.errors.constituencyType)}
                             helperText={formikStep2.touched.constituencyType && formikStep2.errors.constituencyType}
                         >
-                            <MenuItem value="national">National Assembly</MenuItem>
-                            <MenuItem value="provincial">Provincial Assembly</MenuItem>
+                            <MenuItem value="national assembly">National Assembly</MenuItem>
+                            <MenuItem value="provincial assembly">Provincial Assembly</MenuItem>
                         </TextField>
                         <TextField
                             fullWidth
                             label='Constituency Name/Number'
+                            placeholder='NA-7'
                             name="constituency"
                             value={formikStep2.values.constituency}
                             onChange={formikStep2.handleChange}
@@ -275,10 +301,11 @@ function CandidateCompletion() {
                             error={formikStep2.touched.partyAffiliation && Boolean(formikStep2.errors.partyAffiliation)}
                             helperText={formikStep2.touched.partyAffiliation && formikStep2.errors.partyAffiliation}
                         >
-                            <MenuItem value="independent">Independent</MenuItem>
-                            <MenuItem value="partyA">Party A</MenuItem>
-                            <MenuItem value="partyB">Party B</MenuItem>
-                            {/* Add more parties as necessary */}
+                            {allParties && allParties.map((party: any, index: number) => {
+                                return (
+                                    <MenuItem key={index} value={party.name}>{party.name}</MenuItem>
+                                )
+                            })}
                         </TextField>
                     </Grid>
                     <TextField
@@ -304,7 +331,7 @@ function CandidateCompletion() {
 
             {step === 3 && (
                 <form onSubmit={formikStep3.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <Typography variant='h4' gutterBottom>
+                    <Typography variant='h4' color={'primary.main'}>
                         Legal and Compliance
                     </Typography>
                     <Divider />
@@ -352,6 +379,7 @@ function CandidateCompletion() {
                             helperText={formikStep3.touched.assetDeclaration && formikStep3.errors.assetDeclaration}
                         />
                         <FormControlLabel
+                            color='primary.200'
                             control={
                                 <Checkbox
                                     name="codeOfConduct"
@@ -359,11 +387,11 @@ function CandidateCompletion() {
                                     onChange={formikStep3.handleChange}
                                 />
                             }
-                            label="I agree to the code of conduct"
+                            label={<Typography variant='caption' color={'primary.100'}>I agree to the code of conduct.</Typography>}
                         />
                     </Grid>
                     <Grid display="flex" justifyContent="space-between" gap={2}>
-                        <Button onClick={() => setStep(step - 1)} variant="contained" color="primary">
+                        <Button onClick={() => setStep(step - 1)} variant="outlined" color="primary">
                             Back
                         </Button>
                         <Button disabled={!(formikStep3.dirty && formikStep3.isValid && !loading)} type="submit" variant="contained" color="primary">

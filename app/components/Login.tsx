@@ -1,31 +1,36 @@
 "use client"
-import { Grid, Typography, Box, Button, TextField, Stack, CircularProgress } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/features/authSlice';
+import { loginUser, loginUserEmailCheck, setExists } from '../redux/features/authSlice';
 import { FormikValues, useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { AppDispatch, RootState } from '../redux/store';
 import { getUserProfile } from '../redux/features/userSlice';
+import LoginForm from './LoginForm';
+import { CircularProgress, Stack, Typography } from '@mui/material';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { Cancel, CancelOutlined, Check } from '@mui/icons-material';
 
 function Login() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const { loading, isAuthenticated } = useSelector((state: RootState) => state.auth)
+    const { loading, isAuthenticated, exists, checkExistsLoading } = useSelector((state: RootState) => state.auth);
 
+    // Navigate to home if authenticated
     useEffect(() => {
         if (isAuthenticated && !loading) {
-            router.push('/home')
+            router.push('/user');
         }
-    }, [loading, isAuthenticated])
+    }, [loading, isAuthenticated, router]);
 
+    // Fetch user profile if token is present
     useEffect(() => {
         const token = localStorage.getItem('x_auth_token');
         if (token && !isAuthenticated) {
             dispatch(getUserProfile());
         }
-    }, [isAuthenticated])
+    }, [isAuthenticated, dispatch]);
 
     const formik = useFormik({
         initialValues: {
@@ -33,9 +38,12 @@ function Login() {
             password: ''
         },
         onSubmit: values => {
-            const { email, password } = values;
-            console.log(email, password)
-            dispatch(loginUser({ email, password }));
+            toast.promise(
+                dispatch(loginUser(values)).unwrap(), {
+                loading: 'Loading...',
+                success: 'Authenticated',
+                error: err => err.message || 'Authentication error'
+            });
         },
         validate: values => {
             const errors: FormikValues = {};
@@ -54,106 +62,50 @@ function Login() {
         }
     });
 
+    // Callback to dispatch email check
+    const checkEmailExists = useCallback(() => {
+        if (!formik.errors.email && formik.values.email) {
+            dispatch(loginUserEmailCheck({ email: formik.values.email, role: 'voter' }));
+        }
+        else {
+            dispatch(setExists(null));
+        }
+    }, [dispatch, formik.errors.email, formik.values.email]);
+
+    const timeoutRef = useRef<any>();
+
+    useEffect(() => {
+        // Clear the previous timeout if the input changes
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Set a new timeout
+        timeoutRef.current = setTimeout(() => {
+            checkEmailExists();
+        }, 300); // 300ms delay
+
+        // Cleanup function to clear timeout on unmount or when input changes
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [formik.values.email, checkEmailExists]);
+
     return (
-        <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
-            <Grid
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                py={4}
-                width={'100%'}
-            >
-                <Grid
-                    bgcolor={"white"}
-                    display={"flex"}
-                    justifyContent={"center"}
-                    p={"10px"}
-                    borderRadius={2}
-                    gap={3}
-                    boxShadow={3}
-                >
-                    <Grid
-                        p={"50px"}
-                        display={"flex"}
-                        flexDirection={"column"}
-                        gap={3}
-                    >
-                        <Box
-                            display={"flex"}
-                            flexDirection={"column"}
-                            gap="5px"
-                        >
-                            <Typography variant='h3'>Welcome Back!</Typography>
-                            <Typography variant='h6' color={"#5A5A5A"} fontWeight={"light"}>Login to continue</Typography>
-                        </Box>
-
-                        <TextField
-                            name='email'
-                            label={'Email'}
-                            placeholder='example@email.com'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
-                            required
-                        />
-
-                        <TextField
-                            name='password'
-                            label={'Password'}
-                            placeholder='example123@'
-                            type='password'
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.password && Boolean(formik.errors.password)}
-                            helperText={formik.touched.password && formik.errors.password}
-                            required
-                        />
-
-                        <Button
-                            fullWidth
-                            disabled={!(formik.isValid && formik.dirty && !loading)}
-                            variant='contained'
-                            type='submit'
-                        >
-                            {loading ?
-                                <CircularProgress size={24} />
-                                :
-                                'Continue'
-                            }
-                        </Button>
-
-                        <Stack>
-                            <hr style={{ color: "#5A5A5A" }}></hr>
-                            <Link
-                                href={"/user/login"}>
-                                <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
-                                <Typography variant='caption' color={"secondary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
-                            </Link>
-                            <Link href='/candidate/login'>
-                                <Typography variant='caption' color={"secondary.main"} >Login as Candidate</Typography>
-                            </Link>
-                        </Stack>
-                    </Grid>
-
-                    <Grid>
-                        <Box
-                            width={"370px"}
-                            minHeight={"100%"}
-                            bgcolor={"primary.main"}
-                            borderRadius={2}
-                            display={"flex"}
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                        >
-                            <Typography variant='h4' color={"white"} textAlign={"center"}></Typography>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </form>
+        <LoginForm checkExistsLoading={checkExistsLoading} exists={exists} formik={formik} loading={loading}>
+            <Stack>
+                <hr style={{ color: "#5A5A5A" }}></hr>
+                <Link href="/user/register">
+                    <Typography variant='caption' color={"#5A5A5A"}>New to TrustVote? </Typography>
+                    <Typography variant='caption' color={"primary.main"} sx={{ textDecoration: 'underline' }}>Register</Typography>
+                </Link>
+                <Link href='/candidate/login'>
+                    <Typography variant='caption' color={"primary.main"} >Login as <span style={{ textDecoration: 'underline' }}> Candidate</span> instead.</Typography>
+                </Link>
+            </Stack>
+        </LoginForm>
     );
 }
 

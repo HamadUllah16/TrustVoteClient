@@ -9,7 +9,8 @@ function AllCandidatesPage() {
         <Stack
             direction={'row'}
             gap={3}
-            pr={'75px'}
+            flexGrow={1}
+            px={'75px'}
         >
             <Sidebar>
                 <AdminRoutes />
@@ -20,7 +21,7 @@ function AllCandidatesPage() {
                 my={'30px'}
                 gap={2}
             >
-                <Typography variant='h6'>All Candidates</Typography>
+                <Typography variant='h6'>Nominated Candidates</Typography>
                 <Divider />
                 <Box
                     border={'1px solid #DADADA'}
@@ -36,10 +37,13 @@ function AllCandidatesPage() {
                                 <TableCell>Party Affiliation</TableCell>
                                 <TableCell>Constituency Type</TableCell>
                                 <TableCell>Gender</TableCell>
+                                <TableCell>Status</TableCell>
                                 <TableCell>DOB</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
+
+                        {/* render nominated candidates */}
                         <RenderCandidates />
                     </Table>
                 </Box>

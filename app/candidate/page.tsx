@@ -1,16 +1,21 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Typography, Stack } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/Loading";
-import { RootState } from "../redux/store";
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from "../redux/store";
+import { useDispatch, useSelector } from 'react-redux';
 import CandidateSidebarMenus from '../components/Candidate/CandidateSidebarMenus';
 import withCompleteCandidateProfile from '../utils/withCompleteCandidateProfile';
+import { getCandidateProfile } from '../redux/features/candidateSlice';
 
 function CandidateHome() {
     const { userProfile } = useSelector((state: RootState) => state.user);
     const { loading } = useSelector((state: RootState) => state.candidate);
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(getCandidateProfile());
+    }, [])
     return (
         <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
             {loading &&

@@ -7,8 +7,11 @@ import { setUserProfile } from "./userSlice";
 
 const initialState = {
     allCandidates: [],
+    approvedCandidates: [],
+    pendingCandidates: [],
+
     loading: false,
-    error: null || '',
+    error: '',
     message: ''
 }
 const resource = '/candidate';
@@ -63,6 +66,30 @@ export const getAllCandidates = createAsyncThunk(
             return response.data;
         } catch (error) {
             return rejectWithValue(error);
+        }
+    }
+)
+
+export const getApprovedCandidates = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'candidate/getApprovedCandidates',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/candidate/approved-candidates');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data.message || 'error fetching approved candidates.' })
+        }
+    }
+)
+
+export const getPendingCandidates = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'candidate/getPendingCandidates',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('candidate/pending-candidates');
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message || 'error getting pending candidates' })
         }
     }
 )
@@ -130,6 +157,34 @@ const candidateSlice = createSlice({
         builder.addCase(getAllCandidates.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || 'Failed to fetch All Candidates'
+        })
+
+        // get approved candidates builder
+        builder.addCase(getApprovedCandidates.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getApprovedCandidates.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.approvedCandidates = action.payload?.candidates;
+        })
+        builder.addCase(getApprovedCandidates.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'builder error in fetching approved candidates'
+        })
+
+        // get pending candidates builder
+        builder.addCase(getPendingCandidates.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getPendingCandidates.fulfilled, (state, action) => {
+            state.loading = false;
+            state.pendingCandidates = action.payload;
+            state.message = 'pending candidates fetched';
+        })
+        builder.addCase(getPendingCandidates.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'builder error in fetching pending candidates';
         })
     },
 })
