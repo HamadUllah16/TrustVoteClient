@@ -59,7 +59,11 @@ function ProfileMenu() {
                                     border: '1px solid',
                                     borderColor: 'secondary.200',
                                     borderRadius: 1.5,
-                                    gap: 1
+                                    gap: 1,
+                                    bgcolor: 'secondary.100',
+                                    ':hover': {
+                                        bgcolor: 'secondary.200'
+                                    }
                                 }}
                                 onClick={() => email ? setShow(!show) : router.push('/login')}
                             >

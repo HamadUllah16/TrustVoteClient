@@ -27,43 +27,41 @@ function RenderPendingCandidates() {
     }, [])
     return (
         <>
-            <TableBody>
-                {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
-                    return (
-                        <TableRow key={candidate._id}>
-                            <TableCell>{index}</TableCell>
-                            <TableCell>{candidate.firstName}</TableCell>
-                            <TableCell>{candidate.partyAffiliation}</TableCell>
-                            <TableCell>{candidate.constituencyType}</TableCell>
-                            <TableCell>
-                                <Stack
-                                    bgcolor={candidate.status === 'pending' ? 'orange' : 'red'}
-                                    px={1}
-                                    py={0.2}
-                                    alignItems={'center'}
-                                    borderRadius={10}
-                                >
-                                    {candidate.status}
-                                </Stack>
-                            </TableCell>
-                            <TableCell>{candidate.gender}</TableCell>
-                            <TableCell>{candidate.dateOfBirth}</TableCell>
-                            <TableCell>
-                                <Stack direction={'row'}>
-                                    <IconButton onClick={
-                                        () => {
-                                            setSelected(candidate);
-                                            setShow(true);
-                                        }
-                                    }>
-                                        <OpenInNew />
-                                    </IconButton>
-                                </Stack>
-                            </TableCell>
-                        </TableRow>
-                    )
-                })}
-            </TableBody>
+            {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
+                return (
+                    <TableRow key={candidate._id}>
+                        <TableCell>{index}</TableCell>
+                        <TableCell>{candidate.firstName}</TableCell>
+                        <TableCell>{candidate.partyAffiliation}</TableCell>
+                        <TableCell>{candidate.constituencyType}</TableCell>
+                        <TableCell>
+                            <Stack
+                                bgcolor={candidate.status === 'pending' ? 'orange' : 'red'}
+                                px={1}
+                                py={0.2}
+                                alignItems={'center'}
+                                borderRadius={10}
+                            >
+                                {candidate.status}
+                            </Stack>
+                        </TableCell>
+                        <TableCell>{candidate.gender}</TableCell>
+                        <TableCell>{candidate.dateOfBirth}</TableCell>
+                        <TableCell>
+                            <Stack direction={'row'}>
+                                <IconButton onClick={
+                                    () => {
+                                        setSelected(candidate);
+                                        setShow(true);
+                                    }
+                                }>
+                                    <OpenInNew />
+                                </IconButton>
+                            </Stack>
+                        </TableCell>
+                    </TableRow>
+                )
+            })}
             {show && selected &&
                 <Modal>
                     <Stack gap={2} bgcolor={'white'} p={2} borderRadius={2} boxShadow={5}>

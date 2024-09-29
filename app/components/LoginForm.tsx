@@ -12,7 +12,6 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
             alignItems={"center"}
             py={4}
             width={'100vw'}
-            height={'100vh'}
         >
             <Grid
                 bgcolor={"secondary.main"}
@@ -133,6 +132,7 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
                             disabled={!(formik.isValid && formik.dirty && !loading && exists)}
                             variant='contained'
                             type='submit'
+                            sx={{ ':disabled': { bgcolor: '#2B2B2D' } }}
                         >
                             {loading ?
                                 <CircularProgress size={24} />
