@@ -1,78 +1,49 @@
 'use client'
-import Sidebar from '@/app/components/Sidebar'
-import { Box, Button, Divider, IconButton, Stack, Table, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import RenderCandidates from '@/app/components/Candidate/RenderCandidates';
-import React, { useState } from 'react'
-import AdminRoutes from '@/app/components/AdminComponents/AdminRoutes';
-import { Add, Cancel } from '@mui/icons-material';
-import Modal from '@/app/components/Modal';
+import { Divider, IconButton, Stack, Table, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Add } from '@mui/icons-material';
 import AddPoliticalParty from '@/app/components/AdminComponents/AddPoliticalParty';
 import RenderPoliticalParties from '@/app/components/AdminComponents/RenderPoliticalParties';
-import UserSidebarMenus from '@/app/components/UserComponents/UserSidebarMenus';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import UserSidebar from '@/app/components/UserComponents/UserSidebar';
+import MainWrapper from '@/app/components/MainWrapper';
+import RenderTableHead from '@/app/components/RenderTableHead';
+import RenderTableData from '@/app/components/RenderTableData';
+import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
+    const { allParties, loading } = useSelector((state: RootState) => state.profileCompletion);
     const { userProfile } = useSelector((state: RootState) => state.user)
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(allPoliticalParties())
+    }, [])
     return (
-        <Stack
-            direction={'row'}
-            gap={3}
-            flexGrow={1}
-            px={'75px'}
-        >
-            <Sidebar>
-                <UserSidebarMenus />
-            </Sidebar>
+        <MainWrapper>
 
-            <Stack
-                flexGrow={1}
-                my={'30px'}
-                gap={2}
+            <UserSidebar />
+
+            <RenderTableHead
+                title='Political Parties'
+                subtitle={null}
+                labels={['#', 'Name', 'Abbreviation', 'Symbol']}
+                action=
+                {userProfile.role === 'admin' &&
+                    <IconButton onClick={() => setShowAddPartyModel(true)}>
+                        <Add />
+                    </IconButton>
+                }
             >
-                <Stack direction={'row'} gap={2} justifyContent={'space-between'}>
-                    <Typography variant='h6'>Political Parties</Typography>
+                <RenderPoliticalParties />
 
-                    {userProfile.role === 'admin' &&
-                        <IconButton onClick={() => setShowAddPartyModel(true)}>
-                            <Add />
-                        </IconButton>
-                    }
-
-                </Stack>
-                <Divider />
-                <Stack
-                    border={'1px solid #DADADA'}
-                    borderRadius={'10px'}
-                    minHeight={'50vh'}
-                    overflow={'hidden'}
-                >
-                    <Table>
-                        <TableHead sx={{ bgcolor: '#DADADA' }}>
-                            <TableRow>
-                                <TableCell>#</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Abbreviation</TableCell>
-                                <TableCell>Symbol</TableCell>
-                                {userProfile.role === 'admin' &&
-                                    <TableCell>Actions</TableCell>
-                                }
-                            </TableRow>
-                        </TableHead>
-
-                        {/* rendering political parties */}
-                        <RenderPoliticalParties />
-
-                    </Table>
-                </Stack>
-            </Stack>
+            </RenderTableHead>
 
             {showAddPartyModal &&
                 <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
             }
-
-        </Stack >
+        </MainWrapper>
     )
 }
 

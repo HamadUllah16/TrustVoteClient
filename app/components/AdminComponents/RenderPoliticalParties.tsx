@@ -19,7 +19,7 @@ function RenderPoliticalParties() {
         dispatch(allPoliticalParties());
     }, [])
     return (
-        <TableBody>
+        <>
             {allParties && allParties.map((party: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
@@ -42,7 +42,7 @@ function RenderPoliticalParties() {
                     </TableRow>
                 )
             })}
-        </TableBody>
+        </>
     )
 }
 

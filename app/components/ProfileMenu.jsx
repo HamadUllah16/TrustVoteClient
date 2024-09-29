@@ -162,7 +162,7 @@ function ProfileMenu() {
                                     </Grid>
                                 </MenuItem>
                             </Link>
-                            <Divider sx={{ my: 1 }} />
+                            <Divider sx={{ my: 1, borderColor: 'secondary.200' }} />
 
                             <Link
                                 href={'/user/update-profile'}

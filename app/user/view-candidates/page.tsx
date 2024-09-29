@@ -1,51 +1,41 @@
 'use client'
-import React from 'react'
-import { Typography, Stack, Divider, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
-import Sidebar from '@/app/components/Sidebar';
-import UserSidebarMenus from '@/app/components/UserComponents/UserSidebarMenus';
+import React, { useEffect } from 'react'
 import withAuth from '@/app/utils/withAuth';
-import RenderCandidates from '@/app/components/RenderCandidates';
+import UserSidebar from '@/app/components/UserComponents/UserSidebar';
+import MainWrapper from '@/app/components/MainWrapper';
+import RenderTableHead from '@/app/components/RenderTableHead';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import { getAllCandidates } from '@/app/redux/features/candidateSlice';
+import RenderTableData from '@/app/components/RenderTableData';
 
 function ViewCandidatesPage() {
+    const { allCandidates, loading } = useSelector((state: RootState) => state.candidate)
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        dispatch(getAllCandidates());
+    }, [])
     return (
-        <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
-            <Sidebar>
-                <UserSidebarMenus />
-            </Sidebar>
-            <Stack flex={1} gap={2} p={3} borderRadius={2} border={'1px solid'} borderColor={'secondary.200'} width={'100%'} bgcolor={'primary.contrastText'}>
-                <Box>
-                    <Typography variant='h4' fontWeight={'bold'} color={'primary.main'}>
-                        All Candidates
-                    </Typography>
-                    <Typography variant='h6' color={'primary.100'}>
-                        Listed below are the approved candidates
-                    </Typography>
-                </Box>
+        <MainWrapper>
 
-                <Divider />
+            <UserSidebar />
 
-                <Stack flex={1} overflow={'hidden'} borderRadius={2} border={'1px solid #DADADA'} pb={2}>
-                    <Table>
-                        <TableHead sx={{ bgcolor: 'primary.200' }}>
-                            <TableRow>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> #</Typography></TableCell>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> Name</Typography></TableCell>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> Constituency Type</Typography></TableCell>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> Constituency</Typography></TableCell>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> Party Affiliation</Typography></TableCell>
-                                <TableCell><Typography variant='body1' fontWeight={'bold'}> Manifesto</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
+            <RenderTableHead
+                title='All Candidates'
+                subtitle={'Nominated candidates are listed below'}
+                labels={['#', 'Name', 'Constituency Type', 'Constituency', 'Party Affiliation', 'Manifesto']}
+                action={null}
+            >
 
-
-                        <TableBody>
-                            {/* render all the candidates */}
-                            <RenderCandidates />
-                        </TableBody>
-                    </Table>
-                </Stack>
-            </Stack>
-        </Stack>
+                {/* table body */}
+                <RenderTableData
+                    tableData={allCandidates}
+                    loading={loading}
+                    action={null}
+                />
+            </RenderTableHead>
+        </MainWrapper>
     )
 }
 

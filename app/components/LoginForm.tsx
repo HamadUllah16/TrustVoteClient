@@ -1,9 +1,10 @@
 import { Grid, Typography, Box, Button, TextField, Stack, CircularProgress, InputLabel, OutlinedInput, InputAdornment, IconButton, FormControl } from '@mui/material';
-import React from 'react';
-import { Check, Close } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Check, Close, Visibility, VisibilityOff } from '@mui/icons-material';
 import Image from 'next/image';
 
 function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { children: any, formik: any, loading: boolean, checkExistsLoading: boolean, exists: boolean | null }) {
+    const [show, setShow] = useState(false);
     return (
         <Grid
             display={"flex"}
@@ -53,8 +54,12 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
                         <Stack direction={'row'} flexGrow={1} gap={1} alignItems={'center'}>
 
                             <FormControl sx={{ width: '100%' }} variant="outlined">
-                                <InputLabel htmlFor="outlined-adornment-email" error={formik.touched.email && Boolean(formik.errors.email)}>Email</InputLabel>
+                                <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-email" error={formik.touched.email && Boolean(formik.errors.email)}>Email</InputLabel>
                                 <OutlinedInput
+                                    sx={{
+                                        color: 'secondary.100',
+                                        bgcolor: 'background.default'
+                                    }}
                                     fullWidth
                                     id="outlined-adornment-email"
                                     name="email"
@@ -87,22 +92,41 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
                         </Stack>
 
                         {exists &&
-                            <Stack width={'100%'} gap={1}>
-                                <TextField
+                            <FormControl sx={{ width: '100%' }} variant="outlined">
+                                <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-password" error={formik.touched.password && Boolean(formik.errors.password)}>Password</InputLabel>
+                                <OutlinedInput
+                                    sx={{
+                                        color: 'secondary.100',
+                                        bgcolor: 'background.default'
+                                    }}
                                     fullWidth
-                                    name='password'
-                                    label={'Password'}
-                                    placeholder='example123@'
-                                    type='password'
+                                    id="outlined-adornment-password"
+                                    name="password"
+                                    type={show ? 'text' : 'password'}
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
-                                    helperText={formik.touched.password && formik.errors.password}
-                                    required
+                                    label="Password"
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={() => setShow(!show)}>
+                                                {show ?
+                                                    <VisibilityOff sx={{ color: "secondary.100" }} fontSize='medium' />
+                                                    :
+                                                    <Visibility sx={{ color: 'secondary.100' }} fontSize='medium' />
+                                                }
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
                                 />
-                                <Typography variant='body2' color='red'>{formik.values.error}</Typography>
-                            </Stack>
+                                <Typography
+                                    variant='caption'
+                                    color={'error'}
+                                >
+                                    {formik.touched.password && formik.errors.password}
+                                </Typography>
+                            </FormControl>
                         }
                         <Button
                             fullWidth

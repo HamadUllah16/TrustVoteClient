@@ -13,13 +13,8 @@ function Sidebar({ children }: { children: React.ReactNode }) {
         <Stack
             minWidth={400}
             minHeight={'100%'}
-            px={3}
-            py={2}
             gap={5}
-            border={'1px solid'}
-            borderColor={'secondary.200'}
-            borderRadius={2}
-            bgcolor={'secondary.main'}
+            py={3}
         >
             <Stack gap={4} minHeight={'50vh'}>
                 <Stack
