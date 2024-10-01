@@ -6,23 +6,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateCandidateProfile } from '../../redux/features/candidateSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
 import withCandidateAuth from '@/app/utils/withCandidateAuth'
-import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
-import { Error } from '@mui/icons-material'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
     const dispatch = useDispatch<AppDispatch>();
     const { loading } = useSelector((state: RootState) => state.candidate)
     const { allParties } = useSelector((state: RootState) => state.profileCompletion)
-    const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
+    const { profileCompletion, email, firstName, lastName, phone } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter()
 
     const [allValues, setAllValues] = useState({
-        firstName: '',
-        lastName: '',
-        phone: '',
+        firstName: firstName ?? '',
+        lastName: lastName ?? '',
+        phone: phone ?? '',
         dateOfBirth: '',
         gender: '',
         cnicNumber: '',
@@ -141,7 +140,8 @@ function CandidateCompletion() {
                 ...prevValues,
                 ...values,
             }));
-            dispatch(updateCandidateProfile({ profile: { ...allValues, ...values }, router }));
+            const token = localStorage.getItem('x_auth_token')
+            dispatch(updateCandidateProfile({ profile: { ...allValues, ...values }, router, token }));
 
             console.log('Final Form Data:', allValues);
         },
@@ -160,8 +160,8 @@ function CandidateCompletion() {
         const file = event.currentTarget.files?.[0];
         if (file) {
             try {
-                const base64File = await fileToBase64(file);
-                setFieldValue(fieldName, base64File);
+                // const base64File = await fileToBase64(file);
+                setFieldValue(fieldName, file);
             } catch (error) {
                 console.error("Error converting file to base64: ", error);
             }
@@ -310,11 +310,11 @@ function CandidateCompletion() {
                     </Grid>
                     <TextField
                         fullWidth
-                        label='Manifesto Upload'
+                        label='Manifesto Upload (PDF)'
                         type="file"
                         name="manifesto"
                         InputLabelProps={{ shrink: true }}
-                        onChange={(event: any) => handleFileChange(event, "manifesto", formikStep2.setFieldValue)}
+                        onChange={(event: any) => formikStep2.setFieldValue('manifesto', event.currentTarget.files?.[0])}
                         error={formikStep2.touched.manifesto && Boolean(formikStep2.errors.manifesto)}
                         helperText={formikStep2.touched.manifesto && formikStep2.errors.manifesto}
                     />

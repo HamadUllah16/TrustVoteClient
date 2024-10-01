@@ -20,6 +20,7 @@ const theme = createTheme({
         primary: {
             main: '#F85D40',
             '100': '#f2f2f2',
+            '200': '#676767',
             contrastText: '#0C0C0C',
 
         },
@@ -34,6 +35,11 @@ const theme = createTheme({
     },
     shape: {
         borderRadius: 10,
+    },
+    components: {
+        MuiTextField: {
+            styleOverrides: { root: { backgroundColor: '#2B2B2D', borderRadius: '8px' } }
+        }
     }
 });
 

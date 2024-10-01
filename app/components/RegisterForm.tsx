@@ -90,10 +90,10 @@ function RegisterForm({ formik }: { formik: any }) {
                         id="outlined-adornment-confirmPassword"
                         name="confirmPassword"
                         type={showConfirmPassword ? 'text' : 'password'}
-                        value={formik.values.password}
+                        value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                         label="Confirm Password"
                         endAdornment={
                             <InputAdornment position="end">
@@ -111,7 +111,7 @@ function RegisterForm({ formik }: { formik: any }) {
                         variant='caption'
                         color={'error'}
                     >
-                        {formik.touched.password && formik.errors.password}
+                        {formik.touched.confirmPassword && formik.errors.confirmPassword}
                     </Typography>
                 </FormControl>
             </Box>

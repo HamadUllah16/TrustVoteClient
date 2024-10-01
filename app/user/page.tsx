@@ -38,7 +38,13 @@ function UserHomePage() {
 
             <UserSidebar />
 
-            <Stack flex={1} borderRadius={2} py={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'secondary.main'} border={'1px solid'} borderColor={'secondary.200'}>
+            <Stack
+                flex={1}
+                color={'primary.200'}
+                py={2}
+                alignItems={'center'}
+                justifyContent={'center'}
+            >
                 <Typography>
                     Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{firstName}</span>
                 </Typography>

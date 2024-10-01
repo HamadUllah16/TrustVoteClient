@@ -45,7 +45,7 @@ function CandidateRegister() {
             toast.promise(
                 dispatch(createCandidateProfile({ profile: { email, password }, router: router })).unwrap(), {
                 loading: 'Loading...',
-                success: 'Authenticated',
+                success: 'Account created',
                 error: err => err.message
             }
             )

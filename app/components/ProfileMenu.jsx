@@ -60,7 +60,8 @@ function ProfileMenu() {
                                     borderColor: 'secondary.200',
                                     borderRadius: 1.5,
                                     gap: 1,
-                                    bgcolor: 'secondary.100',
+                                    bgcolor: 'secondary.main',
+                                    color: 'secondary.100',
                                     ':hover': {
                                         bgcolor: 'secondary.200'
                                     }
@@ -113,7 +114,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/dashboard') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/dashboard') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -185,7 +186,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/update-profile') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/update-profile') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -215,7 +216,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/settings') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/settings') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -245,7 +246,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/logout') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/logout') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >

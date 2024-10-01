@@ -168,6 +168,17 @@ function CompleteProfile() {
                             name='firstName'
                             error={formik.touched && formik.errors.firstName}
                             helperText={formik.touched && formik.errors.firstName}
+                            InputLabelProps={{
+                                sx: {
+                                    color: 'secondary.100',
+                                    borderColor: 'secondary.100'
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    bgcolor: 'secondary.200',
+                                }
+                            }}
 
                         />
 
@@ -179,6 +190,18 @@ function CompleteProfile() {
                             name='lastName'
                             error={formik.touched && formik.errors.lastName}
                             helperText={formik.touched && formik.errors.lastName}
+                            InputLabelProps={{
+                                sx: {
+                                    color: 'secondary.100',
+                                    borderColor: 'secondary.100'
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    bgcolor: 'secondary.200',
+                                }
+                            }}
+
                         />
                     </Box>
 
@@ -197,6 +220,17 @@ function CompleteProfile() {
                             name='email'
                             value={formik.values.email}
                             onChange={formik.handleChange}
+                            InputLabelProps={{
+                                sx: {
+                                    color: 'secondary.100',
+                                    borderColor: 'secondary.100'
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    bgcolor: 'secondary.200',
+                                }
+                            }}
                         />
 
                         <TextField
@@ -208,6 +242,17 @@ function CompleteProfile() {
                             name='phone'
                             error={formik.touched && formik.errors.phone}
                             helperText={formik.touched && formik.errors.phone}
+                            InputLabelProps={{
+                                sx: {
+                                    color: 'secondary.100',
+                                    borderColor: 'secondary.100'
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    bgcolor: 'secondary.200',
+                                }
+                            }}
                         />
                     </Box>
                     <Divider />
@@ -222,6 +267,17 @@ function CompleteProfile() {
                             onChange={formik.handleChange}
                             error={formik.touched && formik.errors.cnic}
                             helperText={formik.touched && formik.errors.cnic}
+                            InputLabelProps={{
+                                sx: {
+                                    color: 'secondary.100',
+                                    borderColor: 'secondary.100'
+                                }
+                            }}
+                            InputProps={{
+                                sx: {
+                                    bgcolor: 'secondary.200',
+                                }
+                            }}
                         />
 
                         <Stack>
@@ -236,6 +292,17 @@ function CompleteProfile() {
                                 onBlur={formik.handleBlur}
                                 onChange={(newValue) => {
                                     formik.setFieldValue('date', newValue);
+                                }}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: 'secondary.100',
+                                        borderColor: 'secondary.100'
+                                    }
+                                }}
+                                InputProps={{
+                                    sx: {
+                                        backgroundColor: '#2B2B2D',
+                                    }
                                 }}
                             />
                             {formik.errors.date &&
