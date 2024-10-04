@@ -10,16 +10,9 @@ import Modal from '../Modal';
 import dynamic from 'next/dynamic';
 import { pdfjs } from 'react-pdf';
 import Image from 'next/image';
-const PDF = dynamic(() => import('../PDF'), { ssr: false });
+import PDF from '../PDF';
 
-// pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//     'pdfjs-dist/build/pdf.worker.min.mjs',
-//     import.meta.url,
-// ).toString();
-
-
 
 function RenderPendingCandidates() {
     const { pendingCandidates } = useSelector((state: RootState) => state.candidate);
