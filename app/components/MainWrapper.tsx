@@ -1,3 +1,4 @@
+'use client'
 import { Divider, Stack } from '@mui/material'
 import React from 'react'
 

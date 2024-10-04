@@ -2,22 +2,39 @@
 import { approveOrRejectCandidate, getAdminProfile } from '@/app/redux/features/adminSlice';
 import { getPendingCandidates } from '@/app/redux/features/candidateSlice';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import { Cancel, Check, OpenInNew } from '@mui/icons-material';
-import { TableBody, TableCell, Stack, TableRow, IconButton, Typography, Button, Divider } from '@mui/material'
+import { Cancel, Download, Fullscreen, OpenInNew } from '@mui/icons-material';
+import { TableCell, Stack, TableRow, IconButton, Typography, Button, Divider } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../Modal';
+import dynamic from 'next/dynamic';
+import { pdfjs } from 'react-pdf';
 import Image from 'next/image';
+const PDF = dynamic(() => import('../PDF'), { ssr: false });
+
+// pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//     'pdfjs-dist/build/pdf.worker.min.mjs',
+//     import.meta.url,
+// ).toString();
+
+
 
 function RenderPendingCandidates() {
     const { pendingCandidates } = useSelector((state: RootState) => state.candidate);
+    const [activeAttachment, setActiveAttachment] = useState('manifesto');
     const [show, setShow] = useState(false);
     const [selected, setSelected] = useState({
         _id: '',
         firstName: '',
         lastName: '',
         partyAffiliation: '',
-        manifesto: ''
+        manifesto: '',
+        constituency: '',
+        cnicFront: '',
+        cnicBack: '',
+        status: '',
     });
 
     const dispatch = useDispatch<AppDispatch>();
@@ -30,10 +47,10 @@ function RenderPendingCandidates() {
             {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={candidate._id}>
-                        <TableCell>{index}</TableCell>
-                        <TableCell>{candidate.firstName}</TableCell>
-                        <TableCell>{candidate.partyAffiliation}</TableCell>
-                        <TableCell>{candidate.constituencyType}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.firstName}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.partyAffiliation}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.constituencyType}</TableCell>
                         <TableCell>
                             <Stack
                                 bgcolor={candidate.status === 'pending' ? 'orange' : 'red'}
@@ -45,18 +62,21 @@ function RenderPendingCandidates() {
                                 {candidate.status}
                             </Stack>
                         </TableCell>
-                        <TableCell>{candidate.gender}</TableCell>
-                        <TableCell>{candidate.dateOfBirth}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.gender}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.dateOfBirth}</TableCell>
                         <TableCell>
                             <Stack direction={'row'}>
-                                <IconButton onClick={
-                                    () => {
-                                        setSelected(candidate);
-                                        setShow(true);
+                                <Button
+                                    endIcon={<OpenInNew sx={{ color: 'secondary.100' }} />}
+                                    onClick={
+                                        () => {
+                                            setSelected(candidate);
+                                            setShow(true);
+                                        }
                                     }
-                                }>
-                                    <OpenInNew />
-                                </IconButton>
+                                >
+                                    Review
+                                </Button>
                             </Stack>
                         </TableCell>
                     </TableRow>
@@ -64,27 +84,130 @@ function RenderPendingCandidates() {
             })}
             {show && selected &&
                 <Modal>
-                    <Stack gap={2} bgcolor={'white'} p={2} borderRadius={2} boxShadow={5}>
-                        <Stack direction={'row'} justifyContent={'space-between'}>
-                            <Typography variant='h6'>Review</Typography>
+
+                    <Stack
+                        maxHeight={'90vh'}
+                        minWidth={'800px'}
+                        divider={<Divider sx={{ borderColor: 'secondary.200' }} />}
+                        gap={2}
+                        p={2}
+                        boxShadow={5}
+                        bgcolor={'background.default'}
+                        borderRadius={2}
+                        sx={{ transition: 'all 0.3s ease' }}
+                    >
+                        <Stack direction={'row'} justifyContent={'space-between'} color={'primary.main'}>
+                            <Typography variant='h5'>Review</Typography>
                             <IconButton sx={{ p: 0 }} onClick={() => setShow(false)}>
-                                <Cancel />
+                                <Cancel color='primary' />
                             </IconButton>
                         </Stack>
 
-                        <Divider />
+                        <Stack
+                            direction={'row'}
+                            gap={2}
+                            borderRadius={2}
+                            p={2}
+                            border={'1px solid'}
+                            borderColor={'secondary.200'}
+                            bgcolor={'background.default'}
 
-                        <Stack direction={'row'} gap={2}>
-                            <Stack border={'1px solid #DADADA'} p={2} borderRadius={2}>
-                                <Typography variant='subtitle1' fontWeight={'bold'}>{`${selected.firstName}  ${selected.lastName}`}</Typography>
-                                <Typography>{selected.partyAffiliation}</Typography>
+                        >
+                            <Stack gap={2} pr={2} borderRight={'1px solid'} borderColor={'secondary.200'} color={'seconday.100'}>
+
+                                <Stack gap={1}>
+
+                                    <Typography color={'secondary.100'} variant='h6' fontWeight={'bold'}>
+                                        {`${selected.firstName}  ${selected.lastName}`}
+                                    </Typography>
+
+                                    <Typography color={'primary.200'}>
+                                        {selected.partyAffiliation}
+                                    </Typography>
+
+
+                                    <Typography color={'primary.200'}>
+                                        {selected.constituency}
+                                    </Typography>
+
+                                    <Stack bgcolor={selected.status === 'pending' ? '#FFA500' : 'primary.main'} width={'100%'} alignItems={'center'} borderRadius={1}>
+                                        <Typography variant='body2' textTransform={'capitalize'} p={1} color={'secondary.100'}>
+                                            {selected.status}
+                                        </Typography>
+                                    </Stack>
+
+                                </Stack>
+
+                                <Divider sx={{ borderColor: 'secondary.200' }} />
+
+                                <Stack gap={2}>
+                                    <Typography variant='h6' color={'secondary.100'}>
+                                        Attachments
+                                    </Typography>
+                                    <Stack gap={1}>
+                                        <Button
+                                            onClick={() => setActiveAttachment('cnicFront')}
+                                            variant={activeAttachment === 'cnicFront' ? 'contained' : 'outlined'}
+                                        >
+                                            CNIC Front
+                                        </Button>
+
+                                        <Button
+                                            onClick={() => setActiveAttachment('cnicBack')}
+                                            variant={activeAttachment === 'cnicBack' ? 'contained' : 'outlined'}
+                                        >
+                                            CNIC Back
+                                        </Button>
+
+                                        <Button
+                                            onClick={() => setActiveAttachment('manifesto')}
+                                            variant={activeAttachment === 'manifesto' ? 'contained' : 'outlined'}
+                                        >
+                                            Manifesto
+                                        </Button>
+                                    </Stack>
+                                </Stack>
+
                             </Stack>
-                            <Image
-                                src={selected.manifesto}
-                                width={200}
-                                height={200}
-                                alt='manifesto picture'
-                            />
+
+                            <Stack gap={2} maxHeight={'60vh'}>
+
+                                <Stack direction={'row'} justifyContent={'end'} gap={1}>
+
+                                    <Button
+                                        endIcon={<Download />}
+                                    >
+                                        <a href={selected.manifesto} download={'manifesto.pdf'} target='_blank'>
+                                            Download
+                                        </a>
+                                    </Button>
+
+                                </Stack>
+
+                                {activeAttachment === 'cnicFront' &&
+                                    <Image
+                                        src={selected.cnicFront}
+                                        height={200}
+                                        width={300}
+                                        alt='a picture of cnic front'
+                                    />
+                                }
+
+                                {activeAttachment === 'manifesto' &&
+                                    <PDF fileUrl={selected.manifesto} />
+                                }
+
+                                {activeAttachment === 'cnicBack' &&
+                                    <Image
+                                        src={selected.cnicBack}
+                                        height={200}
+                                        width={300}
+                                        alt='a picture of cnic front'
+                                    />
+                                }
+
+                            </Stack>
+
                         </Stack>
 
                         <Stack justifyContent={'end'} gap={2} direction={'row'}>
@@ -93,8 +216,9 @@ function RenderPendingCandidates() {
                             </Button>
                         </Stack>
                     </Stack>
-                </Modal>
+                </Modal >
             }
+
         </>
     )
 }

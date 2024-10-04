@@ -97,7 +97,7 @@ function RegisterForm({ formik }: { formik: any }) {
                         label="Confirm Password"
                         endAdornment={
                             <InputAdornment position="end">
-                                <IconButton onClick={() => setShowPassword(!showConfirmPassword)}>
+                                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                     {showConfirmPassword ?
                                         <VisibilityOff sx={{ color: "secondary.100" }} fontSize='medium' />
                                         :

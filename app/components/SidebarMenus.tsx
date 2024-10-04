@@ -16,7 +16,7 @@ function SidebarMenus({ navItems }: { navItems: navItem[] }) {
         <Stack>
             {navItems.map((nav: navItem, index: number) => {
                 return (
-                    <Link href={nav.href}>
+                    <Link href={nav.href} key={index}>
                         <MenuItem
                             sx={{
                                 bgcolor: pathname.startsWith(nav.href) ? 'primary.main' : '',

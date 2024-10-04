@@ -1,6 +1,7 @@
 import axiosInstance from "@/app/utils/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserProfile } from "./userSlice";
+import axios from "axios";
 
 const initialState = {
     user: {
@@ -17,11 +18,16 @@ export const updateProfile = createAsyncThunk(
     'profileCompletion/updateProfile',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axiosInstance.patch('/user/update-user-profile', data)
-            dispatch(getUserProfile());
-            console.log(data);
-
-            return response.data;
+            const response = await axios.put(`${process.env.NEXT_PUBLIC_ENDPOINT}/user/update-user-profile`, data.profile, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'x_auth_token': data.token
+                }
+            })
+            if (response.status === 200) {
+                dispatch(getUserProfile());
+                return response.data;
+            }
         } catch (error) {
             return rejectWithValue(error)
         }

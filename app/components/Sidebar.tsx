@@ -94,17 +94,17 @@ function Sidebar({ children }: { children: React.ReactNode }) {
 
             <Stack>
                 <Link href={'/settings'}>
-                    <MenuItem sx={{ borderRadius: 1 }}>
-                        <Typography variant='subtitle1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
-                            <SettingsOutlined fontSize='medium' />
+                    <MenuItem sx={{ borderRadius: 1, gap: 2 }}>
+                        <SettingsOutlined fontSize='medium' sx={{ color: 'secondary.100' }} />
+                        <Typography variant='subtitle1' color={'secondary.100'} display={'flex'} gap={1} alignItems={'center'} >
                             Settings
                         </Typography>
                     </MenuItem>
                 </Link>
                 <Link href={'/logout'}>
-                    <MenuItem sx={{ borderRadius: 1 }}>
-                        <Typography variant='subtitle1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
-                            <LogoutOutlined fontSize='medium' />
+                    <MenuItem sx={{ borderRadius: 1, gap: 2 }}>
+                        <LogoutOutlined fontSize='medium' sx={{ color: 'secondary.100' }} />
+                        <Typography variant='subtitle1' color={'secondary.100'} display={'flex'} gap={1} alignItems={'center'} >
                             Logout
                         </Typography>
                     </MenuItem>

@@ -26,7 +26,7 @@ function AdminHomePage() {
 
             <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
                 <Typography>
-                    Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
+                    Welcome to Trust Vote {userProfile.email}
                 </Typography>
             </Stack>
 

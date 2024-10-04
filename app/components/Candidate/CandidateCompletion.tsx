@@ -147,15 +147,6 @@ function CandidateCompletion() {
         },
     });
 
-    const fileToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-    };
-
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>, fieldName: string, setFieldValue: any) => {
         const file = event.currentTarget.files?.[0];
         if (file) {
@@ -314,7 +305,7 @@ function CandidateCompletion() {
                         type="file"
                         name="manifesto"
                         InputLabelProps={{ shrink: true }}
-                        onChange={(event: any) => formikStep2.setFieldValue('manifesto', event.currentTarget.files?.[0])}
+                        onChange={(event: any) => handleFileChange(event, "manifesto", formikStep2.setFieldValue)}
                         error={formikStep2.touched.manifesto && Boolean(formikStep2.errors.manifesto)}
                         helperText={formikStep2.touched.manifesto && formikStep2.errors.manifesto}
                     />

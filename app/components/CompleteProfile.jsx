@@ -1,9 +1,9 @@
 'use client'
-import { Box, Grid, TextField, Typography, Button, Divider, Stack } from '@mui/material'
+import { Box, Grid, TextField, Typography, Button, Divider, Stack, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import NationalityVerification from '@/app/components/NationalityVerification';
-import { Error } from '@mui/icons-material';
+import { Add, Error, Upload } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from '../redux/features/userSlice';
 import DateInputField from "./DateInputField";
@@ -13,10 +13,26 @@ import dayjs from 'dayjs';
 import withAuth from '../utils/withAuth';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+import imageToBase64 from './Utils/imageToBase64';
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
+    const [pfpPreview, setPfpPreview] = useState('');
     const router = useRouter();
+    const ref = useRef();
+
+    function handlePfpGrid(ref) {
+        if (ref.current !== null) {
+            ref.current.click();
+        }
+    }
+
+    async function pfpHandler(event) {
+        const file = event.target.files[0];
+        const base64 = await imageToBase64(file)
+        setPfpPreview(base64);
+    }
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -38,10 +54,14 @@ function CompleteProfile() {
         onSubmit: values => {
             console.log(values)
             const { date, ...otherValues } = values;
+            const token = localStorage.getItem('x_auth_token')
             toast.promise(
                 dispatch(updateProfile({
-                    ...otherValues,
-                    dateOfBirth: dayjs(date).format('YYYY-MM-DD')
+                    profile: {
+                        ...otherValues,
+                        dateOfBirth: dayjs(date).format('YYYY-MM-DD')
+                    },
+                    token
                 })).unwrap(), {
                 loading: 'Updating profile',
                 success: 'Profile updated',
@@ -122,18 +142,17 @@ function CompleteProfile() {
                 <Loading />
             }
             <form onSubmit={formik.handleSubmit}>
-                <Grid
-                    display={"flex"}
-                    flexDirection={"column"}
+                <Stack
                     justifyContent={"space-between"}
                     gap={3}
                     p={3}
-                    width={"fit-content"}
+                    minWidth={300}
                     bgcolor={'secondary.main'}
                     borderRadius={2}
                     border={'1px solid'}
                     borderColor={'secondary.200'}
                 >
+
                     <Grid
                         display={'flex'}
                         flexDirection={'column'}
@@ -142,7 +161,6 @@ function CompleteProfile() {
                         <Grid
                             display={'flex'}
                             gap={2}
-                            // alignItems={'end'}
                             flexDirection={'column'}
                         >
                             <Typography
@@ -154,6 +172,37 @@ function CompleteProfile() {
                             </Typography>
                         </Grid>
                     </Grid>
+
+
+                    <Stack direction={'row'}>
+                        <Stack
+                            border={'1px solid'}
+                            bgcolor={'background.default'}
+                            borderColor={'secondary.200'}
+                            borderRadius={5}
+                            height={100}
+                            width={100}
+                            justifyContent={'center'}
+                            onClick={() => handlePfpGrid(ref)}
+
+                        >
+                            {pfpPreview === '' ?
+                                <IconButton sx={{ width: '100%', height: '100%' }}>
+                                    <Add sx={{ color: 'primary.main' }} />
+                                </IconButton>
+                                :
+
+                                <Image
+                                    width={100}
+                                    height={100}
+                                    src={pfpPreview}
+                                    alt='a profile picture'
+                                />
+
+                            }
+                        </Stack>
+                        <input ref={ref} type='file' onClick={(event) => pfpHandler(event)} name='profile-pic' style={{ display: 'none' }} />
+                    </Stack>
 
                     <Box
                         display={'flex'}
@@ -321,7 +370,7 @@ function CompleteProfile() {
 
                     </Grid>
 
-                    <Divider />
+                    <Divider sx={{ borderColor: 'secondary.200' }} />
                     <Grid
                         display={"flex"}
                         flexDirection={"column"}
@@ -386,7 +435,7 @@ function CompleteProfile() {
                             Submit
                         </Button>
                     </Grid>
-                </Grid>
+                </Stack>
             </form>
         </>
     )

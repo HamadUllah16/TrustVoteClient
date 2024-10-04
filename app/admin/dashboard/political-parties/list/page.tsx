@@ -1,17 +1,18 @@
 'use client'
-import Sidebar from '@/app/components/Sidebar'
-import { Divider, IconButton, Stack, Table, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { IconButton } from '@mui/material'
 import React, { useState } from 'react'
 import { Add } from '@mui/icons-material';
 import AddPoliticalParty from '@/app/components/AdminComponents/AddPoliticalParty';
 import RenderPoliticalParties from '@/app/components/AdminComponents/RenderPoliticalParties';
 import MainWrapper from '@/app/components/MainWrapper';
 import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
-import RenderTableData from '@/app/components/RenderTableData';
 import RenderTableHead from '@/app/components/RenderTableHead';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
+    const { role } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <MainWrapper>
 
@@ -20,10 +21,11 @@ function AllPoliticalPartiesPage() {
             <RenderTableHead
                 title='Political Parties'
                 subtitle={null}
-                labels={['#', 'Name', 'Abbreviation', 'Symbol', 'Actions']}
+                labels={role === 'admin' ? ['#', 'Name', 'Abbreviation', 'Symbol', 'Actions'] : ['#', 'Name', 'Abbreviation', 'Symbol']}
                 action={
+                    role === 'admin' &&
                     <IconButton onClick={() => setShowAddPartyModel(true)}>
-                        <Add />
+                        <Add color='primary' />
                     </IconButton>
                 }>
 
@@ -31,7 +33,7 @@ function AllPoliticalPartiesPage() {
 
             </RenderTableHead>
 
-            {showAddPartyModal &&
+            {showAddPartyModal && role === 'admin' &&
                 <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
             }
 

@@ -1,6 +1,6 @@
 "use client"
-import { AccountCircleOutlined, FavoriteBorder, KeyboardArrowDown, Logout, Menu, SettingsOutlined, ShoppingCart } from '@mui/icons-material'
-import { Box, Button, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
+import { AccountCircleOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
+import { Box, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -153,10 +153,10 @@ function ProfileMenu() {
                                                 sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}
                                             >
                                                 {firstName}
-                                                <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
-                                                    {role}
-                                                </Stack>
                                             </Typography>
+                                            <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
+                                                {role}
+                                            </Stack>
 
                                             <Typography
                                                 variant='body2'
