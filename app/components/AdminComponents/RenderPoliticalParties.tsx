@@ -19,13 +19,13 @@ function RenderPoliticalParties() {
         dispatch(allPoliticalParties());
     }, [])
     return (
-        <TableBody>
+        <>
             {allParties && allParties.map((party: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{party.name}</TableCell>
-                        <TableCell>{party.abbreviation}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{party.name}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100' }}>{party.abbreviation}</TableCell>
                         <TableCell><Image src={party.symbol} width={50} height={50} alt='party symbol' /> </TableCell>
                         {userProfile.role === 'admin' &&
                             <TableCell>
@@ -42,7 +42,7 @@ function RenderPoliticalParties() {
                     </TableRow>
                 )
             })}
-        </TableBody>
+        </>
     )
 }
 

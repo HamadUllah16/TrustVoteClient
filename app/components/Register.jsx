@@ -1,9 +1,8 @@
 'use client'
-import { East, Error, Visibility, VisibilityOff, Warning, WarningRounded } from '@mui/icons-material'
-import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
+import { East } from '@mui/icons-material'
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import Link from 'next/link'
-import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../redux/features/authSlice'
 import Image from 'next/image'
@@ -54,7 +53,7 @@ function Register() {
     return (
         <Stack
             direction={'row'}
-            bgcolor={'background.default'}
+            bgcolor={'secondary.main'}
             width={'100vw'}
             height={'100vh'}
             p={2}
@@ -67,12 +66,11 @@ function Register() {
                     width={50}
                     alt='logo'
                 />
-                <Grid
+                <Stack
                     px={'75px'}
-                    display={"flex"}
                     justifyContent={"center"}
                     gap={2}
-                    flexDirection={'column'}
+                    divider={<Divider sx={{ borderColor: 'secondary.200' }} />}
                 >
                     <Box
                         display={'flex'}
@@ -86,8 +84,6 @@ function Register() {
                         </Typography>
                     </Box>
 
-                    <Divider />
-
                     <Grid
                         display={'flex'}
                         flexDirection={'column'}
@@ -99,8 +95,6 @@ function Register() {
                         />
 
                     </Grid>
-
-                    <Divider />
 
                     <Link
                         href={"/user/login"}
@@ -126,7 +120,7 @@ function Register() {
                             </Box>
                         </Box>
                     </Link>
-                </Grid>
+                </Stack>
             </Stack>
 
             <Stack flexGrow={1} borderRadius={2} bgcolor={'primary.main'}>

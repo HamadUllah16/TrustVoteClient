@@ -32,7 +32,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/components/Candidate/CandidateRegister.jsx"
+    "app/components/Candidate/CandidateRegister.jsx",
+    "app/components/Utils/imageToBase64.js"
   ],
   "exclude": [
     "node_modules"

@@ -53,16 +53,22 @@ function NavItems() {
                         anchorEl={anchorEl2}
                         open={open2}
                         onClose={handleClose2}
+                        sx={{
+                            '& .MuiPaper-root': {
+                                backgroundColor: 'secondary.main',
+                                color: 'secondary.100'
+                            }
+                        }}
                     >
                         <Link href={'/user/login'}>
 
-                            <MenuItem sx={{ borderRadius: 1 }} onClick={handleClose2} disableRipple>
+                            <MenuItem sx={{ borderRadius: 1, ':hover': { bgcolor: 'background.default' } }} onClick={handleClose2} disableRipple>
                                 Voter
                             </MenuItem>
                         </Link>
 
                         <Link href={'/candidate/login'}>
-                            <MenuItem sx={{ borderRadius: 1 }} onClick={handleClose2} disableRipple>
+                            <MenuItem sx={{ borderRadius: 1, ':hover': { bgcolor: 'background.default' } }} onClick={handleClose2} disableRipple>
                                 Candidate
                             </MenuItem>
                         </Link>
@@ -76,6 +82,7 @@ function NavItems() {
                         variant="contained"
                         disableElevation
                         onClick={handleClick}
+
                         endIcon={<KeyboardArrowDown sx={{ rotate: open ? '180deg' : '0deg', transition: '0.3s all' }} />}
                     >
                         Register
@@ -85,19 +92,25 @@ function NavItems() {
                         MenuListProps={{
                             'aria-labelledby': 'demo-customized-button',
                         }}
+                        sx={{
+                            '& .MuiPaper-root': {
+                                backgroundColor: 'secondary.main',
+                                color: 'secondary.100'
+                            }
+                        }}
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}
                     >
                         <Link href={'/user/register'}>
 
-                            <MenuItem sx={{ borderRadius: 1 }} onClick={handleClose} disableRipple>
+                            <MenuItem sx={{ borderRadius: 1, ':hover': { bgcolor: 'background.default' } }} onClick={handleClose} disableRipple>
                                 Voter
                             </MenuItem>
                         </Link>
 
                         <Link href={'/candidate/register'}>
-                            <MenuItem sx={{ borderRadius: 1 }} onClick={handleClose} disableRipple>
+                            <MenuItem sx={{ borderRadius: 1, ':hover': { bgcolor: 'background.default' } }} onClick={handleClose} disableRipple>
                                 Candidate
                             </MenuItem>
                         </Link>

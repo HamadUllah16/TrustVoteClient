@@ -1,68 +1,44 @@
 'use client'
-import Sidebar from '@/app/components/Sidebar'
-import { Box, Button, Divider, IconButton, Stack, Table, TableCell, TableHead, TableRow, TextField, Typography } from '@mui/material'
-import RenderCandidates from '@/app/components/Candidate/RenderCandidates';
+import { IconButton } from '@mui/material'
 import React, { useState } from 'react'
-import AdminRoutes from '@/app/components/AdminComponents/AdminRoutes';
-import { Add, Cancel } from '@mui/icons-material';
-import Modal from '@/app/components/Modal';
+import { Add } from '@mui/icons-material';
 import AddPoliticalParty from '@/app/components/AdminComponents/AddPoliticalParty';
 import RenderPoliticalParties from '@/app/components/AdminComponents/RenderPoliticalParties';
+import MainWrapper from '@/app/components/MainWrapper';
+import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
+import RenderTableHead from '@/app/components/RenderTableHead';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
+    const { role } = useSelector((state: RootState) => state.user.userProfile)
     return (
-        <Stack
-            direction={'row'}
-            gap={3}
-            flexGrow={1}
-            px={'75px'}
-        >
-            <Sidebar>
-                <AdminRoutes />
-            </Sidebar>
+        <MainWrapper>
 
-            <Stack
-                flexGrow={1}
-                my={'30px'}
-                gap={2}
-            >
-                <Stack direction={'row'} gap={2} justifyContent={'space-between'}>
-                    <Typography variant='h6'>Political Parties</Typography>
+            <AdminSidebar />
+
+            <RenderTableHead
+                title='Political Parties'
+                subtitle={null}
+                labels={role === 'admin' ? ['#', 'Name', 'Abbreviation', 'Symbol', 'Actions'] : ['#', 'Name', 'Abbreviation', 'Symbol']}
+                action={
+                    role === 'admin' &&
                     <IconButton onClick={() => setShowAddPartyModel(true)}>
-                        <Add />
+                        <Add color='primary' />
                     </IconButton>
-                </Stack>
-                <Divider />
-                <Stack
-                    border={'1px solid #DADADA'}
-                    borderRadius={'10px'}
-                    minHeight={'50vh'}
-                    overflow={'hidden'}
-                >
-                    <Table>
-                        <TableHead sx={{ bgcolor: '#DADADA' }}>
-                            <TableRow>
-                                <TableCell>#</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Abbreviation</TableCell>
-                                <TableCell>Symbol</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
+                }>
 
-                        {/* rendering political parties */}
-                        <RenderPoliticalParties />
+                <RenderPoliticalParties />
 
-                    </Table>
-                </Stack>
-            </Stack>
+            </RenderTableHead>
 
-            {showAddPartyModal &&
+            {showAddPartyModal && role === 'admin' &&
                 <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
             }
 
-        </Stack >
+        </MainWrapper>
+
     )
 }
 

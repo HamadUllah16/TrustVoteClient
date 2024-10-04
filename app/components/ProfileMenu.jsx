@@ -1,6 +1,6 @@
 "use client"
-import { AccountCircleOutlined, FavoriteBorder, KeyboardArrowDown, Logout, Menu, SettingsOutlined, ShoppingCart } from '@mui/icons-material'
-import { Box, Button, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
+import { AccountCircleOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
+import { Box, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -59,7 +59,12 @@ function ProfileMenu() {
                                     border: '1px solid',
                                     borderColor: 'secondary.200',
                                     borderRadius: 1.5,
-                                    gap: 1
+                                    gap: 1,
+                                    bgcolor: 'secondary.main',
+                                    color: 'secondary.100',
+                                    ':hover': {
+                                        bgcolor: 'secondary.200'
+                                    }
                                 }}
                                 onClick={() => email ? setShow(!show) : router.push('/login')}
                             >
@@ -109,7 +114,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/dashboard') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/dashboard') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -148,10 +153,10 @@ function ProfileMenu() {
                                                 sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', alignItems: 'center' }}
                                             >
                                                 {firstName}
-                                                <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
-                                                    {role}
-                                                </Stack>
                                             </Typography>
+                                            <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
+                                                {role}
+                                            </Stack>
 
                                             <Typography
                                                 variant='body2'
@@ -162,7 +167,7 @@ function ProfileMenu() {
                                     </Grid>
                                 </MenuItem>
                             </Link>
-                            <Divider sx={{ my: 1 }} />
+                            <Divider sx={{ my: 1, borderColor: 'secondary.200' }} />
 
                             <Link
                                 href={'/user/update-profile'}
@@ -181,7 +186,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/update-profile') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/update-profile') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -211,7 +216,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/user/settings') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/user/settings') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >
@@ -241,7 +246,7 @@ function ProfileMenu() {
                                         backgroundColor: pathName.startsWith('/logout') ? 'primary.main' : 'secondary.main',
                                         color: pathName.startsWith('/logout') ? 'secondary.200' : 'primary.100',
                                         ':hover': {
-                                            color: 'primary.100'
+                                            bgcolor: 'secondary.200'
                                         }
                                     }}
                                 >

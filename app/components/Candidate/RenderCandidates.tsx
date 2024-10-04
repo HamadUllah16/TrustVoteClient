@@ -15,7 +15,7 @@ function RenderCandidates() {
         dispatch(getApprovedCandidates());
     }, [])
     return (
-        <TableBody>
+        <>
             {approvedCandidates && approvedCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
@@ -40,7 +40,7 @@ function RenderCandidates() {
                     </TableRow>
                 )
             })}
-        </TableBody>
+        </>
     )
 }
 

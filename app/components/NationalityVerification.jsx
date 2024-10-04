@@ -3,60 +3,44 @@ import { Button, Grid, Box, Typography } from '@mui/material'
 import React, { useRef, useState } from 'react'
 import { CloudCircle, Error, Info } from '@mui/icons-material'
 import Image from 'next/image';
+import imageToBase64 from './Utils/imageToBase64';
 
 
 function NationalityVerification({ formik }) {
     const [msg, setMsg] = useState('');
+    const [cnicFrontPreview, setCnicFrontPreview] = useState('');
+    const [cnicBackPreview, setCnicBackPreview] = useState('');
 
     const firstImageRef = useRef(null);
     const secondImageRef = useRef(null);
+
     function handleGridClick(ref) {
         if (ref.current !== null) {
             ref.current.click();
         }
     }
 
-    function imageToBase64(file) {
-        return new Promise(resolve => {
-            let baseURL = "";
-            // Make new FileReader
-            let reader = new FileReader();
-
-            // Convert the file to base64 text
-            reader.readAsDataURL(file);
-
-            // on reader load somthing...
-            reader.onload = () => {
-
-                baseURL = reader.result;
-
-                resolve(baseURL);
-            };
-        });
-    }
-
-
-    function firstImageHandler(event) {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0];
-
-            const supportedFormats = ["image/png", "image/jpeg"];
-            if (!supportedFormats.includes(file.type)) {
-                setMsg("Unsupported format");
-                return;
+    const handleFileChange = async (event, fieldName, setFieldValue, setPreview) => {
+        const file = event.currentTarget.files?.[0];
+        if (file) {
+            try {
+                const supportedFormats = ["image/png", "image/jpeg"];
+                if (!supportedFormats.includes(file.type)) {
+                    setMsg("Unsupported format");
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // 5 MB
+                    setMsg("Max file size is 5 MB");
+                    return;
+                }
+                const imagePreview = await imageToBase64(file);
+                setPreview(imagePreview)
+                setFieldValue(fieldName, file);
+            } catch (error) {
+                console.error("Error converting file to base64: ", error);
             }
-            if (file.size > 5 * 1024 * 1024) { // 5 MB
-                setMsg("Max file size is 5 MB");
-                return;
-            }
-            imageToBase64(file).then(imageStr => {
-                formik.setFieldValue("cnicFront", imageStr)
-                setMsg('');
-            }).catch(err => {
-                setMsg('Error processing image.')
-            })
         }
-    }
+    };
 
     function secondImageHandler(event) {
         if (event.target.files && event.target.files.length > 0) {
@@ -131,7 +115,7 @@ function NationalityVerification({ formik }) {
 
                         :
                         <Image
-                            src={formik.values.cnicFront}
+                            src={cnicFrontPreview}
                             alt='front of the card'
                             style={{
                                 maxWidth: "100%",
@@ -169,7 +153,7 @@ function NationalityVerification({ formik }) {
 
 
                     </Box>
-                    <input name='cnicFront' type='file' ref={firstImageRef} onChange={firstImageHandler} style={{ display: "none" }} />
+                    <input name='cnicFront' type='file' ref={firstImageRef} onChange={(event) => handleFileChange(event, 'cnicFront', formik.setFieldValue, setCnicFrontPreview)} style={{ display: "none" }} />
                 </Grid>
 
                 {/* Back picture of the card */}
@@ -201,7 +185,7 @@ function NationalityVerification({ formik }) {
                         <Typography color={"#5A5A5A"} variant='body2'>Upload back picture of the ID</Typography>
                         :
                         <Image
-                            src={formik.values.cnicBack}
+                            src={cnicBackPreview}
                             alt='back of the card'
                             style={{
                                 maxWidth: "100%",
@@ -239,7 +223,7 @@ function NationalityVerification({ formik }) {
                         </Button>
 
                     </Box>
-                    <input name='cnicBack' type='file' ref={secondImageRef} onChange={secondImageHandler} style={{ display: "none" }} />
+                    <input name='cnicBack' type='file' ref={secondImageRef} onChange={(event) => handleFileChange(event, 'cnicBack', formik.setFieldValue, setCnicBackPreview)} style={{ display: "none" }} />
                 </Grid>
             </Grid>
             {

@@ -45,7 +45,7 @@ function CandidateRegister() {
             toast.promise(
                 dispatch(createCandidateProfile({ profile: { email, password }, router: router })).unwrap(), {
                 loading: 'Loading...',
-                success: 'Authenticated',
+                success: 'Account created',
                 error: err => err.message
             }
             )
@@ -55,7 +55,7 @@ function CandidateRegister() {
     return (
         <Stack
             direction={'row'}
-            bgcolor={'background.default'}
+            bgcolor={'secondary.main'}
             width={'100vw'}
             height={'100vh'}
             p={2}
@@ -68,12 +68,13 @@ function CandidateRegister() {
                     width={50}
                     alt='logo'
                 />
-                <Grid
+                <Stack
                     px={'75px'}
                     display={"flex"}
                     justifyContent={"center"}
                     gap={2}
                     flexDirection={'column'}
+                    divider={<Divider sx={{ borderColor: 'secondary.200' }} />}
                 >
                     <Box
                         display={'flex'}
@@ -87,8 +88,6 @@ function CandidateRegister() {
                         </Typography>
                     </Box>
 
-                    <Divider />
-
                     <Grid
                         display={'flex'}
                         flexDirection={'column'}
@@ -100,8 +99,6 @@ function CandidateRegister() {
                         />
 
                     </Grid>
-
-                    <Divider />
 
                     <Link
                         href={"/candidate/login"}
@@ -127,7 +124,7 @@ function CandidateRegister() {
                             </Box>
                         </Box>
                     </Link>
-                </Grid>
+                </Stack>
             </Stack>
 
             <Stack flexGrow={1} borderRadius={2} bgcolor={'primary.main'}>

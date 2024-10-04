@@ -1,28 +1,30 @@
 import React, { useState } from 'react'
-import { East, Error, Visibility, VisibilityOff, Warning, WarningRounded } from '@mui/icons-material'
-import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Box, Button, Checkbox, FormControl, FormControlLabel, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material'
 
 function RegisterForm({ formik }: { formik: any }) {
     const [agree, setAgree] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event: any) => {
-        event.preventDefault();
-    };
-
     return (
         <form style={{ display: 'flex', flexDirection: 'column', gap: '16px', flexGrow: 1 }} onSubmit={formik.handleSubmit}>
-            <Stack>
-                <TextField
+            <FormControl sx={{ width: '100%' }} variant="outlined">
+                <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-email" error={formik.touched.email && Boolean(formik.errors.email)}>Email</InputLabel>
+                <OutlinedInput
+                    sx={{
+                        color: 'secondary.100',
+                        bgcolor: 'background.default',
+                    }}
                     fullWidth
-                    label='Email'
+                    id="outlined-adornment-email"
                     name="email"
+                    type={'email'}
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.email && Boolean(formik.errors.email)}
+                    label="Email"
                 />
                 <Typography
                     variant='caption'
@@ -30,15 +32,19 @@ function RegisterForm({ formik }: { formik: any }) {
                 >
                     {formik.touched.email && formik.errors.email}
                 </Typography>
-            </Stack>
+            </FormControl>
             <Box
                 display={'flex'}
                 flexDirection={'column'}
                 gap={0.5}
             >
                 <FormControl sx={{ width: '100%' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password" error={formik.touched.password && Boolean(formik.errors.password)}>Password</InputLabel>
+                    <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-password" error={formik.touched.password && Boolean(formik.errors.password)}>Password</InputLabel>
                     <OutlinedInput
+                        sx={{
+                            color: 'secondary.100',
+                            bgcolor: 'background.default'
+                        }}
                         fullWidth
                         id="outlined-adornment-password"
                         name="password"
@@ -50,13 +56,12 @@ function RegisterForm({ formik }: { formik: any }) {
                         label="Password"
                         endAdornment={
                             <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                    {showPassword ?
+                                        <VisibilityOff sx={{ color: "secondary.100" }} fontSize='medium' />
+                                        :
+                                        <Visibility sx={{ color: 'secondary.100' }} fontSize='medium' />
+                                    }
                                 </IconButton>
                             </InputAdornment>
                         }
@@ -75,29 +80,32 @@ function RegisterForm({ formik }: { formik: any }) {
                 gap={0.5}
             >
                 <FormControl sx={{ width: '100%' }} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-confirm-password" error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}>Confirm Password</InputLabel>
+                    <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-confirmPassword" error={formik.touched.password && Boolean(formik.errors.password)}>Confirm Password</InputLabel>
                     <OutlinedInput
+                        sx={{
+                            color: 'secondary.100',
+                            bgcolor: 'background.default'
+                        }}
                         fullWidth
-                        id="outlined-adornment-confirm-password"
+                        id="outlined-adornment-confirmPassword"
                         name="confirmPassword"
                         type={showConfirmPassword ? 'text' : 'password'}
                         value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                        label="Confirm Password"
                         endAdornment={
                             <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                    {showConfirmPassword ?
+                                        <VisibilityOff sx={{ color: "secondary.100" }} fontSize='medium' />
+                                        :
+                                        <Visibility sx={{ color: 'secondary.100' }} fontSize='medium' />
+                                    }
                                 </IconButton>
                             </InputAdornment>
                         }
-                        label="Confirm Password"
                     />
                     <Typography
                         variant='caption'
@@ -121,6 +129,7 @@ function RegisterForm({ formik }: { formik: any }) {
                 type='submit'
                 disabled={!(formik.isValid && formik.dirty && agree)}
                 variant='contained'
+                sx={{ ":disabled": { backgroundColor: '#2B2B2D' } }}
             >
                 Create Account
             </Button>

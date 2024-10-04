@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Stack, Typography } from '@mui/material'
 import Loading from '@/app/components/Loading'
-import Sidebar from '@/app/components/Sidebar'
-import AdminRoutes from '@/app/components/AdminComponents/AdminRoutes'
 import { getAdminProfile } from '@/app/redux/features/adminSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
+import MainWrapper from '@/app/components/MainWrapper'
+import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar'
 
 function AdminHomePage() {
     const { userProfile } = useSelector((state: RootState) => state.user)
@@ -16,19 +16,21 @@ function AdminHomePage() {
         dispatch(getAdminProfile())
     }, [])
     return (
-        <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
+
+        <MainWrapper>
+
             {loading &&
                 <Loading />
             }
-            <Sidebar>
-                <AdminRoutes />
-            </Sidebar>
+            <AdminSidebar />
+
             <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
                 <Typography>
-                    Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
+                    Welcome to Trust Vote {userProfile.email}
                 </Typography>
             </Stack>
-        </Stack>
+
+        </MainWrapper>
     )
 }
 

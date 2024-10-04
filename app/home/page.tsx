@@ -8,7 +8,7 @@ import Sidebar from "../components/Sidebar";
 import Loading from "../components/Loading";
 import { AppDispatch, RootState } from "../redux/store";
 import withAuth from "../utils/withAuth";
-import UserSidebarMenus from "../components/UserComponents/UserSidebarMenus";
+import UserSidebarMenus from "../components/UserComponents/UserSidebar";
 
 function HomePage() {
     const { firstName } = useSelector((state: RootState) => state.user.userProfile);

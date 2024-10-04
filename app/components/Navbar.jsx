@@ -57,9 +57,6 @@ function Navbar() {
                     >
                         <Grid
                             container
-                            bgcolor='secondary.main'
-                            border={'1px solid'}
-                            borderColor={'secondary.200'}
                             borderRadius={2}
                             px={2}
                             py={2}
