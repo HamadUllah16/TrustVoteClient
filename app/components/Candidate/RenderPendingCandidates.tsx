@@ -7,12 +7,12 @@ import { TableCell, Stack, TableRow, IconButton, Typography, Button, Divider } f
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../Modal';
-import dynamic from 'next/dynamic';
 import { pdfjs } from 'react-pdf';
 import Image from 'next/image';
-import PDF from '../PDF';
+import dynamic from 'next/dynamic';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+const PDF = dynamic(() => import('../PDF'), { ssr: false });
+
 
 function RenderPendingCandidates() {
     const { pendingCandidates } = useSelector((state: RootState) => state.candidate);
@@ -32,6 +32,7 @@ function RenderPendingCandidates() {
 
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
+        pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
         dispatch(getAdminProfile())
         dispatch(getPendingCandidates());
     }, [])
