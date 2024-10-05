@@ -19,14 +19,14 @@ function RenderCandidates() {
             {approvedCandidates && approvedCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{candidate.firstName}</TableCell>
-                        <TableCell>{candidate.partyAffiliation}</TableCell>
-                        <TableCell>{candidate.constituencyType}</TableCell>
-                        <TableCell>{candidate.gender}</TableCell>
-                        <TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituency}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.gender}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>
                             <Stack
-                                bgcolor={candidate.status === 'approved' ? '#008cff' : 'red'}
+                                bgcolor={candidate.status === 'approved' ? 'primary.main' : 'red'}
                                 px={1}
                                 py={0.2}
                                 alignItems={'center'}
@@ -35,7 +35,7 @@ function RenderCandidates() {
                                 {candidate.status}
                             </Stack>
                         </TableCell>
-                        <TableCell>{candidate.dateOfBirth}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.dateOfBirth}</TableCell>
                         <TableCell>Actions</TableCell>
                     </TableRow>
                 )

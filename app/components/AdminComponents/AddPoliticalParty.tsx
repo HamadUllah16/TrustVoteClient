@@ -46,16 +46,17 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                     }}
                     gap={2}
                     boxShadow={5}
-                    bgcolor={'white'}
-                    border={'1px solid #DADADA'}
+                    bgcolor={'background.default'}
+                    border={'1px solid'}
+                    borderColor={'secondary.200'}
                     p={2}
                     borderRadius={2}
-                    minWidth={400}
+                    minWidth={500}
                 >
                     <Stack direction={'row'} gap={1} justifyContent={'space-between'}>
-                        <Typography variant='h6'>Add a Political Party</Typography>
+                        <Typography variant='h5' color={'primary.main'}>Add a Political Party</Typography>
                         <IconButton sx={{ p: 0 }} onClick={() => setDisplay(false)}>
-                            <Cancel fontSize='medium' />
+                            <Cancel fontSize='medium' sx={{ color: 'primary.main' }} />
                         </IconButton>
                     </Stack>
                     <Divider />
