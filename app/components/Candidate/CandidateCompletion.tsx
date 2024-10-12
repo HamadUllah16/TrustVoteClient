@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateCandidateProfile } from '../../redux/features/candidateSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
 import withCandidateAuth from '@/app/utils/withCandidateAuth'
-import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, MenuItem, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
+import { Search } from '@mui/icons-material'
+import ConstituencySelect from './ConstituencySelection'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
@@ -17,6 +19,7 @@ function CandidateCompletion() {
     const { allParties } = useSelector((state: RootState) => state.profileCompletion)
     const { profileCompletion, email, firstName, lastName, phone } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter()
+
 
     const [allValues, setAllValues] = useState({
         firstName: firstName ?? '',
@@ -125,6 +128,8 @@ function CandidateCompletion() {
             handleNext(formikStep2);
         },
     });
+
+
 
     const formikStep3 = useFormik({
         initialValues: {
@@ -240,7 +245,7 @@ function CandidateCompletion() {
             )}
             {step === 2 && (
                 <form onSubmit={formikStep2.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <Typography variant='h4' gutterBottom>
+                    <Typography variant='h4' gutterBottom color={'secondary.100'}>
                         Additional Candidate Information
                     </Typography>
                     <Divider />
@@ -270,16 +275,12 @@ function CandidateCompletion() {
                             <MenuItem value="national assembly">National Assembly</MenuItem>
                             <MenuItem value="provincial assembly">Provincial Assembly</MenuItem>
                         </TextField>
-                        <TextField
-                            fullWidth
-                            label='Constituency Name/Number'
-                            placeholder='NA-7'
-                            name="constituency"
-                            value={formikStep2.values.constituency}
-                            onChange={formikStep2.handleChange}
-                            error={formikStep2.touched.constituency && Boolean(formikStep2.errors.constituency)}
-                            helperText={formikStep2.touched.constituency && formikStep2.errors.constituency}
+
+                        {/* Constituency Selection */}
+                        <ConstituencySelect
+                            formikStep2={formikStep2}
                         />
+
                     </Grid>
                     <Grid display={'flex'} gap={2}>
                         <TextField

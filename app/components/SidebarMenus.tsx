@@ -20,13 +20,15 @@ function SidebarMenus({ navItems }: { navItems: navItem[] }) {
                         <MenuItem
                             sx={{
                                 bgcolor: pathname.startsWith(nav.href) ? 'primary.main' : '',
+                                border: '1px solid transparent',
                                 color: 'secondary.100',
                                 display: 'flex',
                                 gap: 2,
                                 borderRadius: 1,
-                                py: 1,
+                                py: 2,
                                 ':hover': {
-                                    bgcolor: 'secondary.200'
+                                    bgcolor: pathname.startsWith(nav.href) ? 'primary.main' : '',
+                                    borderColor: pathname.startsWith(nav.href) ? '' : 'secondary.200'
                                 }
                             }}>
                             {nav.icon}

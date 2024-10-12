@@ -1,13 +1,12 @@
-import { Stack, Typography } from '@mui/material'
+import { Grid, MenuItem, Stack, Typography } from '@mui/material'
 import React from 'react'
 import LandingPageNavItems from './LandingPageNavItems'
 import Image from 'next/image'
 
 function LandingComponent() {
     return (
-        <Stack className='flex-grow' px={'75px'} py={'15px'} flex={1}>
+        <Stack flexGrow={1} gap={3} px={'75px'} py={'15px'} flex={1}>
             <Stack
-                className='flex-grow'
                 flex={1}
                 px={10}
                 py={4}
@@ -15,6 +14,7 @@ function LandingComponent() {
                 gap={3}
                 justifyContent={'center'}
                 alignItems={'center'}
+                minHeight={'50vh'}
             >
                 <Stack
                     alignItems={'center'}
@@ -51,6 +51,24 @@ function LandingComponent() {
 
                 </Stack>
             </Stack>
+
+            {/* ----------------------second screen--------------------------- */}
+            <Grid container >
+
+                <Grid item xs={6} px={1}>
+                    <Typography variant='h4' fontWeight={'bold'} color={'secondary.100'}>
+                        The Problem
+                    </Typography>
+                    <Typography variant='subtitle1' color={'primary.200'} sx={{ textWrap: 'wrap' }}>
+                        Hosting an election in Pakistan is expensive, troublesome and hard to manage. There has been claims for discrepencies, abuse of control and what not which has made the interest in democracy and voter turn out percentage lowest in the decade.
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={6} px={1} border={'1px solid'} borderRadius={2} borderColor={'secondary.200'}>
+                    some data
+                </Grid>
+
+            </Grid>
 
         </Stack>
     )
