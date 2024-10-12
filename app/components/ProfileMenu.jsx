@@ -1,10 +1,10 @@
 "use client"
-import { AccountCircleOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
+import { AccountCircleOutlined, Home, HomeOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
 import { Box, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { logoutUser } from '@/app/redux/features/authSlice';
 import Image from 'next/image';
 
@@ -13,6 +13,7 @@ const pfp = '/avatar.jpg'
 function ProfileMenu() {
     const { isAuthenticated } = useSelector((state) => state.auth)
     const { firstName, email, role } = useSelector(state => state.user.userProfile)
+    const [currentPath, setCurrentPath] = useState();
     const [show, setShow] = useState(false);
     const router = useRouter();
     const dispatch = useDispatch();
@@ -25,16 +26,34 @@ function ProfileMenu() {
         }
     };
 
+    function getCurrentPath() {
+        switch (role) {
+            case 'candidate':
+                setCurrentPath('/candidate');
+                return;
+            case 'voter':
+                setCurrentPath('/user');
+                return;
+            case 'admin':
+                setCurrentPath('/admin');
+                return;
+            default:
+                '';
+                return
+        }
+    }
+
     function logoutHandler() {
         dispatch(logoutUser())
         router.push('/logout')
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+        getCurrentPath()
         if (show) {
             window.addEventListener('click', handleClickOutside);
         }
-    }, [show])
+    }, [show, role])
     return (
         <>
             {isAuthenticated &&
@@ -45,7 +64,6 @@ function ProfileMenu() {
                         position={'relative'}
                         ref={ref}
                     >
-
                         <InputLabel
                             sx={{
                                 fontSize: "15px",
@@ -63,7 +81,9 @@ function ProfileMenu() {
                                     bgcolor: 'secondary.main',
                                     color: 'secondary.100',
                                     ':hover': {
-                                        bgcolor: 'secondary.200'
+
+                                        bgcolor: 'secondary.200',
+                                        color: 'secondary.100'
                                     }
                                 }}
                                 onClick={() => email ? setShow(!show) : router.push('/login')}
@@ -102,7 +122,7 @@ function ProfileMenu() {
                             }}
                         >
                             <Link
-                                href={'/user/dashboard'}
+                                href={`${currentPath}/dashboard`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -112,9 +132,9 @@ function ProfileMenu() {
                                     sx={{
                                         borderRadius: 1.5,
                                         backgroundColor: pathName.startsWith('/user/dashboard') ? 'primary.main' : 'secondary.main',
-                                        color: pathName.startsWith('/user/dashboard') ? 'secondary.200' : 'primary.100',
+                                        color: 'secondary.100',
                                         ':hover': {
-                                            bgcolor: 'secondary.200'
+                                            bgcolor: 'secondary.200',
                                         }
                                     }}
                                 >
@@ -169,8 +189,9 @@ function ProfileMenu() {
                             </Link>
                             <Divider sx={{ my: 1, borderColor: 'secondary.200' }} />
 
+
                             <Link
-                                href={'/user/update-profile'}
+                                href={`${currentPath}/dashboard`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -183,10 +204,42 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith('/user/update-profile') ? 'primary.main' : 'secondary.main',
-                                        color: pathName.startsWith('/user/update-profile') ? 'secondary.200' : 'primary.100',
+                                        backgroundColor: pathName.startsWith(`${currentPath}/dashboard`) ? 'primary.main' : 'secondary.main',
+                                        color: 'secondary.100',
                                         ':hover': {
-                                            bgcolor: 'secondary.200'
+
+                                            bgcolor: 'secondary.200',
+                                        }
+                                    }}
+                                >
+                                    <HomeOutlined fontSize='small' />
+                                    <Typography
+                                        variant='body1'
+                                    >
+                                        Home
+                                    </Typography>
+                                </MenuItem>
+                            </Link>
+
+                            <Link
+                                href={`${currentPath}/update-profile`}
+                                onClick={() => setShow(false)}
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'primary.main',
+                                }}
+                            >
+                                <MenuItem
+                                    sx={{
+                                        display: 'flex',
+                                        gap: 2,
+                                        alignItems: 'center',
+                                        borderRadius: 1,
+                                        backgroundColor: pathName.startsWith(`${currentPath}/update-profile`) ? 'primary.main' : 'secondary.main',
+                                        color: 'secondary.100',
+                                        ':hover': {
+
+                                            bgcolor: 'secondary.200',
                                         }
                                     }}
                                 >
@@ -200,7 +253,7 @@ function ProfileMenu() {
                             </Link>
 
                             <Link
-                                href={'/user/settings'}
+                                href={`${currentPath}/settings`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -213,10 +266,11 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith('/user/settings') ? 'primary.main' : 'secondary.main',
-                                        color: pathName.startsWith('/user/settings') ? 'secondary.200' : 'primary.100',
+                                        backgroundColor: pathName.startsWith(`${currentPath}/settings`) ? 'primary.main' : 'secondary.main',
+                                        color: 'secondary.100',
                                         ':hover': {
-                                            bgcolor: 'secondary.200'
+
+                                            bgcolor: 'secondary.200',
                                         }
                                     }}
                                 >
@@ -244,9 +298,10 @@ function ProfileMenu() {
                                         alignItems: 'center',
                                         borderRadius: 1,
                                         backgroundColor: pathName.startsWith('/logout') ? 'primary.main' : 'secondary.main',
-                                        color: pathName.startsWith('/logout') ? 'secondary.200' : 'primary.100',
+                                        color: 'secondary.100',
                                         ':hover': {
-                                            bgcolor: 'secondary.200'
+
+                                            bgcolor: 'secondary.200',
                                         }
                                     }}
                                 >

@@ -5,6 +5,7 @@ import axios from "axios";
 import { setUserProfile } from "./userSlice";
 import { setIsAuthenticated } from "./authSlice";
 import toast from "react-hot-toast";
+import { getAllCandidates } from "./candidateSlice";
 
 interface initState {
     isAuthenticated: string,
@@ -70,6 +71,7 @@ export const approveOrRejectCandidate = createAsyncThunk<any, any, { rejectValue
             const response = await axiosInstance.put(`/admin/candidates/approve-or-reject-candidate/${data.id}`, { status: data.status });
             data.setShow(false);
             dispatch(getPendingCandidate());
+            dispatch(getAllCandidates())
             return response.data;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message || 'Request failed.' })

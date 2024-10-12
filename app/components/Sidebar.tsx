@@ -49,13 +49,13 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                             </Typography>
 
                             <Stack
-                                bgcolor={role === 'voter' ? 'primary.100' : 'secondary.main'}
+                                bgcolor={'primary.main'}
                                 px={2}
-                                py={0.2}
-                                borderRadius={2}
+                                py={0.5}
+                                borderRadius={1}
                                 justifyContent={'center'}
                             >
-                                <Typography color={role === 'voter' ? 'secondary.200' : 'primary.contrastText'}>
+                                <Typography color={'secondary.100'}>
                                     {role}
                                 </Typography>
                             </Stack>
@@ -83,13 +83,13 @@ function Sidebar({ children }: { children: React.ReactNode }) {
 
                 </Stack>
 
-                <Divider />
+                <Divider sx={{ borderColor: 'secondary.200' }} />
 
                 {children}
 
             </Stack>
 
-            <Divider />
+            <Divider sx={{ borderColor: 'secondary.200' }} />
 
 
             <Stack>
