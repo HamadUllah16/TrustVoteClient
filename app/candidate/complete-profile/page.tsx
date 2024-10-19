@@ -1,8 +1,17 @@
+'use client'
 import CandidateCompletion from '@/app/components/Candidate/CandidateCompletion'
+import { allConstituency } from '@/app/redux/features/constituencySlice'
+import { AppDispatch } from '@/app/redux/store'
 import { Stack } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 function CandidateProfileCompletion() {
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(allConstituency());
+    }, [])
     return (
         <Stack
             alignItems={'center'}

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
 import { Search } from '@mui/icons-material'
 import ConstituencySelect from './ConstituencySelection'
+import { allConstituency } from '@/app/redux/features/constituencySlice'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
@@ -44,6 +45,7 @@ function CandidateCompletion() {
             router.push('/candidate')
         }
         dispatch(allPoliticalParties());
+        dispatch(allConstituency());
     }, [profileCompletion])
 
     const handleNext = async (formik: any) => {
@@ -175,6 +177,7 @@ function CandidateCompletion() {
                     <Grid display={'flex'} gap={2}>
 
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='First Name'
                             name="firstName"
@@ -185,6 +188,7 @@ function CandidateCompletion() {
                             helperText={formikStep1.touched.firstName && formikStep1.errors.firstName}
                         />
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='Last Name'
                             name="lastName"
@@ -197,6 +201,7 @@ function CandidateCompletion() {
                     </Grid>
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='Phone Number'
                             name="phone"
@@ -209,6 +214,7 @@ function CandidateCompletion() {
                     </Grid>
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='Date of Birth'
                             type="date"
@@ -221,6 +227,7 @@ function CandidateCompletion() {
                             helperText={formikStep1.touched.dateOfBirth && formikStep1.errors.dateOfBirth}
                         />
                         <TextField
+                            variant='filled'
                             fullWidth
                             select
                             label='Gender'
@@ -251,6 +258,7 @@ function CandidateCompletion() {
                     <Divider />
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='CNIC Number'
                             placeholder='17301-1234567-8'
@@ -263,6 +271,7 @@ function CandidateCompletion() {
                     </Grid>
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             select
                             label='Constituency Type'
@@ -284,6 +293,7 @@ function CandidateCompletion() {
                     </Grid>
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             select
                             label='Party Affiliation'
@@ -301,6 +311,7 @@ function CandidateCompletion() {
                         </TextField>
                     </Grid>
                     <TextField
+                        variant='filled'
                         fullWidth
                         label='Manifesto Upload (PDF)'
                         type="file"
@@ -329,6 +340,7 @@ function CandidateCompletion() {
                     <Divider />
                     <Grid display={'flex'} gap={2}>
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='CNIC Front Image'
                             type="file"
@@ -339,6 +351,7 @@ function CandidateCompletion() {
                             helperText={formikStep3.touched.cnicFront && formikStep3.errors.cnicFront}
                         />
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='CNIC Back Image'
                             type="file"
@@ -350,6 +363,7 @@ function CandidateCompletion() {
                         />
                     </Grid>
                     <TextField
+                        variant='filled'
                         fullWidth
                         label='Educational Certificates (highest/recent degree)'
                         type="file"
@@ -361,6 +375,7 @@ function CandidateCompletion() {
                     />
                     <Grid display={'flex'} gap={2} alignItems="center">
                         <TextField
+                            variant='filled'
                             fullWidth
                             label='Asset Declaration'
                             type="file"

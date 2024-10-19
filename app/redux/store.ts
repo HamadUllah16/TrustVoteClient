@@ -4,6 +4,7 @@ import userSlice from "./features/userSlice";
 import profileCompletionSlice from "./features/profileCompletionSlice";
 import adminSlice from "./features/adminSlice";
 import candidateSlice from "./features/candidateSlice";
+import constituencySlice from './features/constituencySlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         profileCompletion: profileCompletionSlice,
         user: userSlice,
         admin: adminSlice,
-        candidate: candidateSlice
+        candidate: candidateSlice,
+        constituency: constituencySlice
     }
 })
 

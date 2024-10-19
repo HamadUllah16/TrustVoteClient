@@ -3,13 +3,13 @@ import { Typography, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUserProfile } from "../redux/features/userSlice";
-import Loading from "../components/Loading";
-import { AppDispatch, RootState } from "../redux/store";
-import withAuth from "../utils/withAuth";
-import CompleteProfile from "../components/CompleteProfile";
-import UserSidebar from "../components/UserComponents/UserSidebar";
-import MainWrapper from "../components/MainWrapper";
+import { getUserProfile } from "../../redux/features/userSlice";
+import Loading from "../../components/Loading";
+import { AppDispatch, RootState } from "../../redux/store";
+import withAuth from "../../utils/withAuth";
+import CompleteProfile from "../../components/CompleteProfile";
+import UserSidebar from "../../components/UserComponents/UserSidebar";
+import MainWrapper from "../../components/MainWrapper";
 
 function UserHomePage() {
     const { firstName, profileCompletion } = useSelector((state: RootState) => state.user.userProfile);

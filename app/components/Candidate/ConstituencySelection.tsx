@@ -1,76 +1,34 @@
-import React, { useMemo, useState } from 'react';
+'use client'
+import React, { useEffect, useMemo, useState } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import { allConstituency } from '@/app/redux/features/constituencySlice';
 
 
 
 const ConstituencySearch = ({ formikStep2 }: { formikStep2: any }) => {
+    const { allConstituencies } = useSelector((state: RootState) => state.constituency)
     const [inputValue, setInputValue] = useState('');
 
 
-    const assemblySeats = {
-        balochistan: 16,
-        kpk: 45,
-        punjab: 141,
-        sindh: 61,
-        federalCapital: 3,
-    };
+    const constituencyOptions = useMemo(() => {
+        return allConstituencies
+            .flatMap((item: any) => item.constituencies.map((c: any) => c.area + "  " + c.constituency)) || [];
+    }, [allConstituencies]);
 
-    const generateConstituencies = (seats: any) => {
-        return Array.from({ length: seats }).map((_, index) => index + 1);
-    };
+    const dispatch = useDispatch<AppDispatch>();
 
-    // const allConstituencies = useMemo(() => {
-    //     if (formikStep2.values.constituencyType === 'national assembly') {
-    //         return [
-    //             ...generateConstituencies(nationAssemblySeats.balochistan),
-    //             ...generateConstituencies(nationAssemblySeats.kpk),
-    //             ...generateConstituencies(nationAssemblySeats.punjab),
-    //             ...generateConstituencies(nationAssemblySeats.sindh),
-    //             ...generateConstituencies(nationAssemblySeats.federalCapital),
-    //         ];
-    //     } else if (formikStep2.values.constituencyType === 'provincial assembly') {
-    //         return [
 
-    //             // ...generateConstituencies("PB-" + nationAssemblySeats.balochistan),
-    //             // ...generateConstituencies("PK-" + nationAssemblySeats.kpk),
-    //             // ...generateConstituencies("PP-" + nationAssemblySeats.punjab),
-    //             // ...generateConstituencies("PS-" + nationAssemblySeats.sindh),
-    //         ];
-    //     }
-    //     return [];
-    // }, [formikStep2.values.constituencyType]);
 
-    const nationalConstituency = useMemo(() => {
-        return [
-            ...Array.from({ length: assemblySeats.balochistan + assemblySeats.federalCapital + assemblySeats.kpk + assemblySeats.punjab + assemblySeats.sindh })
-                .map((_, index: number) => `NA-${index + 1}`)
-        ]
-    }, [formikStep2.values.constituencyType])
-
-    const provincialConstituency = useMemo(() => {
-        return [
-            ...Array.from({ length: assemblySeats.balochistan }).map((_, index: number) => `PB-${index + 1}`),
-            ...Array.from({ length: assemblySeats.kpk }).map((_, index: number) => `PK-${index + 1}`),
-            ...Array.from({ length: assemblySeats.punjab }).map((_, index: number) => `PP-${index + 1}`),
-            ...Array.from({ length: assemblySeats.sindh }).map((_, index: number) => `PS-${index + 1}`)
-        ];
-    }, [formikStep2.values.constituencyType])
-
+    useEffect(() => {
+        dispatch(allConstituency());
+    }, [])
 
     return (
         <Autocomplete
             fullWidth
-            options={
-                formikStep2.values.constituencyType === 'national assembly'
-                    ?
-                    nationalConstituency
-                    :
-                    formikStep2.values.constituencyType === 'provinicial assembly'
-                        ?
-                        provincialConstituency
-                        :
-                        []
-            }
+            options={constituencyOptions}
             getOptionLabel={(option: any) => option}
             filterSelectedOptions
             inputValue={inputValue}

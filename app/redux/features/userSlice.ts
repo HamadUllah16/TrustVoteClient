@@ -9,8 +9,12 @@ const initialState = {
         lastName: '',
         email: '',
         phone: '',
-        profileCompletion: '',
-        status: ''
+        profileCompletion: false,
+        status: '',
+        constituency: '',
+        province: '',
+        cnicFront: '',
+        cnicBack: '',
     },
 
     loading: false,
