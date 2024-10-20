@@ -5,7 +5,7 @@ import axios from "axios";
 import { setUserProfile } from "./userSlice";
 import { setIsAuthenticated } from "./authSlice";
 import toast from "react-hot-toast";
-import { getAllCandidates } from "./candidateSlice";
+import { getAllCandidates, getPendingCandidates } from "./candidateSlice";
 
 interface initState {
     isAuthenticated: string,
@@ -70,7 +70,7 @@ export const approveOrRejectCandidate = createAsyncThunk<any, any, { rejectValue
         try {
             const response = await axiosInstance.put(`/admin/candidates/approve-or-reject-candidate/${data.id}`, { status: data.status });
             data.setShow(false);
-            dispatch(getPendingCandidate());
+            dispatch(getPendingCandidates());
             dispatch(getAllCandidates())
             return response.data;
         } catch (error: any) {
@@ -193,7 +193,7 @@ const adminSlice = createSlice({
         })
         builder.addCase(approveOrRejectCandidate.fulfilled, (state, action) => {
             state.loading = false;
-            state.message = action.payload?.message;
+            state.message = action.payload?.message || 'Candidate Approved';
             toast.success(state.message);
         })
         builder.addCase(approveOrRejectCandidate.rejected, (state, action) => {

@@ -16,11 +16,13 @@ import toast from 'react-hot-toast';
 import Image from 'next/image';
 import imageToBase64 from './Utils/imageToBase64';
 import UserAddressConstituency from './UserAddressConstituency';
+import checkChanged from './checkChanged';
 
 
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
+    const { isAuthenticated } = useSelector(state => state.auth)
     const [pfpPreview, setPfpPreview] = useState('');
     const router = useRouter();
     const ref = useRef();
@@ -39,7 +41,9 @@ function CompleteProfile() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getUserProfile())
+        if (!isAuthenticated) {
+            dispatch(getUserProfile())
+        }
     }, [dispatch])
 
     const formik = useFormik({
@@ -53,19 +57,21 @@ function CompleteProfile() {
             cnicFront: userProfile.cnicFront ?? '',
             cnicBack: userProfile.cnicBack ?? '',
             province: userProfile.province ?? '',
-            constituency: userProfile.constituency ?? ''
+            constituency: userProfile.constituency ?? '',
+            provincialConstituency: userProfile.provincialConstituency ?? ''
         },
         enableReinitialize: true,
         onSubmit: values => {
             console.log(values)
             const { date, ...otherValues } = values;
+            const changed = checkChanged(formik, values)
             const token = localStorage.getItem('x_auth_token')
             toast.promise(
                 dispatch(updateProfile({
                     router,
                     profile: {
-                        ...otherValues,
-                        dateOfBirth: dayjs(date).format('YYYY-MM-DD')
+                        ...changed,
+                        // dateOfBirth: dayjs(date).format('YYYY-MM-DD')
                     },
                     token
                 })).unwrap(), {
@@ -127,6 +133,9 @@ function CompleteProfile() {
             }
             if (!values.constituency) {
                 errors.constituency = 'Please select a constituency'
+            }
+            if (!values.provincialConstituency) {
+                errors.provincialConstituency = 'Please select a provincial constituency'
             }
             if (!values.date) {
                 errors.date = 'Date of Birth cannot be empty';

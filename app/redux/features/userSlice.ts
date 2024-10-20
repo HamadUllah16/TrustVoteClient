@@ -12,6 +12,7 @@ const initialState = {
         profileCompletion: false,
         status: '',
         constituency: '',
+        provincialConstituency: '',
         province: '',
         cnicFront: '',
         cnicBack: '',

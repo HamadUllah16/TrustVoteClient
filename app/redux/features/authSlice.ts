@@ -163,10 +163,9 @@ const authSlice = createSlice({
             state.loading = false;
         })
 
-        // Redux slice builder
         builder.addCase(loginUserEmailCheck.pending, (state) => {
             state.checkExistsLoading = true;
-            state.error = null; // Clear previous errors
+            state.error = null;
         })
         builder.addCase(loginUserEmailCheck.fulfilled, (state, action) => {
             state.checkExistsLoading = false;

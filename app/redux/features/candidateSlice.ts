@@ -9,6 +9,7 @@ const initialState = {
     allCandidates: [],
     approvedCandidates: [],
     pendingCandidates: [],
+    myCandidates: [],
 
     loading: false,
     error: '',
@@ -97,6 +98,18 @@ export const getPendingCandidates = createAsyncThunk<any, void, { rejectValue: {
             return response.data;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message || 'error getting pending candidates' })
+        }
+    }
+)
+
+export const getRelevantCandidates = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'candidate/relevantCandidates',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance('/candidate/my-candidates');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
         }
     }
 )
@@ -192,6 +205,20 @@ const candidateSlice = createSlice({
         builder.addCase(getPendingCandidates.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'builder error in fetching pending candidates';
+        })
+
+        // my candidates builder
+        builder.addCase(getRelevantCandidates.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getRelevantCandidates.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.myCandidates = action.payload?.candidates;
+        })
+        builder.addCase(getRelevantCandidates.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error fetching candidates.'
         })
     },
 })

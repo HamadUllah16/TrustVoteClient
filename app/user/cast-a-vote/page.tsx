@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Typography, Stack, Divider, Button } from "@mui/material";
 import UserSidebar from '@/app/components/UserComponents/UserSidebar';
 import MainWrapper from '@/app/components/MainWrapper';
@@ -7,9 +7,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import CompleteProfile from '@/app/components/CompleteProfile';
 import RenderBallots from '@/app/components/RenderBallots';
+import { useRouter } from 'next/navigation';
 
 function VoteCastingPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
+    const router = useRouter();
     return (
         <MainWrapper>
 
@@ -30,11 +32,15 @@ function VoteCastingPage() {
                     <Stack gap={2}>
 
                         <Stack alignItems={'center'} direction={'row'} gap={1}>
-                            <Button variant='contained'>
+                            <Button
+                                onClick={() => router.push('/user/cast-a-vote')}
+                                variant={'contained'}>
                                 National Assembly Voting
                             </Button>
 
-                            <Button variant='contained'>
+                            <Button
+                                onClick={() => router.push('/user/cast-a-vote/provincial-assembly')}
+                                variant={'outlined'}>
                                 Provincial Assembly Voting
                             </Button>
                         </Stack>
