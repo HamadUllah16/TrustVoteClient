@@ -8,6 +8,7 @@ import { RootState } from '@/app/redux/store';
 import CompleteProfile from '@/app/components/CompleteProfile';
 import RenderBallots from '@/app/components/RenderBallots';
 import { useRouter } from 'next/navigation';
+import RenderProvincialBallots from '@/app/components/RenderProvincialBallots';
 
 function VoteCastingPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
@@ -45,7 +46,7 @@ function VoteCastingPage() {
                             </Button>
                         </Stack>
 
-                        <RenderBallots />
+                        <RenderProvincialBallots />
 
                     </Stack>
                     :

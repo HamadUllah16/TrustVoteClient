@@ -55,6 +55,7 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
                             <FormControl sx={{ width: '100%' }} variant="outlined">
                                 <InputLabel sx={{ color: 'secondary.100' }} htmlFor="outlined-adornment-email" error={formik.touched.email && Boolean(formik.errors.email)}>Email</InputLabel>
                                 <OutlinedInput
+                                    disabled={exists ? true : false}
                                     sx={{
                                         color: 'secondary.100',
                                         bgcolor: 'background.default'
