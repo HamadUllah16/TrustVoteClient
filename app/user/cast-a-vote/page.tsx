@@ -1,17 +1,27 @@
 'use client'
-import React, { useState } from 'react'
-import { Typography, Stack, Divider, Button } from "@mui/material";
+import React, { useEffect, useState } from 'react'
+import { Typography, Stack, Divider, Button, CircularProgress } from "@mui/material";
 import UserSidebar from '@/app/components/UserComponents/UserSidebar';
 import MainWrapper from '@/app/components/MainWrapper';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
 import CompleteProfile from '@/app/components/CompleteProfile';
 import RenderBallots from '@/app/components/RenderBallots';
 import { useRouter } from 'next/navigation';
+import Loading from '@/app/components/Loading';
+import { Circle } from '@mui/icons-material';
+import { getElectionSession } from '@/app/redux/features/electionSessionSlice';
+import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteCastingRoutes';
 
 function VoteCastingPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter();
+    const { loading, electionSession } = useSelector((state: RootState) => state.electionSession)
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(getElectionSession())
+    }, [])
     return (
         <MainWrapper>
 
@@ -22,30 +32,51 @@ function VoteCastingPage() {
                 gap={2}
                 py={3}
             >
-                <Typography variant='h4' fontWeight={'bold'} color={'primary.main'}>
-                    Cast A Vote
-                </Typography>
+                <Stack direction={'row'} gap={1} justifyContent={'space-between'}>
 
+                    <Typography variant='h4' fontWeight={'bold'} color={'primary.main'}>
+                        Cast A Vote
+                    </Typography>
+
+                    <RenderVoteCastingRoutes />
+
+                </Stack>
                 <Divider sx={{ borderColor: 'secondary.200' }} />
 
                 {profileCompletion ?
                     <Stack gap={2}>
 
-                        <Stack alignItems={'center'} direction={'row'} gap={1}>
-                            <Button
-                                onClick={() => router.push('/user/cast-a-vote')}
-                                variant={'contained'}>
-                                National Assembly Voting
-                            </Button>
+                        {loading ?
+                            <CircularProgress size={'24px'} />
+                            :
+                            electionSession && electionSession._id &&
+                            <Stack gap={1} p={1} >
+                                <Typography variant='h6' color={'primary.main'}>
+                                    Current Election Session
+                                </Typography>
+                                <Stack bgcolor={'primary.main'} direction={'row'} gap={1} p={1} border={'1px solid'} borderColor={'secondary.200'} borderRadius={1} justifyContent={'space-between'} alignItems={'center'}>
+                                    <Stack p={2}>
+                                        <Typography variant='subtitle1' color={'secondary.300'}>Name</Typography>
+                                        <Typography variant='h5' color={'secondary.100'}>
+                                            {electionSession.name}
+                                        </Typography>
+                                    </Stack>
 
-                            <Button
-                                onClick={() => router.push('/user/cast-a-vote/provincial-assembly')}
-                                variant={'outlined'}>
-                                Provincial Assembly Voting
-                            </Button>
-                        </Stack>
+                                    <Stack p={2}>
+                                        <Typography variant='subtitle1' color={'secondary.300'}>Status</Typography>
+                                        <Stack direction={'row'} gap={1} alignItems={'center'}>
+                                            <Circle color={electionSession.status === 'active' ? 'success' : electionSession.status === 'paused' ? 'warning' : 'error'} fontSize='small' />
+                                            <Typography variant='h5' textTransform={'capitalize'} color={'secondary.100'}>
+                                                {electionSession.status}
+                                            </Typography>
+                                        </Stack>
+                                    </Stack>
 
-                        <RenderBallots />
+                                </Stack>
+                            </Stack>
+
+                        }
+
 
                     </Stack>
                     :

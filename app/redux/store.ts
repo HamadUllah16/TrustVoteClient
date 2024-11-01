@@ -6,6 +6,7 @@ import adminSlice from "./features/adminSlice";
 import candidateSlice from "./features/candidateSlice";
 import constituencySlice from './features/constituencySlice';
 import provincialConstituencySlice from './features/provincialConstituenciesSlice'
+import electionSessionSlice from './features/electionSessionSlice';
 
 export const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
         admin: adminSlice,
         candidate: candidateSlice,
         constituency: constituencySlice,
-        provincialConstituency: provincialConstituencySlice
+        provincialConstituency: provincialConstituencySlice,
+        electionSession: electionSessionSlice
     }
 })
 

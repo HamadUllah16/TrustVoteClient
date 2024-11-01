@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material'
 import React from 'react'
+import VoteButtonInBallots from './UserComponents/VoteButtonInBallots'
 
 function BallotCard({ candidate }: { candidate: any }) {
     return (
@@ -32,9 +33,8 @@ function BallotCard({ candidate }: { candidate: any }) {
             </Typography>
 
             <Stack direction={'row'} gap={1} pt={1}>
-                <Button fullWidth variant='contained'>
-                    Vote
-                </Button>
+                {/* button that behaves to the election session status accordingly i.e disables */}
+                <VoteButtonInBallots />
             </Stack>
 
 

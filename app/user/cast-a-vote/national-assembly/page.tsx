@@ -8,10 +8,9 @@ import { RootState } from '@/app/redux/store';
 import CompleteProfile from '@/app/components/CompleteProfile';
 import RenderBallots from '@/app/components/RenderBallots';
 import { useRouter } from 'next/navigation';
-import RenderProvincialBallots from '@/app/components/RenderProvincialBallots';
 import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteCastingRoutes';
 
-function VoteCastingPage() {
+function NationalAssemblyPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const router = useRouter();
     return (
@@ -39,7 +38,7 @@ function VoteCastingPage() {
                 {profileCompletion ?
                     <Stack gap={2}>
 
-                        <RenderProvincialBallots />
+                        <RenderBallots />
 
                     </Stack>
                     :
@@ -51,4 +50,4 @@ function VoteCastingPage() {
     )
 }
 
-export default VoteCastingPage
+export default NationalAssemblyPage
