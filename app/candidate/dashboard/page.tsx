@@ -1,49 +1,37 @@
-import Sidebar from '@/app/components/Sidebar'
-import { MenuItem, Stack, Typography } from '@mui/material'
-import Link from 'next/link'
-import React from 'react'
+'use client'
+import CandidateSidebarMenus from '@/app/components/Candidate/CandidateSidebarMenus';
+import Loading from '@/app/components/Loading';
+import Sidebar from '@/app/components/Sidebar';
+import { getCandidateProfile } from '@/app/redux/features/candidateSlice';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import withCompleteCandidateProfile from '@/app/utils/withCompleteCandidateProfile';
+import { Stack, Typography } from '@mui/material';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
 function DashboardPage() {
+    const { userProfile } = useSelector((state: RootState) => state.user);
+    const { loading } = useSelector((state: RootState) => state.candidate);
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(getCandidateProfile());
+    }, [])
     return (
-        <Stack
-            direction={'row'}
-            gap={3}
-        >
-
+        <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
+            {loading &&
+                <Loading />
+            }
             <Sidebar>
-                <Stack
-                    gap={2}
-                >
-                    <Typography
-                        variant='subtitle2'
-                        color={'grey'}
-                        textTransform={'uppercase'}
-                    >
-
-                    </Typography>
-
-                    <Stack
-                        gap={0.3}
-                    >
-                        <MenuItem >
-                            <Link href={'/admin/dashboard/candidates/list'}>
-                                <Typography variant='body1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
-
-                                    List
-                                </Typography>
-                            </Link>
-                        </MenuItem>
-                        <MenuItem>
-                            <Typography variant='body1' color={'grey'} display={'flex'} gap={1} alignItems={'center'} >
-
-                                Requests
-                            </Typography>
-                        </MenuItem>
-                    </Stack>
-                </Stack>
+                <CandidateSidebarMenus />
             </Sidebar>
+            <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
+                <Typography>
+                    Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
+                </Typography>
+            </Stack>
         </Stack>
     )
 }
 
-export default DashboardPage
+export default withCompleteCandidateProfile(DashboardPage)

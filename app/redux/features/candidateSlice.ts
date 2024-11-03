@@ -9,6 +9,8 @@ const initialState = {
     allCandidates: [],
     approvedCandidates: [],
     pendingCandidates: [],
+    myCandidates: [],
+    myProvincialCandidates: [],
 
     loading: false,
     error: '',
@@ -16,7 +18,7 @@ const initialState = {
 }
 const resource = '/candidate';
 
-export const createCandidateProfile = createAsyncThunk(
+export const createCandidateProfile = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'candidate/createCandidateProfile',
     async (data: any, { rejectWithValue }) => {
         try {
@@ -25,8 +27,8 @@ export const createCandidateProfile = createAsyncThunk(
                 data.router.push('/candidate/login')
                 return response.data;
             }
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
         }
     }
 )
@@ -97,6 +99,30 @@ export const getPendingCandidates = createAsyncThunk<any, void, { rejectValue: {
             return response.data;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message || 'error getting pending candidates' })
+        }
+    }
+)
+
+export const getRelevantCandidates = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'candidate/relevantCandidates',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance('/candidate/my-candidates');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
+        }
+    }
+)
+
+export const getProvincialRelevantCandidates = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'candidate/provincialCandidates',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/candidate/my-provincial-candidates');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message);
         }
     }
 )
@@ -192,6 +218,34 @@ const candidateSlice = createSlice({
         builder.addCase(getPendingCandidates.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'builder error in fetching pending candidates';
+        })
+
+        // my candidates builder
+        builder.addCase(getRelevantCandidates.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getRelevantCandidates.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.myCandidates = action.payload?.candidates;
+        })
+        builder.addCase(getRelevantCandidates.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error fetching relevant candidates.'
+        })
+
+        // my provincial candidates builder
+        builder.addCase(getProvincialRelevantCandidates.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getProvincialRelevantCandidates.fulfilled, (state, action) => {
+            state.loading = false;
+            state.myProvincialCandidates = action.payload?.candidates;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(getProvincialRelevantCandidates.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Error fetching relevant provincial candidates';
         })
     },
 })

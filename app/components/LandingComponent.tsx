@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Stack, Typography } from '@mui/material'
+import { Grid, Link, MenuItem, Stack, Typography } from '@mui/material'
 import React from 'react'
 import LandingPageNavItems from './LandingPageNavItems'
 import Image from 'next/image'
@@ -53,19 +53,37 @@ function LandingComponent() {
             </Stack>
 
             {/* ----------------------second screen--------------------------- */}
-            <Grid container >
+            <Grid container>
 
                 <Grid item xs={6} px={1}>
                     <Typography variant='h4' fontWeight={'bold'} color={'secondary.100'}>
                         The Problem
                     </Typography>
-                    <Typography variant='subtitle1' color={'primary.200'} sx={{ textWrap: 'wrap' }}>
-                        Hosting an election in Pakistan is expensive, troublesome and hard to manage. There has been claims for discrepencies, abuse of control and what not which has made the interest in democracy and voter turn out percentage lowest in the decade.
-                    </Typography>
+
+                    <Stack gap={3}>
+                        <Typography variant='subtitle1' color={'primary.200'} sx={{ textWrap: 'wrap' }}>
+                            Hosting an election in Pakistan is expensive, troublesome and hard to manage. There has been claims for discrepencies, abuse of control and what not which has made the interest in democracy and voter turn out percentage lowest in the decade.
+                        </Typography>
+
+                        <Typography variant='subtitle1' color={'primary.200'} sx={{ textWrap: 'wrap' }}>
+                            Due to lower turn out rate, the allocated budget of a voter (375 PKR/voter) spikes all the way to 778 PKR/voter. That is more than 50% of increase.
+                        </Typography>
+                    </Stack>
                 </Grid>
 
-                <Grid item xs={6} px={1} border={'1px solid'} borderRadius={2} borderColor={'secondary.200'}>
-                    some data
+                <Grid item overflow={'hidden'} p={1} border={'1px solid'} borderRadius={2} borderColor={'secondary.200'}>
+                    <Image
+                        src={'/rr-the-economic-and-environmental-cost-of-election-2024-fig-3.png'}
+                        width={600}
+                        height={300}
+                        alt='some data showing voter turnout percentage'
+                        style={{ borderRadius: '12px' }}
+                    />
+                    <Typography variant='caption' textAlign={'center'} width={'100%'}>
+                        <Link color={'primary.200'} target='_blank' href='https://pide.org.pk/research/the-economic-and-environmental-cost-of-election-2024/'>
+                            Pakistan Institute of Development Economics
+                        </Link>
+                    </Typography>
                 </Grid>
 
             </Grid>

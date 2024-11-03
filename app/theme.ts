@@ -39,6 +39,16 @@ const theme = createTheme({
     components: {
         MuiTextField: {
             styleOverrides: { root: { backgroundColor: '#2B2B2D', borderRadius: '8px' } }
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    borderBottom: '1px solid #2B2B2D'
+                }
+            }
+        },
+        MuiPaper: {
+            styleOverrides: { root: { backgroundColor: '#2B2B2D' } }
         }
     }
 });

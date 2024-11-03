@@ -1,76 +1,71 @@
-import React, { useMemo, useState } from 'react';
+'use client'
+import React, { useEffect, useMemo, useState } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import { allConstituency, balochistanConstituency, capitalConstituency, kpkConstituency, punjabConstituency, sindhConstituency } from '@/app/redux/features/constituencySlice';
+import { balochistanProvincialConstituency, kpkProvincialConstituency, punjabProvincialConstituency, sindhProvincialConstituency } from '@/app/redux/features/provincialConstituenciesSlice';
 
 
 
 const ConstituencySearch = ({ formikStep2 }: { formikStep2: any }) => {
+    const { allConstituencies, data } = useSelector((state: RootState) => state.constituency)
+    const { provincialConstituencies } = useSelector((state: RootState) => state.provincialConstituency)
     const [inputValue, setInputValue] = useState('');
 
 
-    const assemblySeats = {
-        balochistan: 16,
-        kpk: 45,
-        punjab: 141,
-        sindh: 61,
-        federalCapital: 3,
-    };
+    const constituencyOptions = useMemo(() => {
+        if (formikStep2.values.constituencyType === 'national assembly') {
+            return data.constituencies
+                .map((c: any) => { return (c.area + "  " + c.constituency) });
+        }
+        if (formikStep2.values.constituencyType === 'provincial assembly') {
+            return provincialConstituencies.constituencies
+                .map((c: any) => { return (c.area + "  " + c.constituency) });
+        }
+    }, [data, provincialConstituencies, formikStep2.values.province]);
 
-    const generateConstituencies = (seats: any) => {
-        return Array.from({ length: seats }).map((_, index) => index + 1);
-    };
+    const dispatch = useDispatch<AppDispatch>();
 
-    // const allConstituencies = useMemo(() => {
-    //     if (formikStep2.values.constituencyType === 'national assembly') {
-    //         return [
-    //             ...generateConstituencies(nationAssemblySeats.balochistan),
-    //             ...generateConstituencies(nationAssemblySeats.kpk),
-    //             ...generateConstituencies(nationAssemblySeats.punjab),
-    //             ...generateConstituencies(nationAssemblySeats.sindh),
-    //             ...generateConstituencies(nationAssemblySeats.federalCapital),
-    //         ];
-    //     } else if (formikStep2.values.constituencyType === 'provincial assembly') {
-    //         return [
 
-    //             // ...generateConstituencies("PB-" + nationAssemblySeats.balochistan),
-    //             // ...generateConstituencies("PK-" + nationAssemblySeats.kpk),
-    //             // ...generateConstituencies("PP-" + nationAssemblySeats.punjab),
-    //             // ...generateConstituencies("PS-" + nationAssemblySeats.sindh),
-    //         ];
-    //     }
-    //     return [];
-    // }, [formikStep2.values.constituencyType]);
 
-    const nationalConstituency = useMemo(() => {
-        return [
-            ...Array.from({ length: assemblySeats.balochistan + assemblySeats.federalCapital + assemblySeats.kpk + assemblySeats.punjab + assemblySeats.sindh })
-                .map((_, index: number) => `NA-${index + 1}`)
-        ]
-    }, [formikStep2.values.constituencyType])
-
-    const provincialConstituency = useMemo(() => {
-        return [
-            ...Array.from({ length: assemblySeats.balochistan }).map((_, index: number) => `PB-${index + 1}`),
-            ...Array.from({ length: assemblySeats.kpk }).map((_, index: number) => `PK-${index + 1}`),
-            ...Array.from({ length: assemblySeats.punjab }).map((_, index: number) => `PP-${index + 1}`),
-            ...Array.from({ length: assemblySeats.sindh }).map((_, index: number) => `PS-${index + 1}`)
-        ];
-    }, [formikStep2.values.constituencyType])
-
+    useEffect(() => {
+        if (formikStep2.values.constituencyType === 'national assembly') {
+            dispatch(allConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'punjab') {
+            dispatch(punjabConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'sindh') {
+            dispatch(sindhConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'balochistan') {
+            dispatch(balochistanConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'khyber pakhtunkhwa') {
+            dispatch(kpkConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'islamabad capital territory') {
+            dispatch(capitalConstituency());
+        }
+        if (formikStep2.values.constituencyType === 'provincial assembly' && formikStep2.values.province === 'punjab') {
+            dispatch(punjabProvincialConstituency())
+        }
+        if (formikStep2.values.constituencyType === 'provincial assembly' && formikStep2.values.province === 'sindh') {
+            dispatch(sindhProvincialConstituency())
+        }
+        if (formikStep2.values.constituencyType === 'provincial assembly' && formikStep2.values.province === 'balochistan') {
+            dispatch(balochistanProvincialConstituency())
+        }
+        if (formikStep2.values.constituencyType === 'provincial assembly' && formikStep2.values.province === 'khyber pakhtunkhwa') {
+            dispatch(kpkProvincialConstituency())
+        }
+    }, [formikStep2.values.province, formikStep2.values.constituencyType])
 
     return (
         <Autocomplete
             fullWidth
-            options={
-                formikStep2.values.constituencyType === 'national assembly'
-                    ?
-                    nationalConstituency
-                    :
-                    formikStep2.values.constituencyType === 'provinicial assembly'
-                        ?
-                        provincialConstituency
-                        :
-                        []
-            }
+            options={constituencyOptions || []}
             getOptionLabel={(option: any) => option}
             filterSelectedOptions
             inputValue={inputValue}

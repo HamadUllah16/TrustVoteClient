@@ -41,10 +41,10 @@ function RenderPendingCandidates() {
             {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={candidate._id}>
-                        <TableCell sx={{ color: 'secondary.100' }}>{index + 1}</TableCell>
-                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.firstName}</TableCell>
-                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.partyAffiliation}</TableCell>
-                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.constituencyType}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituencyType}</TableCell>
                         <TableCell>
                             <Stack
                                 bgcolor={candidate.status === 'pending' ? 'orange' : 'red'}
@@ -56,8 +56,8 @@ function RenderPendingCandidates() {
                                 {candidate.status}
                             </Stack>
                         </TableCell>
-                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.gender}</TableCell>
-                        <TableCell sx={{ color: 'secondary.100' }}>{candidate.dateOfBirth}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.gender}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.dateOfBirth}</TableCell>
                         <TableCell>
                             <Stack direction={'row'}>
                                 <Button

@@ -5,7 +5,7 @@ import axios from "axios";
 import { setUserProfile } from "./userSlice";
 import { setIsAuthenticated } from "./authSlice";
 import toast from "react-hot-toast";
-import { getAllCandidates } from "./candidateSlice";
+import { getAllCandidates, getPendingCandidates } from "./candidateSlice";
 
 interface initState {
     isAuthenticated: string,
@@ -15,8 +15,8 @@ interface initState {
     message: string,
     error: string,
     loading: boolean,
-    toastId: undefined | string
-
+    toastId: undefined | string,
+    userCount: number
 }
 
 const initialState: initState = {
@@ -30,7 +30,21 @@ const initialState: initState = {
     error: '',
     loading: false,
     toastId: undefined,
+    userCount: 0
 }
+
+export const getVerifiedUsersCount = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'user/getVerifiedUsersCount',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/user/get-verified-users-count');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message });
+        }
+    }
+)
+
 
 export const loginAdmin = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'admin/loginAdmin',
@@ -70,7 +84,7 @@ export const approveOrRejectCandidate = createAsyncThunk<any, any, { rejectValue
         try {
             const response = await axiosInstance.put(`/admin/candidates/approve-or-reject-candidate/${data.id}`, { status: data.status });
             data.setShow(false);
-            dispatch(getPendingCandidate());
+            dispatch(getPendingCandidates());
             dispatch(getAllCandidates())
             return response.data;
         } catch (error: any) {
@@ -193,13 +207,27 @@ const adminSlice = createSlice({
         })
         builder.addCase(approveOrRejectCandidate.fulfilled, (state, action) => {
             state.loading = false;
-            state.message = action.payload?.message;
+            state.message = action.payload?.message || 'Candidate Approved';
             toast.success(state.message);
         })
         builder.addCase(approveOrRejectCandidate.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Error occurred while submitting request.';
             toast.error(state.error);
+        })
+
+        // verified users count builder
+        builder.addCase(getVerifiedUsersCount.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getVerifiedUsersCount.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.userCount = action.payload?.userCount;
+        })
+        builder.addCase(getVerifiedUsersCount.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Failed to fetch verified users count.'
         })
     },
 })

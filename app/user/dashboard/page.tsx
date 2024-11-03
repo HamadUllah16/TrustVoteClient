@@ -3,34 +3,46 @@ import { Typography, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUserProfile } from "../redux/features/userSlice";
-import Loading from "../components/Loading";
-import { AppDispatch, RootState } from "../redux/store";
-import withAuth from "../utils/withAuth";
-import CompleteProfile from "../components/CompleteProfile";
-import UserSidebar from "../components/UserComponents/UserSidebar";
-import MainWrapper from "../components/MainWrapper";
+import { getUserProfile } from "../../redux/features/userSlice";
+import Loading from "../../components/Loading";
+import { AppDispatch, RootState } from "../../redux/store";
+import withAuth from "../../utils/withAuth";
+import CompleteProfile from "../../components/CompleteProfile";
+import UserSidebar from "../../components/UserComponents/UserSidebar";
+import MainWrapper from "../../components/MainWrapper";
 
 function UserHomePage() {
     const { firstName, profileCompletion } = useSelector((state: RootState) => state.user.userProfile);
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     const [loading, setLoading] = useState(true); // Loading state to block rendering
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const token = localStorage.getItem('x_auth_token');
-        if (token) {
-            dispatch(getUserProfile())
-                .then(() => setLoading(false)) // Set loading to false once the profile is fetched
-                .catch(() => router.push('/user/login')); // In case of error, redirect to login
-        } else {
-            router.push('/user/login');
-        }
-    }, [dispatch, router, profileCompletion]);
 
-    if (loading) {
-        // Return a loading state or spinner while the auth check is happening
-        return <Loading />;
+        if (!token) {
+            router.push('/user/login');
+            return; // Stop further execution
+        }
+
+        if (!isAuthenticated) {
+            dispatch(getUserProfile())
+                .then(() => setLoading(false))
+                .catch(() => {
+                    setLoading(false);
+                    router.push('/user/login'); // Redirect in case of error
+                });
+        }
+    }, [dispatch, router]);
+
+    if (loading && !isAuthenticated) {
+        return <Loading />; // Show loading spinner while checking auth
+    }
+
+    if (!isAuthenticated) {
+        router.push('/user/login');
+        return null; // Avoid rendering anything until the redirect is complete
     }
 
     return (

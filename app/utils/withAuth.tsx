@@ -7,13 +7,14 @@ import { getCandidateProfile } from "../redux/features/candidateSlice"
 import { getAdminProfile } from "../redux/features/adminSlice"
 import { usePathname, useRouter } from "next/navigation"
 import Unauthorized from "../components/Unauthorized"
+import Loading from "../components/Loading"
 
 export default function withAuth(Component: any) {
     return function WithAuthProps(props: any) {
         const pathName = usePathname();
         const dispatch = useDispatch<AppDispatch>();
         const { isAuthenticated } = useSelector((state: RootState) => state.auth)
-        const { userProfile } = useSelector((state: RootState) => state.user)
+        const { userProfile, loading } = useSelector((state: RootState) => state.user)
         const router = useRouter();
 
         useEffect(() => {
@@ -52,12 +53,12 @@ export default function withAuth(Component: any) {
                         break;
                 }
             }
-        }, [isAuthenticated, dispatch, userProfile]);
+        }, [isAuthenticated, dispatch, userProfile.role]);
 
-        // Avoid dispatch during rendering, only dispatch side-effects
+
         if (!isAuthenticated) {
-            dispatch(setShowLogin(true));  // Ensure this dispatch happens only once and not during render
-            return null; // Don't render anything if not authenticated
+            dispatch(setShowLogin(true));
+            return null;
         }
 
         const roleBasedPaths = {
@@ -66,7 +67,9 @@ export default function withAuth(Component: any) {
             candidate: '/candidate',
         };
 
-        // Role-based route checks
+        if (loading) {
+            return <Loading />
+        }
         if (userProfile.role === 'admin' && pathName.startsWith(roleBasedPaths.admin)) {
             return <Component {...props} />;
         }

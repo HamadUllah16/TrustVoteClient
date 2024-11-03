@@ -4,9 +4,11 @@ import React, { useRef, useState } from 'react'
 import { CloudCircle, Error, Info } from '@mui/icons-material'
 import Image from 'next/image';
 import imageToBase64 from './Utils/imageToBase64';
+import { useSelector } from 'react-redux';
 
 
 function NationalityVerification({ formik }) {
+    const { cnicFront, cnicBack, profileCompletion } = useSelector((state) => state.user.userProfile)
     const [msg, setMsg] = useState('');
     const [cnicFrontPreview, setCnicFrontPreview] = useState('');
     const [cnicBackPreview, setCnicBackPreview] = useState('');
@@ -41,29 +43,6 @@ function NationalityVerification({ formik }) {
             }
         }
     };
-
-    function secondImageHandler(event) {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0];
-
-            const supportedFormats = ["image/png", "image/jpeg"];
-            if (!supportedFormats.includes(file.type)) {
-                setMsg("Unsupported format");
-                return;
-            }
-            if (file.size > 5 * 1024 * 1024) { // 5 MB
-                setMsg("Max file size is 5 MB");
-                return;
-            }
-            imageToBase64(file).then(imgStr => {
-                formik.setFieldValue("cnicBack", imgStr)
-                console.log(imgStr)
-                setMsg('');
-            }).catch(err => {
-                setMessage('Error processing image.')
-            })
-        }
-    }
     return (
         <Grid
             display={"flex"}
@@ -115,7 +94,7 @@ function NationalityVerification({ formik }) {
 
                         :
                         <Image
-                            src={cnicFrontPreview}
+                            src={profileCompletion ? cnicFront : cnicFrontPreview}
                             alt='front of the card'
                             style={{
                                 maxWidth: "100%",
@@ -185,7 +164,7 @@ function NationalityVerification({ formik }) {
                         <Typography color={"#5A5A5A"} variant='body2'>Upload back picture of the ID</Typography>
                         :
                         <Image
-                            src={cnicBackPreview}
+                            src={profileCompletion ? cnicBack : cnicBackPreview}
                             alt='back of the card'
                             style={{
                                 maxWidth: "100%",

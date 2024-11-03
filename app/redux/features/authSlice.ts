@@ -85,7 +85,7 @@ export const loginUserEmailCheck = createAsyncThunk<
 );
 
 
-export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'auth/registerUser',
     async (data: any, { rejectWithValue }) => {
         try {
@@ -95,7 +95,7 @@ export const registerUser = createAsyncThunk(
                 return response.data
             }
         } catch (error: any) {
-            return rejectWithValue(error.response ? error.response.data : error.message);
+            return rejectWithValue(error.response?.data?.message);
         }
     }
 )
@@ -141,9 +141,9 @@ const authSlice = createSlice({
             state.loading = false;
             state.message = action.payload?.message || 'User account creation successful.'
         })
-        builder.addCase(registerUser.rejected, state => {
+        builder.addCase(registerUser.rejected, (state, action) => {
             state.loading = false;
-            state.error = 'User registeration failed.'
+            state.error = action.payload?.message;
         })
 
         // login candidate builder
@@ -163,10 +163,9 @@ const authSlice = createSlice({
             state.loading = false;
         })
 
-        // Redux slice builder
         builder.addCase(loginUserEmailCheck.pending, (state) => {
             state.checkExistsLoading = true;
-            state.error = null; // Clear previous errors
+            state.error = null;
         })
         builder.addCase(loginUserEmailCheck.fulfilled, (state, action) => {
             state.checkExistsLoading = false;

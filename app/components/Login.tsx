@@ -17,20 +17,21 @@ function Login() {
     const router = useRouter();
     const { loading, isAuthenticated, exists, checkExistsLoading } = useSelector((state: RootState) => state.auth);
 
-    // Navigate to home if authenticated
+    // Redirect to dashboard if authenticated
     useEffect(() => {
         if (isAuthenticated && !loading) {
-            router.push('/user');
+            router.push('/user/dashboard');
         }
-    }, [loading, isAuthenticated, router]);
+    }, [isAuthenticated, loading, router]);
 
-    // Fetch user profile if token is present
+    // Fetch user profile if a token exists but not authenticated yet
     useEffect(() => {
         const token = localStorage.getItem('x_auth_token');
-        if (token && !isAuthenticated) {
+
+        if (token && !isAuthenticated && !loading) {
             dispatch(getUserProfile());
         }
-    }, [isAuthenticated, dispatch]);
+    }, [isAuthenticated, loading, dispatch]);
 
     const formik = useFormik({
         initialValues: {

@@ -1,5 +1,5 @@
 'use client'
-import { Box, Grid, TextField, Typography, Button, Divider, Stack, IconButton } from '@mui/material'
+import { Box, Grid, TextField, Typography, Button, Divider, Stack, IconButton, MenuItem, Autocomplete } from '@mui/material'
 import { useFormik } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 import NationalityVerification from '@/app/components/NationalityVerification';
@@ -15,9 +15,14 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import imageToBase64 from './Utils/imageToBase64';
+import UserAddressConstituency from './UserAddressConstituency';
+import checkChanged from './checkChanged';
+
+
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
+    const { isAuthenticated } = useSelector(state => state.auth)
     const [pfpPreview, setPfpPreview] = useState('');
     const router = useRouter();
     const ref = useRef();
@@ -36,7 +41,9 @@ function CompleteProfile() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getUserProfile())
+        if (!isAuthenticated) {
+            dispatch(getUserProfile())
+        }
     }, [dispatch])
 
     const formik = useFormik({
@@ -48,18 +55,23 @@ function CompleteProfile() {
             cnic: userProfile.cnic ?? '',
             date: userProfile.dateOfBirth ?? '',
             cnicFront: userProfile.cnicFront ?? '',
-            cnicBack: userProfile.cnicBack ?? ''
+            cnicBack: userProfile.cnicBack ?? '',
+            province: userProfile.province ?? '',
+            constituency: userProfile.constituency ?? '',
+            provincialConstituency: userProfile.provincialConstituency ?? ''
         },
         enableReinitialize: true,
         onSubmit: values => {
             console.log(values)
             const { date, ...otherValues } = values;
+            const changed = checkChanged(formik, values)
             const token = localStorage.getItem('x_auth_token')
             toast.promise(
                 dispatch(updateProfile({
+                    router,
                     profile: {
-                        ...otherValues,
-                        dateOfBirth: dayjs(date).format('YYYY-MM-DD')
+                        ...changed,
+                        // dateOfBirth: dayjs(date).format('YYYY-MM-DD')
                     },
                     token
                 })).unwrap(), {
@@ -68,7 +80,7 @@ function CompleteProfile() {
                 error: err => err?.message
             }
             )
-            router.push('/user')
+
         },
         validate: values => {
             const errors = {};
@@ -115,6 +127,15 @@ function CompleteProfile() {
             }
             if (!/^\d{5}-\d{7}-\d{1}$/.test(values.cnic)) {
                 errors.cnic = 'Invalid CNIC Number'
+            }
+            if (!values.province) {
+                errors.province = 'Please select a province'
+            }
+            if (!values.constituency) {
+                errors.constituency = 'Please select a constituency'
+            }
+            if (!values.provincialConstituency) {
+                errors.provincialConstituency = 'Please select a provincial constituency'
             }
             if (!values.date) {
                 errors.date = 'Date of Birth cannot be empty';
@@ -210,6 +231,7 @@ function CompleteProfile() {
                         justifyContent={'space-between'}
                     >
                         <TextField
+                            variant='filled'
                             fullWidth
                             label={'First Name'}
                             value={formik.values.firstName}
@@ -232,6 +254,7 @@ function CompleteProfile() {
                         />
 
                         <TextField
+                            variant='filled'
                             fullWidth
                             label={'Last Name'}
                             value={formik.values.lastName}
@@ -263,6 +286,7 @@ function CompleteProfile() {
                     >
 
                         <TextField
+                            variant='filled'
                             label={'Email'}
                             disabled
                             fullWidth
@@ -283,6 +307,7 @@ function CompleteProfile() {
                         />
 
                         <TextField
+                            variant='filled'
                             label={'Phone'}
                             type='tel'
                             fullWidth
@@ -310,6 +335,7 @@ function CompleteProfile() {
                         gap={2}
                     >
                         <TextField
+                            variant='filled'
                             name='cnic'
                             label={'CNIC Number'}
                             value={formik.values.cnic}
@@ -369,6 +395,10 @@ function CompleteProfile() {
                         </Stack>
 
                     </Grid>
+
+                    <Divider sx={{ borderColor: 'secondary.200' }} />
+
+                    <UserAddressConstituency formik={formik} />
 
                     <Divider sx={{ borderColor: 'secondary.200' }} />
                     <Grid

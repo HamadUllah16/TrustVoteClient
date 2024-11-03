@@ -9,10 +9,14 @@ const initialState = {
         lastName: '',
         email: '',
         phone: '',
-        profileCompletion: '',
-        status: ''
+        profileCompletion: false,
+        status: '',
+        constituency: '',
+        provincialConstituency: '',
+        province: '',
+        cnicFront: '',
+        cnicBack: '',
     },
-
     loading: false,
     message: '',
     error: '',

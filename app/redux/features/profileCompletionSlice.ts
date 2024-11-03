@@ -26,6 +26,7 @@ export const updateProfile = createAsyncThunk(
             })
             if (response.status === 200) {
                 dispatch(getUserProfile());
+                data.router.push('/user/dashboard');
                 return response.data;
             }
         } catch (error) {
