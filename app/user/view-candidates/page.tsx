@@ -24,7 +24,7 @@ function ViewCandidatesPage() {
             <RenderTableHead
                 title='All Candidates'
                 subtitle={'Nominated candidates are listed below'}
-                labels={['#', 'Name', 'Constituency Type', 'Constituency', 'Party Affiliation', 'Manifesto']}
+                labels={['#', 'Name', 'Constituency Type', 'Constituency', 'Party Affiliation']}
                 action={null}
             >
 

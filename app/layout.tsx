@@ -7,6 +7,7 @@ import StoreProvider from '@/app/redux/StoreProvider';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { Toaster } from "react-hot-toast";
+import NetworkStatus from "./components/NetworkStatus";
 
 
 const inter = Inter({ subsets: ["latin"] });

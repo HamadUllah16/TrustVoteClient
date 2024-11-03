@@ -17,7 +17,6 @@ const initialState = {
         cnicFront: '',
         cnicBack: '',
     },
-
     loading: false,
     message: '',
     error: '',

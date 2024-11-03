@@ -46,7 +46,8 @@ function VoteCastingPage() {
                 {profileCompletion ?
                     <Stack gap={2}>
 
-                        {loading ?
+                        {loading
+                            ?
                             <CircularProgress size={'24px'} />
                             :
                             electionSession && electionSession._id &&
@@ -54,7 +55,17 @@ function VoteCastingPage() {
                                 <Typography variant='h6' color={'primary.main'}>
                                     Current Election Session
                                 </Typography>
-                                <Stack bgcolor={'primary.main'} direction={'row'} gap={1} p={1} border={'1px solid'} borderColor={'secondary.200'} borderRadius={1} justifyContent={'space-between'} alignItems={'center'}>
+                                <Stack
+                                    bgcolor={'primary.main'}
+                                    direction={'row'}
+                                    gap={1}
+                                    p={1}
+                                    border={'1px solid'}
+                                    borderColor={'secondary.200'}
+                                    borderRadius={1}
+                                    justifyContent={'space-between'}
+                                    alignItems={'center'}
+                                >
                                     <Stack p={2}>
                                         <Typography variant='subtitle1' color={'secondary.300'}>Name</Typography>
                                         <Typography variant='h5' color={'secondary.100'}>
@@ -63,10 +74,36 @@ function VoteCastingPage() {
                                     </Stack>
 
                                     <Stack p={2}>
-                                        <Typography variant='subtitle1' color={'secondary.300'}>Status</Typography>
-                                        <Stack direction={'row'} gap={1} alignItems={'center'}>
-                                            <Circle color={electionSession.status === 'active' ? 'success' : electionSession.status === 'paused' ? 'warning' : 'error'} fontSize='small' />
-                                            <Typography variant='h5' textTransform={'capitalize'} color={'secondary.100'}>
+                                        <Typography
+                                            variant='subtitle1'
+                                            color={'secondary.300'}
+                                        >
+                                            Status
+                                        </Typography>
+                                        <Stack
+                                            direction={'row'}
+                                            gap={1}
+                                            alignItems={'center'}
+                                            bgcolor={'secondary.200'}
+                                            p={1}
+                                            borderRadius={1}
+                                        >
+                                            <Circle
+                                                color={
+                                                    electionSession.status === 'active'
+                                                        ?
+                                                        'success'
+                                                        :
+                                                        electionSession.status === 'paused'
+                                                            ?
+                                                            'warning' : 'error'}
+                                                fontSize='small'
+                                            />
+                                            <Typography
+                                                variant='h5'
+                                                textTransform={'capitalize'}
+                                                color={'secondary.100'}
+                                            >
                                                 {electionSession.status}
                                             </Typography>
                                         </Stack>

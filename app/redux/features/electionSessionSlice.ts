@@ -40,6 +40,18 @@ export const getElectionSession = createAsyncThunk<any, void, { rejectValue: { m
     }
 )
 
+export const modifyElectionSession = createAsyncThunk<any, { status: string, electionSessionPublicKey: string }, { rejectValue: { message: string } }>(
+    'admin/modifyElectionSession',
+    async (data: any, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/election-session/configure-election-session', data);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
+        }
+    }
+)
+
 const electionSessionSlice = createSlice({
     name: 'electionSession',
     initialState,
@@ -73,6 +85,20 @@ const electionSessionSlice = createSlice({
         builder.addCase(getElectionSession.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Error occurred while fetching election sessions.';
+        })
+
+        // modify election session
+        builder.addCase(modifyElectionSession.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(modifyElectionSession.fulfilled, (state, action) => {
+            state.loading = false;
+            state.electionSession.status = action.payload?.status;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(modifyElectionSession.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Failed to modify the election session.'
         })
     },
 })
