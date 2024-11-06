@@ -1,11 +1,12 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios";
 
 const initialState = {
     electionSession: {
         _id: '',
         name: '',
-        publicKey: '',
+        electionSessionPublicKey: '',
         status: '',
         scheduledTime: null,
 
@@ -32,8 +33,11 @@ export const getElectionSession = createAsyncThunk<any, void, { rejectValue: { m
     'electionSession/getElectionSession',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.get('/election-session/recent-election-session');
-            return response;
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_ENDPOINT}/election-session/recent-election-session`);
+            if (response.status === 200) {
+                console.log(response)
+                return response.data;
+            }
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message });
         }
@@ -51,6 +55,7 @@ export const modifyElectionSession = createAsyncThunk<any, { status: string, ele
         }
     }
 )
+
 
 const electionSessionSlice = createSlice({
     name: 'electionSession',

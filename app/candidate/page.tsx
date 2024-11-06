@@ -5,9 +5,10 @@ import Sidebar from "../components/Sidebar";
 import Loading from "../components/Loading";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
-import CandidateSidebarMenus from '../components/Candidate/CandidateSidebarMenus';
 import withCompleteCandidateProfile from '../utils/withCompleteCandidateProfile';
 import { getCandidateProfile } from '../redux/features/candidateSlice';
+import MainWrapper from '../components/MainWrapper';
+import CandidateSidebar from '../components/Candidate/CandidateSidebar';
 
 function CandidateHome() {
     const { userProfile } = useSelector((state: RootState) => state.user);
@@ -17,19 +18,20 @@ function CandidateHome() {
         dispatch(getCandidateProfile());
     }, [])
     return (
-        <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
-            {loading &&
-                <Loading />
-            }
-            <Sidebar>
-                <CandidateSidebarMenus />
-            </Sidebar>
-            <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
-                <Typography>
-                    Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
-                </Typography>
+        <MainWrapper>
+            <CandidateSidebar />
+
+            <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
+                {loading &&
+                    <Loading />
+                }
+                <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
+                    <Typography>
+                        Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
+                    </Typography>
+                </Stack>
             </Stack>
-        </Stack>
+        </MainWrapper>
     )
 }
 

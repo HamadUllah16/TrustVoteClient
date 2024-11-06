@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import { allConstituency, balochistanConstituency, capitalConstituency, kpkConstituency, punjabConstituency, sindhConstituency } from '@/app/redux/features/constituencySlice';
+import { getAllConstituency, balochistanConstituency, capitalConstituency, kpkConstituency, punjabConstituency, sindhConstituency } from '@/app/redux/features/constituencySlice';
 import { balochistanProvincialConstituency, kpkProvincialConstituency, punjabProvincialConstituency, sindhProvincialConstituency } from '@/app/redux/features/provincialConstituenciesSlice';
 
 
@@ -17,11 +17,11 @@ const ConstituencySearch = ({ formikStep2 }: { formikStep2: any }) => {
     const constituencyOptions = useMemo(() => {
         if (formikStep2.values.constituencyType === 'national assembly') {
             return data.constituencies
-                .map((c: any) => { return (c.area + "  " + c.constituency) });
+                .map((c: any) => { return (c.area + " " + c.constituency) });
         }
         if (formikStep2.values.constituencyType === 'provincial assembly') {
             return provincialConstituencies.constituencies
-                .map((c: any) => { return (c.area + "  " + c.constituency) });
+                .map((c: any) => { return (c.area + " " + c.constituency) });
         }
     }, [data, provincialConstituencies, formikStep2.values.province]);
 
@@ -31,7 +31,7 @@ const ConstituencySearch = ({ formikStep2 }: { formikStep2: any }) => {
 
     useEffect(() => {
         if (formikStep2.values.constituencyType === 'national assembly') {
-            dispatch(allConstituency());
+            dispatch(getAllConstituency());
         }
         if (formikStep2.values.constituencyType === 'national assembly' && formikStep2.values.province === 'punjab') {
             dispatch(punjabConstituency());

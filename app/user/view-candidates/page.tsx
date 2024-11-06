@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/redux/store';
 import { getAllCandidates } from '@/app/redux/features/candidateSlice';
 import RenderTableData from '@/app/components/RenderTableData';
+import PageHeader from '@/app/components/PageHeader';
 
 function ViewCandidatesPage() {
     const { allCandidates, loading } = useSelector((state: RootState) => state.candidate)
@@ -21,20 +22,25 @@ function ViewCandidatesPage() {
 
             <UserSidebar />
 
-            <RenderTableHead
+            <PageHeader
                 title='All Candidates'
                 subtitle={'Nominated candidates are listed below'}
-                labels={['#', 'Name', 'Constituency Type', 'Constituency', 'Party Affiliation']}
                 action={null}
             >
-
-                {/* table body */}
-                <RenderTableData
-                    tableData={allCandidates}
-                    loading={loading}
+                <RenderTableHead
+                    labels={['#', 'Name', 'Votes', 'Constituency Type', 'Constituency', 'Party Affiliation']}
                     action={null}
-                />
-            </RenderTableHead>
+                >
+
+                    {/* table body */}
+                    <RenderTableData
+                        tableData={allCandidates}
+                        loading={loading}
+                        action={null}
+                    />
+                </RenderTableHead>
+            </PageHeader>
+
         </MainWrapper>
     )
 }

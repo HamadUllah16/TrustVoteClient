@@ -3,21 +3,27 @@ import RenderPendingCandidates from '@/app/components/Candidate/RenderPendingCan
 import MainWrapper from '@/app/components/MainWrapper';
 import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
 import RenderTableHead from '@/app/components/RenderTableHead';
+import PageHeader from '@/app/components/PageHeader';
 function PendingCandidatesPage() {
   return (
     <MainWrapper>
 
       <AdminSidebar />
 
-      <RenderTableHead
+      <PageHeader
         title='Pending Candidates'
         subtitle={'Review the details of pending candidates and perform actions.'}
-        labels={['#', 'Name', 'Party Affiliation', 'Constituency Type', 'Status', 'Gender', 'DOB', 'Actions']}
         action={null}
       >
-        <RenderPendingCandidates />
 
-      </RenderTableHead>
+        <RenderTableHead
+          labels={['#', 'Name', 'Party Affiliation', 'Constituency Type', 'Status', 'Gender', 'DOB', 'Actions']}
+          action={null}
+        >
+          <RenderPendingCandidates />
+
+        </RenderTableHead>
+      </PageHeader>
 
     </MainWrapper>
   )

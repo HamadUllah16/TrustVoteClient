@@ -30,7 +30,7 @@ function Countdown({ scheduledTime }) {
     }, [scheduledTime]);
 
     return (
-        <Stack p={2} width={200}>
+        <Stack p={2} width={250}>
             <Typography variant='subtitle1' color='secondary.300'>Time Remaining</Typography>
             <Typography variant='h5' color='secondary.100'>
                 {timeRemaining}

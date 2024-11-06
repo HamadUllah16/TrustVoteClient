@@ -65,6 +65,10 @@ function Register() {
                     height={50}
                     width={50}
                     alt='logo'
+                    style={{
+                        borderRadius: '12px',
+                        rotate: '90deg'
+                    }}
                 />
                 <Stack
                     px={'75px'}

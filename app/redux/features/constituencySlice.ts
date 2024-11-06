@@ -1,34 +1,28 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
-interface initState {
-    data: {
-        province: string,
-        constituencies: [],
-    },
-    allConstituencies: [],
-    loading: boolean,
-    message: string,
-    error: string
-}
 
-const initialState: initState = {
-    data: {
-        province: '',
-        constituencies: [],
-    },
+const initialState = {
+
+    kpk: {},
+    punjab: {},
+    sindh: {},
+    balochistan: {},
+    capital: {},
+
     allConstituencies: [],
     loading: false,
     message: '',
     error: ''
 }
 
-export const addConstituency = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+export const addConstituency = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'constituency/addConstituency',
-    async (data: any, { rejectWithValue }) => {
+    async (data: { constituencyName: string, area: string, province: string }, { rejectWithValue, dispatch }) => {
         try {
             const response = await axiosInstance.post('/constituency/add-constituency', data)
-            return response.data;
+            dispatch(getAllConstituency())
+            return response;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message || 'Error adding constituency' })
         }
@@ -95,7 +89,7 @@ export const balochistanConstituency = createAsyncThunk<any, void, { rejectValue
     }
 )
 
-export const allConstituency = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+export const getAllConstituency = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'constituency/all-constituency',
     async (_, { rejectWithValue }) => {
         try {
@@ -117,26 +111,26 @@ const constituencySlice = createSlice({
 
     },
     extraReducers(builder) {
+        // add constituency
         builder.addCase(addConstituency.pending, state => {
             state.loading = true;
         })
         builder.addCase(addConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload?.data;
-            state.message = action.payload.message;
+            state.message = action.payload?.message;
         })
         builder.addCase(addConstituency.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || 'Error fetching data';
-        }),
+        })
 
-            // punjab constituencies
-            builder.addCase(punjabConstituency.pending, state => {
-                state.loading = true;
-            })
+        // punjab constituencies
+        builder.addCase(punjabConstituency.pending, state => {
+            state.loading = true;
+        })
         builder.addCase(punjabConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload.data;
+            state.punjab = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(punjabConstituency.rejected, (state, action) => {
@@ -150,7 +144,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(sindhConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload.data;
+            state.punjab = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(sindhConstituency.rejected, (state, action) => {
@@ -164,7 +158,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(balochistanConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload.data;
+            state.balochistan = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(balochistanConstituency.rejected, (state, action) => {
@@ -178,7 +172,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(kpkConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload.data;
+            state.kpk = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(kpkConstituency.rejected, (state, action) => {
@@ -192,7 +186,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(capitalConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload.data;
+            state.capital = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(capitalConstituency.rejected, (state, action) => {
@@ -201,15 +195,15 @@ const constituencySlice = createSlice({
         })
 
         // all constituencies builder
-        builder.addCase(allConstituency.pending, state => {
+        builder.addCase(getAllConstituency.pending, state => {
             state.loading = true;
         })
-        builder.addCase(allConstituency.fulfilled, (state, action) => {
+        builder.addCase(getAllConstituency.fulfilled, (state, action) => {
             state.loading = false;
             state.allConstituencies = action.payload?.data;
             state.message = action.payload?.message;
         })
-        builder.addCase(allConstituency.rejected, (state, action) => {
+        builder.addCase(getAllConstituency.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || 'Could not fetch all constituencies.'
         })

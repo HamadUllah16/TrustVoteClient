@@ -16,13 +16,49 @@ const initialState = {
         province: '',
         cnicFront: '',
         cnicBack: '',
+        naVote: '',
+        paVote: '',
+        partyAffiliation: '',
     },
+    searchedCandidates: [],
+
     loading: false,
     message: '',
     error: '',
 
     showLogin: false,
 }
+
+
+export const searchCandidatesOffConstituency = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'user/getCandidatesOffConstituency',
+    async (data: { constituency: string }, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/candidate/candidates-off-constituency', data);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
+        }
+    }
+)
+
+export const castVote = createAsyncThunk
+    <
+        any,
+        { candidateId: string, votingSessionPublicKey: string },
+        { rejectValue: { message: string } }
+    >(
+        'user/castVote',
+        async (data: any, { rejectWithValue, dispatch }) => {
+            try {
+                const response = await axiosInstance.post('/user/cast-a-vote', data);
+                dispatch(getUserProfile());
+                return response;
+            } catch (error: any) {
+                return rejectWithValue({ message: error.response?.data?.message })
+            }
+        }
+    )
 
 export const getUserProfile = createAsyncThunk(
     'user/getUserProfile',
@@ -65,6 +101,32 @@ const userSlice = createSlice({
             state.error = action.error.message || 'Profile fetching failed.'
         })
 
+        // cast a vote builder
+        builder.addCase(castVote.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(castVote.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(castVote.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Could not cast a vote.'
+        })
+
+        // search candidates based off constituency
+        builder.addCase(searchCandidatesOffConstituency.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(searchCandidatesOffConstituency.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.searchedCandidates = action.payload?.candidates;
+        })
+        builder.addCase(searchCandidatesOffConstituency.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message || 'Could not get candidates.';
+        })
     },
 
 })

@@ -23,11 +23,11 @@ export default function LongMenu({ electionSession, options }: { options: string
         toast.promise(
             dispatch(modifyElectionSession(
                 {
-                    status: option === 'Resume' ? 'active' : 'paused', electionSessionPublicKey: electionSession.electionSessionPublicKey
+                    status: option === 'Resume' ? 'active' : option === 'End' ? 'ended' : 'paused', electionSessionPublicKey: electionSession.electionSessionPublicKey
                 }
             )).unwrap(), {
             loading: 'Loading...',
-            success: `Election Session ${option === 'Resume' ? 'Resumed' : 'Paused'}`,
+            success: `Election Session ${option === 'Resume' ? 'Resumed' : option === 'End' ? 'Ended' : 'Paused'}`,
             error: 'Error changing Election Session status.'
         }
         )

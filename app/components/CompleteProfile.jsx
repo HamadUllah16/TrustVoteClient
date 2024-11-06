@@ -65,12 +65,13 @@ function CompleteProfile() {
             console.log(values)
             const { date, ...otherValues } = values;
             const changed = checkChanged(formik, values)
+            console.log(changed)
             const token = localStorage.getItem('x_auth_token')
             toast.promise(
                 dispatch(updateProfile({
                     router,
                     profile: {
-                        ...changed,
+                        ...changed
                         // dateOfBirth: dayjs(date).format('YYYY-MM-DD')
                     },
                     token
@@ -153,7 +154,6 @@ function CompleteProfile() {
                     errors.date = 'You must be at least 18 years old';
                 }
             }
-            console.log(errors)
             return errors;
         }
     })
@@ -239,17 +239,6 @@ function CompleteProfile() {
                             name='firstName'
                             error={formik.touched && formik.errors.firstName}
                             helperText={formik.touched && formik.errors.firstName}
-                            InputLabelProps={{
-                                sx: {
-                                    color: 'secondary.100',
-                                    borderColor: 'secondary.100'
-                                }
-                            }}
-                            InputProps={{
-                                sx: {
-                                    bgcolor: 'secondary.200',
-                                }
-                            }}
 
                         />
 
@@ -262,17 +251,6 @@ function CompleteProfile() {
                             name='lastName'
                             error={formik.touched && formik.errors.lastName}
                             helperText={formik.touched && formik.errors.lastName}
-                            InputLabelProps={{
-                                sx: {
-                                    color: 'secondary.100',
-                                    borderColor: 'secondary.100'
-                                }
-                            }}
-                            InputProps={{
-                                sx: {
-                                    bgcolor: 'secondary.200',
-                                }
-                            }}
 
                         />
                     </Box>
@@ -293,17 +271,6 @@ function CompleteProfile() {
                             name='email'
                             value={formik.values.email}
                             onChange={formik.handleChange}
-                            InputLabelProps={{
-                                sx: {
-                                    color: 'secondary.100',
-                                    borderColor: 'secondary.100'
-                                }
-                            }}
-                            InputProps={{
-                                sx: {
-                                    bgcolor: 'secondary.200',
-                                }
-                            }}
                         />
 
                         <TextField
@@ -316,17 +283,6 @@ function CompleteProfile() {
                             name='phone'
                             error={formik.touched && formik.errors.phone}
                             helperText={formik.touched && formik.errors.phone}
-                            InputLabelProps={{
-                                sx: {
-                                    color: 'secondary.100',
-                                    borderColor: 'secondary.100'
-                                }
-                            }}
-                            InputProps={{
-                                sx: {
-                                    bgcolor: 'secondary.200',
-                                }
-                            }}
                         />
                     </Box>
                     <Divider />
@@ -336,63 +292,28 @@ function CompleteProfile() {
                     >
                         <TextField
                             variant='filled'
+                            fullWidth
                             name='cnic'
                             label={'CNIC Number'}
                             value={formik.values.cnic}
                             onChange={formik.handleChange}
                             error={formik.touched && formik.errors.cnic}
                             helperText={formik.touched && formik.errors.cnic}
-                            InputLabelProps={{
-                                sx: {
-                                    color: 'secondary.100',
-                                    borderColor: 'secondary.100'
-                                }
-                            }}
-                            InputProps={{
-                                sx: {
-                                    bgcolor: 'secondary.200',
-                                }
-                            }}
                         />
 
-                        <Stack>
-
-                            <DateInputField
-                                name='date'
-                                label={'Date of Birth'}
-                                formik={formik}
-                                value={dayjs(formik.values.date)}
-                                error={formik.touched && Boolean(formik.errors.date)}
-                                helperText={formik.touched && formik.errors.date}
-                                onBlur={formik.handleBlur}
-                                onChange={(newValue) => {
-                                    formik.setFieldValue('date', newValue);
-                                }}
-                                InputLabelProps={{
-                                    sx: {
-                                        color: 'secondary.100',
-                                        borderColor: 'secondary.100'
-                                    }
-                                }}
-                                InputProps={{
-                                    sx: {
-                                        backgroundColor: '#2B2B2D',
-                                    }
-                                }}
-                            />
-                            {formik.errors.date &&
-                                <Typography
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 0.5
-                                    }}
-                                    variant='body2'
-                                    color={"error"}>
-                                    <Error fontSize="small" /> {formik.errors.date}
-                                </Typography>
-                            }
-                        </Stack>
+                        <TextField
+                            variant='filled'
+                            fullWidth
+                            label='Date of Birth'
+                            type="date"
+                            name="date"
+                            InputLabelProps={{ shrink: true }}
+                            value={formik.values.date}
+                            onChange={formik.handleChange}
+                            error={formik.touched.date && Boolean(formik.errors.date)}
+                            onBlur={formik.handleBlur}
+                            helperText={formik.touched.date && formik.errors.date}
+                        />
 
                     </Grid>
 

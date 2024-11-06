@@ -1,10 +1,9 @@
 'use client'
 import { AppDispatch, RootState } from "@/app/redux/store"
-import React, { useEffect, useLayoutEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getCandidateProfile } from "../redux/features/candidateSlice"
 import CandidateLogin from "../components/Candidate/CandidateLogin"
-import { Stack, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 
 export default function withCandidateAuth(Component: any) {
@@ -15,15 +14,15 @@ export default function withCandidateAuth(Component: any) {
         const { role } = useSelector((state: RootState) => state.user.userProfile);
         const router = useRouter();
 
-        useLayoutEffect(() => {
+        useEffect(() => {
             const token = localStorage.getItem('x_auth_token');
             if (!isAuthenticated && token) {
                 dispatch(getCandidateProfile()); // Fetch candidate profile if token exists
             }
         }, [isAuthenticated, dispatch]);
 
-        useLayoutEffect(() => {
-            if (role !== 'candidate') {
+        useEffect(() => {
+            if (role !== 'candidate' && role !== '') {
                 router.replace('/unauthorized')
             } else {
                 setLoading(false)

@@ -4,6 +4,7 @@ import React from 'react'
 import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
 import MainWrapper from '@/app/components/MainWrapper';
 import RenderTableHead from '@/app/components/RenderTableHead';
+import PageHeader from '@/app/components/PageHeader';
 
 function AllCandidatesPage() {
     return (
@@ -11,16 +12,21 @@ function AllCandidatesPage() {
 
             <AdminSidebar />
 
-            <RenderTableHead
+            <PageHeader
                 title='Nominated Candidates'
                 subtitle={null}
-                labels={['#', 'Name', 'Party Affiliation', 'Constituency', 'Gender', 'Status', 'DOB', 'Actions']}
                 action={null}
             >
-                <RenderCandidates />
 
-            </RenderTableHead>
+                <RenderTableHead
+                    labels={['#', 'Name', 'Party Affiliation', 'Constituency', 'Gender', 'Status', 'DOB', 'Actions']}
+                    action={null}
+                >
+                    <RenderCandidates />
 
+                </RenderTableHead>
+
+            </PageHeader>
         </MainWrapper>
     )
 }

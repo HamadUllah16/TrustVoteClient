@@ -1,10 +1,10 @@
 "use client"
-import { AccountCircleOutlined, Home, HomeOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
+import { AccountCircleOutlined, HomeOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
 import { Box, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { logoutUser } from '@/app/redux/features/authSlice';
 import Image from 'next/image';
 
@@ -48,7 +48,7 @@ function ProfileMenu() {
         router.push('/logout')
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         getCurrentPath()
         if (show) {
             window.addEventListener('click', handleClickOutside);

@@ -22,7 +22,6 @@ export default function withAuth(Component: any) {
             const role = localStorage.getItem('role');
 
             if (!isAuthenticated && token && userProfile.email === '') {
-                // Only dispatch if profile is not already fetched
                 switch (role) {
                     case 'voter':
                         dispatch(getUserProfile());
@@ -37,7 +36,7 @@ export default function withAuth(Component: any) {
                         break;
                 }
             } else if (!token) {
-                // Redirect if token is missing
+                // if token is missing
                 switch (role) {
                     case 'voter':
                         router.push('/user/login');
