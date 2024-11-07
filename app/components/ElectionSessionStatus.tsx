@@ -23,89 +23,101 @@ export default function ElectionSessionStatus() {
                 <CircularProgress size={'12px'} />
             }
             {
-                electionSession._id &&
-                <Stack gap={1} >
-                    <Typography variant='h6' color={'primary.main'}>
-                        {electionSession.status === 'ended' ?
-                            "Recent Election Session"
-                            :
-                            electionSession.status === 'scheduled' ?
-                                'Scheduled Election Session'
+                electionSession._id ?
+                    <Stack gap={1} >
+                        <Typography variant='h6' color={'primary.main'}>
+                            {electionSession.status === 'ended' ?
+                                "Recent Election Session"
                                 :
-                                "Current Election Session"
-                        }
-                    </Typography>
-                    <Stack
-                        bgcolor={'primary.main'}
-                        direction={'row'}
-                        gap={1}
-                        p={1}
-                        border={'1px solid'}
-                        borderColor={'secondary.200'}
-                        borderRadius={1}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                    >
-                        <Stack p={2}>
-                            <Typography variant='subtitle1' color={'secondary.300'}>Name</Typography>
-                            <Typography variant='h5' color={'secondary.100'}>
-                                {electionSession.name}
-                            </Typography>
-                        </Stack>
-
-                        {electionSession.status === 'scheduled' &&
-                            <Countdown scheduledTime={electionSession.scheduledTime} />
-                        }
-
-                        <Stack p={2}>
-                            <Typography
-                                variant='subtitle1'
-                                color={'secondary.300'}
-                            >
-                                Status
-                            </Typography>
-                            <Stack
-                                direction={'row'}
-                                gap={1}
-                                alignItems={'center'}
-                                bgcolor={'secondary.200'}
-                                p={1}
-                                borderRadius={1}
-                            >
-                                <Circle
-                                    color={electionSession.status === 'active' ?
-                                        'success'
-                                        :
-                                        electionSession.status === 'ended' ?
-                                            'error'
-                                            :
-                                            'warning'
-                                    }
-                                    fontSize='small'
-                                />
-                                <Typography
-                                    variant='h5'
-                                    textTransform={'capitalize'}
-                                    color={'secondary.100'}
-                                >
-                                    {electionSession.status}
+                                electionSession.status === 'scheduled' ?
+                                    'Scheduled Election Session'
+                                    :
+                                    "Current Election Session"
+                            }
+                        </Typography>
+                        <Stack
+                            bgcolor={'primary.main'}
+                            direction={'row'}
+                            gap={1}
+                            p={1}
+                            border={'1px solid'}
+                            borderColor={'secondary.200'}
+                            borderRadius={1}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                        >
+                            <Stack p={2}>
+                                <Typography variant='subtitle1' color={'secondary.300'}>Name</Typography>
+                                <Typography variant='h5' color={'secondary.100'}>
+                                    {electionSession.name}
                                 </Typography>
                             </Stack>
-                        </Stack>
 
-                        {role === 'admin' && (electionSession.status === 'paused' || electionSession.status === 'active') &&
-                            <Stack p={2} >
-                                <IconMenu
-                                    electionSession={electionSession}
-                                    options={electionSession.status === 'paused' ? ['Resume', 'End'] : ['Pause', 'End']}
-                                />
+                            {electionSession.status === 'scheduled' &&
+                                <Countdown scheduledTime={electionSession.scheduledTime} />
+                            }
+
+                            <Stack p={2}>
+                                <Typography
+                                    variant='subtitle1'
+                                    color={'secondary.300'}
+                                >
+                                    Status
+                                </Typography>
+                                <Stack
+                                    direction={'row'}
+                                    gap={1}
+                                    alignItems={'center'}
+                                    bgcolor={'secondary.200'}
+                                    p={1}
+                                    borderRadius={1}
+                                >
+                                    <Circle
+                                        color={electionSession.status === 'active' ?
+                                            'success'
+                                            :
+                                            electionSession.status === 'ended' ?
+                                                'error'
+                                                :
+                                                'warning'
+                                        }
+                                        fontSize='small'
+                                    />
+                                    <Typography
+                                        variant='h5'
+                                        textTransform={'capitalize'}
+                                        color={'secondary.100'}
+                                    >
+                                        {electionSession.status}
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+
+                            {role === 'admin' && (electionSession.status === 'paused' || electionSession.status === 'active') &&
+                                <Stack p={2} >
+                                    <IconMenu
+                                        electionSession={electionSession}
+                                        options={electionSession.status === 'paused' ? ['Resume', 'End'] : ['Pause', 'End']}
+                                    />
+                                </Stack>
+                            }
+
+                        </Stack>
+                    </Stack>
+                    :
+                    <>
+                        {role !== 'admin' &&
+
+                            <Stack flexGrow={1}>
+                                <Typography color={'primary.main'}>
+                                    No recent election sessions found. Wait for the Election Commissioner to schedule an Election Session.
+                                </Typography>
                             </Stack>
                         }
-
-                    </Stack>
-                </Stack>
+                    </>
             }
-            {electionSession && (electionSession.status === '' || electionSession.status === 'ended') && role === 'admin' &&
+            {
+                electionSession && (electionSession.status === '' || electionSession.status === 'ended') && role === 'admin' &&
                 <Stack gap={1} p={3}>
                     <Typography variant='h6' color={'primary.main'}>
                         Schedule an Election Session
@@ -114,7 +126,7 @@ export default function ElectionSessionStatus() {
                 </Stack>
             }
 
-        </Stack>
+        </Stack >
 
     )
 }

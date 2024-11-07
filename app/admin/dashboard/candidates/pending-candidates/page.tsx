@@ -4,6 +4,7 @@ import MainWrapper from '@/app/components/MainWrapper';
 import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
 import RenderTableHead from '@/app/components/RenderTableHead';
 import PageHeader from '@/app/components/PageHeader';
+import PendingCandidatesTable from '@/app/components/Candidate/PendingCandidatesTable';
 function PendingCandidatesPage() {
   return (
     <MainWrapper>
@@ -16,13 +17,8 @@ function PendingCandidatesPage() {
         action={null}
       >
 
-        <RenderTableHead
-          labels={['#', 'Name', 'Party Affiliation', 'Constituency Type', 'Status', 'Gender', 'DOB', 'Actions']}
-          action={null}
-        >
-          <RenderPendingCandidates />
+        <PendingCandidatesTable />
 
-        </RenderTableHead>
       </PageHeader>
 
     </MainWrapper>

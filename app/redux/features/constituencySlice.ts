@@ -1,14 +1,18 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
+interface constituencyState {
+    province: string,
+    constituencies: { area: string, constituency: string }[]
+}
 
 const initialState = {
 
-    kpk: {},
-    punjab: {},
-    sindh: {},
-    balochistan: {},
-    capital: {},
+    kpk: <constituencyState>{},
+    punjab: <constituencyState>{},
+    sindh: <constituencyState>{},
+    balochistan: <constituencyState>{},
+    capital: <constituencyState>{},
 
     allConstituencies: [],
     loading: false,

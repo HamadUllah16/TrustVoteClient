@@ -5,6 +5,7 @@ import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
 import MainWrapper from '@/app/components/MainWrapper';
 import RenderTableHead from '@/app/components/RenderTableHead';
 import PageHeader from '@/app/components/PageHeader';
+import NominatedCandidatesTable from '@/app/components/Candidate/NominatedCandidatesTable';
 
 function AllCandidatesPage() {
     return (
@@ -17,14 +18,7 @@ function AllCandidatesPage() {
                 subtitle={null}
                 action={null}
             >
-
-                <RenderTableHead
-                    labels={['#', 'Name', 'Party Affiliation', 'Constituency', 'Gender', 'Status', 'DOB', 'Actions']}
-                    action={null}
-                >
-                    <RenderCandidates />
-
-                </RenderTableHead>
+                <NominatedCandidatesTable />
 
             </PageHeader>
         </MainWrapper>

@@ -5,11 +5,11 @@ import RenderConstituencyData from '../RenderConstituencyData'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/redux/store'
 import {
-    balochistanConstituency, capitalConstituency, getAllConstituency,
+    balochistanConstituency, capitalConstituency,
     kpkConstituency, punjabConstituency, sindhConstituency
 } from '@/app/redux/features/constituencySlice'
 import {
-    allProvincialConstituencies, balochistanProvincialConstituency, kpkProvincialConstituency,
+    balochistanProvincialConstituency, kpkProvincialConstituency,
     punjabProvincialConstituency, sindhProvincialConstituency
 } from '@/app/redux/features/provincialConstituenciesSlice'
 import { MenuItem, Stack, TablePagination, TextField } from '@mui/material'
@@ -19,8 +19,8 @@ function Constituency() {
     const [selectedProvince, setSelectedProvince] = useState('punjab');
     const [page, setPage] = useState(0);
 
-    const { allConstituencies, punjab, sindh, kpk, balochistan, capital, loading } = useSelector((state: RootState) => state.constituency);
-    const { all, pk, pp, pb, ps } = useSelector((state: RootState) => state.provincialConstituency);
+    const { punjab, sindh, kpk, balochistan, capital, loading } = useSelector((state: RootState) => state.constituency);
+    const { all, pk, pp, pb, ps, loading: provincialLoading } = useSelector((state: RootState) => state.provincialConstituency);
     const dispatch = useDispatch<AppDispatch>();
 
 
@@ -68,17 +68,16 @@ function Constituency() {
         }
     }, [dispatch, selectedConstituency, selectedProvince]);
 
-    // Trigger fetching only when province or assembly changes
+
     useEffect(() => {
         fetchConstituencies();
     }, [fetchConstituencies]);
 
-    // Handle page change for TablePagination
     const handlePageChange = () => setPage(page + 1);
 
     return (
         <>
-            <Stack direction={'row'} gap={2}>
+            <Stack direction={'row'} justifyContent={'end'} gap={2}>
 
                 <TextField
                     variant='filled'
@@ -92,6 +91,9 @@ function Constituency() {
                 </TextField>
 
                 <TextField
+                    sx={{
+                        width: 200
+                    }}
                     variant='filled'
                     label='Province'
                     select
@@ -108,25 +110,24 @@ function Constituency() {
 
             <RenderTableHead
                 labels={['#', 'Constituency', 'Area', 'Province']}
-                action={null}
             >
                 <RenderConstituencyData
                     tableData={tableData}
                     action={null}
-                    loading={loading}
+                    loading={loading || provincialLoading}
                 />
             </RenderTableHead>
 
-            <Stack borderRadius={1} bgcolor={'background.default'}>
+            {/* <Stack borderRadius={1} bgcolor={'background.default'}>
                 <TablePagination
                     component='div'
-                    count={tableData ? tableData.constituencies.length : 10}
+                    count={200}
                     page={page}
                     onPageChange={handlePageChange}
                     rowsPerPage={20}
                     rowsPerPageOptions={[20]}
                 />
-            </Stack>
+            </Stack> */}
         </>
     );
 }

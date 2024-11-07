@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Stack, Divider, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
 
-function RenderTableHead({ labels, children }: { action: React.ReactNode | null, labels: string[], children: React.ReactNode }) {
+function RenderTableHead({ labels, children }: { labels: string[], children: React.ReactNode }) {
     return (
 
         <Stack

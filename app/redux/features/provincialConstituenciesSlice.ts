@@ -1,18 +1,21 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import toast from "react-hot-toast";
-
+interface constituencyState {
+    province: string,
+    constituencies: { area: string, constituency: string }[]
+}
 
 const initalValues = {
     provincialConstituencies: {
         province: '',
         constituencies: [],
     },
-    all: [],
-    pk: {},
-    ps: {},
-    pb: {},
-    pp: {},
+    all: <constituencyState[]>[],
+    pk: <constituencyState>{},
+    ps: <constituencyState>{},
+    pb: <constituencyState>{},
+    pp: <constituencyState>{},
 
     loading: false,
     message: '',

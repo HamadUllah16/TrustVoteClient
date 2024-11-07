@@ -89,40 +89,38 @@ function ElectionResults() {
                 subtitle={status === 'ended' ? "Final results are listed below." : 'Live results are listed below.'}
                 action={null}>
 
+                <Stack direction={'row'} justifyContent={'end'} gap={1}>
+                    <Button
+                        variant={currentTable === 'all' ? 'contained' : 'outlined'}
+                        onClick={() => setCurrentTable('all')}
+                    >
+                        All Candidates
+                    </Button>
+                    <TextField
+                        label={'Choose an Assembly'}
+                        placeholder='National Assembly'
+                        variant='filled'
+                        select
+                        onChange={e => setUserConstituency(e.target.value)}
+                        sx={{ minWidth: 300, maxWidth: 400 }}
+                    >
+                        <MenuItem value='national assembly'>National Assembly</MenuItem>
+                        <MenuItem value='provincial assembly'>Provincial Assembly</MenuItem>
+                    </TextField>
+                    {/* {userConstituency && ( */}
+                    <Autocomplete
+                        options={userConstituency === 'national assembly' ? allNationalConstituencies : allProvincial}
+                        onChange={(event, value) => userSearchedConstituencyHandler(value)}
+                        fullWidth
+                        sx={{ maxWidth: 350 }}
+                        renderInput={(params) => (
+                            <TextField {...params} variant='filled' label='Constituency' />
+                        )}
+                    />
+                </Stack>
+
                 <RenderTableHead
                     labels={['#', 'Name', 'Votes', 'Assembly', 'Constituency', 'Affiliation']}
-                    action={
-                        <Stack direction={'row'} flexGrow={1} justifyContent={'end'} gap={1}>
-                            <Button
-                                variant={currentTable === 'all' ? 'contained' : 'outlined'}
-                                onClick={() => setCurrentTable('all')}
-                            >
-                                All Candidates
-                            </Button>
-                            <TextField
-                                label={'Choose an Assembly'}
-                                placeholder='National Assembly'
-                                variant='filled'
-                                select
-                                onChange={e => setUserConstituency(e.target.value)}
-                                sx={{ minWidth: 300, maxWidth: 400 }}
-                            >
-                                <MenuItem value='national assembly'>National Assembly</MenuItem>
-                                <MenuItem value='provincial assembly'>Provincial Assembly</MenuItem>
-                            </TextField>
-                            {userConstituency && (
-                                <Autocomplete
-                                    options={userConstituency === 'national assembly' ? allNationalConstituencies : allProvincial}
-                                    onChange={(event, value) => userSearchedConstituencyHandler(value)}
-                                    fullWidth
-                                    sx={{ maxWidth: 350 }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} variant='filled' label='Constituency' />
-                                    )}
-                                />
-                            )}
-                        </Stack>
-                    }
                 >
                     <RenderTableData
                         action={null}

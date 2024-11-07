@@ -6,17 +6,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getApprovedCandidates } from '@/app/redux/features/candidateSlice';
 
-function RenderCandidates() {
-    const { approvedCandidates } = useSelector((state: RootState) => state.candidate);
-
-    const dispatch = useDispatch<AppDispatch>();
-    useEffect(() => {
-        dispatch(getAdminProfile())
-        dispatch(getApprovedCandidates());
-    }, [])
+function RenderCandidates({ approvedCandidates, loading }: { approvedCandidates: any, loading: boolean }) {
     return (
         <>
-            {approvedCandidates && approvedCandidates.map((candidate: any, index: number) => {
+            {approvedCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>

@@ -1,6 +1,6 @@
 'use client'
 import { Autocomplete, Stack, TextField, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 import { balochistanConstituency, capitalConstituency, kpkConstituency, punjabConstituency, sindhConstituency } from '../redux/features/constituencySlice'
@@ -9,27 +9,51 @@ import { balochistanProvincialConstituency, kpkProvincialConstituency, punjabPro
 
 function UserAddressConstituency({ formik }: { formik: any }) {
     const provinces = ['Punjab', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan', 'Islamabad Capital Territory']
-    const { data } = useSelector((state: RootState) => state.constituency)
-    const { provincialConstituencies } = useSelector((state: RootState) => state.provincialConstituency)
+    const { kpk, balochistan, punjab, sindh, capital } = useSelector((state: RootState) => state.constituency)
+    const { ps, pb, pk, pp } = useSelector((state: RootState) => state.provincialConstituency)
     const { constituency, province, provincialConstituency } = useSelector((state: RootState) => state.user.userProfile);
     const dispatch = useDispatch<AppDispatch>();
+
+    const constituencies = useMemo(() => {
+        switch (formik.values.province) {
+            case 'punjab': return punjab;
+            case 'sindh': return sindh;
+            case 'khyber pakhtunkhwa': return kpk;
+            case 'balochistan': return balochistan;
+            case 'islamabad capital territory': return capital;
+            default: return punjab;
+        }
+    }, [punjab, sindh, kpk, balochistan, capital])
+
+    const provincialConstituencies = useMemo(() => {
+        switch (formik.values.province) {
+            case 'punjab': return pp;
+            case 'sindh': return ps;
+            case 'khyber pakhtunkhwa': return pk;
+            case 'balochistan': return pb;
+            default: return pp;
+        }
+    }, [pp, ps, pk, pb])
+
+
+
     useEffect(() => {
-        if (formik.values.province === 'Punjab') {
+        if (formik.values.province === 'punjab') {
             dispatch(punjabConstituency());
             dispatch(punjabProvincialConstituency())
         }
-        if (formik.values.province === 'Islamabad Capital Territory') {
+        if (formik.values.province === 'islamabad capital territory') {
             dispatch(capitalConstituency());
         }
-        if (formik.values.province === 'Sindh') {
+        if (formik.values.province === 'sindh') {
             dispatch(sindhConstituency());
             dispatch(sindhProvincialConstituency())
         }
-        if (formik.values.province === 'Balochistan') {
+        if (formik.values.province === 'balochistan') {
             dispatch(balochistanConstituency());
             dispatch(balochistanProvincialConstituency())
         }
-        if (formik.values.province === 'Khyber Pakhtunkhwa') {
+        if (formik.values.province === 'khyber pakhtunkhwa') {
             dispatch(kpkConstituency());
             dispatch(kpkProvincialConstituency())
         }
@@ -44,7 +68,7 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                 <Autocomplete
                     options={provinces}
                     defaultValue={province}
-                    onChange={(event, value) => formik.setFieldValue('province', value)}
+                    onChange={(event, value) => formik.setFieldValue('province', value?.toLowerCase())}
                     fullWidth
                     renderInput={(params) => (
                         <TextField
@@ -63,7 +87,7 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                     <>
                         <Autocomplete
                             defaultValue={constituency}
-                            options={data.constituencies.map((item: any) => `${item.area}  ${item.constituency}`)}
+                            options={constituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`)}
                             fullWidth
                             onChange={(event, value) => formik.setFieldValue('constituency', value)}
                             renderInput={(params) => (
@@ -75,21 +99,22 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                                 />
                             )}
                         />
-
-                        <Autocomplete
-                            defaultValue={provincialConstituency}
-                            options={provincialConstituencies.constituencies.map((item: any) => `${item.area}  ${item.constituency}`)}
-                            fullWidth
-                            onChange={(event, value) => formik.setFieldValue('provincialConstituency', value)}
-                            renderInput={(params) => (
-                                <TextField
-                                    name={'provincialConstituency'}
-                                    variant='filled'
-                                    {...params}
-                                    label='Provincial Constituency'
-                                />
-                            )}
-                        />
+                        {formik.values.province !== 'islamabad capital territory' &&
+                            <Autocomplete
+                                defaultValue={provincialConstituency}
+                                options={provincialConstituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`)}
+                                fullWidth
+                                onChange={(event, value) => formik.setFieldValue('provincialConstituency', value)}
+                                renderInput={(params) => (
+                                    <TextField
+                                        name={'provincialConstituency'}
+                                        variant='filled'
+                                        {...params}
+                                        label='Provincial Constituency'
+                                    />
+                                )}
+                            />
+                        }
                     </>
                 }
             </Stack>

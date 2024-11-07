@@ -22,26 +22,25 @@ function AllPoliticalPartiesPage() {
             <PageHeader
                 title='Political Parties'
                 subtitle={null}
-                action={null}
+                action={
+                    <IconButton onClick={() => setShowAddPartyModel(true)}>
+                        <Add sx={{ color: 'primary.main' }} />
+                    </IconButton>
+                }
             >
 
                 <RenderTableHead
                     labels={role === 'admin' ? ['#', 'Name', 'Abbreviation', 'Symbol', 'Actions'] : ['#', 'Name', 'Abbreviation', 'Symbol']}
-                    action={
-                        role === 'admin' &&
-                        <IconButton onClick={() => setShowAddPartyModel(true)}>
-                            <Add color='primary' />
-                        </IconButton>
-                    }>
+                >
 
                     <RenderPoliticalParties />
 
                 </RenderTableHead>
+                {showAddPartyModal && role === 'admin' &&
+                    <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
+                }
             </PageHeader>
 
-            {showAddPartyModal && role === 'admin' &&
-                <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
-            }
 
         </MainWrapper>
 

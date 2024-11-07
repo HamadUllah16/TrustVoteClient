@@ -7,7 +7,6 @@ function PageHeader({ title, action, subtitle, children }: { title: string, subt
             flex={1}
             gap={2}
             py={3}
-            divider={<Divider sx={{ bgcolor: 'secondary.200' }} />}
         >
             <Box>
                 <Stack direction={'row'} gap={1} justifyContent={'space-between'}>
@@ -22,6 +21,7 @@ function PageHeader({ title, action, subtitle, children }: { title: string, subt
                     {subtitle}
                 </Typography>
             </Box>
+            <Divider sx={{ bgcolor: 'secondary.200' }} />
 
             {children}
         </Stack>
