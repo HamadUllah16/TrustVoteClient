@@ -1,10 +1,10 @@
 "use client"
-import { AccountCircleOutlined, Home, HomeOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
+import { AccountCircleOutlined, HomeOutlined, KeyboardArrowDown, Logout, SettingsOutlined } from '@mui/icons-material'
 import { Box, Divider, Grid, IconButton, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { logoutUser } from '@/app/redux/features/authSlice';
 import Image from 'next/image';
 
@@ -12,7 +12,7 @@ const pfp = '/avatar.jpg'
 
 function ProfileMenu() {
     const { isAuthenticated } = useSelector((state) => state.auth)
-    const { firstName, email, role } = useSelector(state => state.user.userProfile)
+    const { firstName, email, role, profilePicture } = useSelector(state => state.user.userProfile)
     const [currentPath, setCurrentPath] = useState();
     const [show, setShow] = useState(false);
     const router = useRouter();
@@ -48,7 +48,7 @@ function ProfileMenu() {
         router.push('/logout')
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         getCurrentPath()
         if (show) {
             window.addEventListener('click', handleClickOutside);
@@ -88,7 +88,24 @@ function ProfileMenu() {
                                 }}
                                 onClick={() => email ? setShow(!show) : router.push('/login')}
                             >
-                                <AccountCircleOutlined />
+                                {profilePicture ?
+                                    <Stack
+                                        width={30}
+                                        height={30}
+                                        borderRadius={0.8}
+                                        overflow={'hidden'}
+                                        position={'relative'}
+                                    >
+                                        <Image
+                                            src={profilePicture}
+                                            alt='a profile picture'
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                    </Stack>
+                                    :
+                                    <AccountCircleOutlined />
+                                }
                                 <Typography display={{ xs: 'none', md: 'block' }}
                                 >
                                     {firstName ? firstName : email}
@@ -140,33 +157,25 @@ function ProfileMenu() {
                                 >
                                     <Grid
                                         display={'flex'}
-                                        gap={3}
+                                        gap={2}
                                     >
-                                        <Box
-                                            height={'50px'}
-                                            maxWidth={'100px'}
-                                            borderRadius={'100px'}
-                                            sx={{
-                                                backgroundColor: '#DADADA',
-                                                objectFit: 'contain',
-                                                overflow: 'hidden',
-                                            }}
-                                            display={'flex'}
-                                            justifyContent={'center'}
-                                            alignItems={'center'}
+                                        <Stack
+                                            width={75}
+                                            height={75}
+                                            position={'relative'}
+                                            borderRadius={2}
+                                            overflow={'hidden'}
                                         >
                                             <Image
-                                                src={'/avatar.jpg'}
-                                                height={50}
-                                                width={50}
-                                                style={{ maxWidth: '100px', height: 'auto' }}
-                                                alt='a pfp'
+                                                src={profilePicture}
+                                                alt='a profile picture'
+                                                style={{ objectFit: 'cover' }}
+                                                fill
                                             />
-                                        </Box>
+                                        </Stack>
 
-                                        <Box
-                                            display={'flex'}
-                                            flexDirection={'column'}
+                                        <Stack
+                                            justifyContent={'center'}
                                         >
                                             <Typography
                                                 variant='body1'
@@ -174,16 +183,13 @@ function ProfileMenu() {
                                             >
                                                 {firstName}
                                             </Typography>
-                                            <Stack borderRadius={2} bgcolor={'primary.main'} px={2} py={0.2}>
-                                                {role}
-                                            </Stack>
 
                                             <Typography
                                                 variant='body2'
                                             >
                                                 {email}
                                             </Typography>
-                                        </Box>
+                                        </Stack>
                                     </Grid>
                                 </MenuItem>
                             </Link>
@@ -222,7 +228,7 @@ function ProfileMenu() {
                             </Link>
 
                             <Link
-                                href={`${currentPath}/update-profile`}
+                                href={`${currentPath}/settings/update-profile`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -235,7 +241,7 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith(`${currentPath}/update-profile`) ? 'primary.main' : 'secondary.main',
+                                        backgroundColor: pathName.endsWith(`${currentPath}/settings/update-profile`) ? 'primary.main' : 'secondary.main',
                                         color: 'secondary.100',
                                         ':hover': {
 
@@ -266,7 +272,7 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith(`${currentPath}/settings`) ? 'primary.main' : 'secondary.main',
+                                        backgroundColor: pathName.endsWith(`${currentPath}/settings`) ? 'primary.main' : 'secondary.main',
                                         color: 'secondary.100',
                                         ':hover': {
 

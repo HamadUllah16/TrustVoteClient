@@ -1,6 +1,8 @@
 'use client'
-import CandidateSidebarMenus from '@/app/components/Candidate/CandidateSidebarMenus';
+import CandidateSidebar from '@/app/components/Candidate/CandidateSidebar';
+import CandidateSidebarMenus from '@/app/components/Candidate/CandidateSidebar';
 import Loading from '@/app/components/Loading';
+import MainWrapper from '@/app/components/MainWrapper';
 import Sidebar from '@/app/components/Sidebar';
 import { getCandidateProfile } from '@/app/redux/features/candidateSlice';
 import { AppDispatch, RootState } from '@/app/redux/store';
@@ -18,19 +20,17 @@ function DashboardPage() {
         dispatch(getCandidateProfile());
     }, [])
     return (
-        <Stack direction={'row'} px={'75px'} py={'15px'} gap={4} flex={1}>
-            {loading &&
-                <Loading />
-            }
-            <Sidebar>
-                <CandidateSidebarMenus />
-            </Sidebar>
+        <MainWrapper>
+
+            <CandidateSidebar />
+
             <Stack flex={1} borderRadius={2} width={'100%'} alignItems={'center'} justifyContent={'center'} bgcolor={'primary.contrastText'}>
                 <Typography>
                     Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{userProfile.email}</span>
                 </Typography>
             </Stack>
-        </Stack>
+
+        </MainWrapper>
     )
 }
 

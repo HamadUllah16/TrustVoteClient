@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
 import { Search } from '@mui/icons-material'
 import ConstituencySelect from './ConstituencySelection'
-import { allConstituency } from '@/app/redux/features/constituencySlice'
+import { getAllConstituency } from '@/app/redux/features/constituencySlice'
 
 function CandidateCompletion() {
     const [step, setStep] = useState(1)
@@ -47,7 +47,7 @@ function CandidateCompletion() {
             router.push('/candidate')
         }
         dispatch(allPoliticalParties());
-        dispatch(allConstituency());
+        dispatch(getAllConstituency());
     }, [profileCompletion])
 
     const handleNext = async (formik: any) => {

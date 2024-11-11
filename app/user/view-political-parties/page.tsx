@@ -11,6 +11,7 @@ import MainWrapper from '@/app/components/MainWrapper';
 import RenderTableHead from '@/app/components/RenderTableHead';
 import RenderTableData from '@/app/components/RenderTableData';
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice';
+import PageHeader from '@/app/components/PageHeader';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
@@ -25,21 +26,19 @@ function AllPoliticalPartiesPage() {
 
             <UserSidebar />
 
-            <RenderTableHead
+            <PageHeader
                 title='Political Parties'
                 subtitle={null}
-                labels={['#', 'Name', 'Abbreviation', 'Symbol']}
-                action=
-                {userProfile.role === 'admin' &&
-                    <IconButton onClick={() => setShowAddPartyModel(true)}>
-                        <Add />
-                    </IconButton>
-                }
+                action={null}
             >
-                <RenderPoliticalParties />
+                <RenderTableHead
+                    labels={['#', 'Name', 'Abbreviation', 'Symbol']}
+                >
+                    <RenderPoliticalParties />
 
-            </RenderTableHead>
+                </RenderTableHead>
 
+            </PageHeader>
             {showAddPartyModal &&
                 <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
             }

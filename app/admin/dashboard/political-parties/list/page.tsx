@@ -9,6 +9,7 @@ import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar';
 import RenderTableHead from '@/app/components/RenderTableHead';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
+import PageHeader from '@/app/components/PageHeader';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
@@ -18,24 +19,28 @@ function AllPoliticalPartiesPage() {
 
             <AdminSidebar />
 
-            <RenderTableHead
+            <PageHeader
                 title='Political Parties'
                 subtitle={null}
-                labels={role === 'admin' ? ['#', 'Name', 'Abbreviation', 'Symbol', 'Actions'] : ['#', 'Name', 'Abbreviation', 'Symbol']}
                 action={
-                    role === 'admin' &&
                     <IconButton onClick={() => setShowAddPartyModel(true)}>
-                        <Add color='primary' />
+                        <Add sx={{ color: 'primary.main' }} />
                     </IconButton>
-                }>
+                }
+            >
 
-                <RenderPoliticalParties />
+                <RenderTableHead
+                    labels={role === 'admin' ? ['#', 'Name', 'Abbreviation', 'Symbol', 'Actions'] : ['#', 'Name', 'Abbreviation', 'Symbol']}
+                >
 
-            </RenderTableHead>
+                    <RenderPoliticalParties />
 
-            {showAddPartyModal && role === 'admin' &&
-                <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
-            }
+                </RenderTableHead>
+                {showAddPartyModal && role === 'admin' &&
+                    <AddPoliticalParty display={showAddPartyModal} setDisplay={setShowAddPartyModel} />
+                }
+            </PageHeader>
+
 
         </MainWrapper>
 

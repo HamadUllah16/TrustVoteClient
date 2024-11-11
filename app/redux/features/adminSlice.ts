@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { getAllCandidates, getPendingCandidates } from "./candidateSlice";
 
 interface initState {
-    isAuthenticated: string,
+    isAuthenticated: boolean,
     profile: object,
     pendingCandidates: Array<object>,
     allParties: Array<object>,
@@ -20,7 +20,7 @@ interface initState {
 }
 
 const initialState: initState = {
-    isAuthenticated: '',
+    isAuthenticated: false,
     profile: {
 
     },
@@ -97,13 +97,33 @@ export const addPoliticalParty = createAsyncThunk<any, any, { rejectValue: { mes
     'admin/addPoliticalParty',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axiosInstance.post('/admin/create-political-party', data.party)
-            data.setDisplay(false)
-            dispatch(allPoliticalParties());
-            return response.data;
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/admin/create-political-party`, data.party, {
+                headers: {
+                    "Content-Type": 'multipart/form-data',
+                    'x_auth_token': data.token
+                }
+            })
+            if (response.status === 200) {
+                data.setDisplay(false)
+                dispatch(allPoliticalParties());
+                return response.data;
+            }
         } catch (error: any) {
             console.log(error.message)
             return rejectWithValue({ message: error?.message })
+        }
+    }
+)
+
+export const deletePoliticalParty = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'admin/deletePoliticalParty',
+    async (data: any, { rejectWithValue, dispatch }) => {
+        try {
+            const response = await axiosInstance.post('/admin/delete-political-party', data);
+            dispatch(allPoliticalParties());
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message });
         }
     }
 )
@@ -114,6 +134,19 @@ export const allPoliticalParties = createAsyncThunk<any, void, { rejectValue: { 
         try {
             const response = await axiosInstance.get('/admin/all-political-parties');
             console.log(response)
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message })
+        }
+    }
+)
+
+export const editPoliticalParty = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'admin/editPoliticalParty',
+    async (data: any, { rejectWithValue, dispatch }) => {
+        try {
+            const response = await axiosInstance.patch('/admin/edit-political-party', data);
+            dispatch(allPoliticalParties());
             return response;
         } catch (error: any) {
             return rejectWithValue({ message: error?.message })
@@ -150,6 +183,7 @@ const adminSlice = createSlice({
             state.message = 'Authenticated!';
             localStorage.setItem('x_auth_token', action.payload.token);
             localStorage.setItem('role', action.payload.role);
+            state.isAuthenticated = true;
         });
 
         builder.addCase(loginAdmin.rejected, (state, action) => {
@@ -228,6 +262,32 @@ const adminSlice = createSlice({
         builder.addCase(getVerifiedUsersCount.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Failed to fetch verified users count.'
+        })
+
+        // delete political party builder
+        builder.addCase(deletePoliticalParty.pending, state => {
+            state.loading = true
+        })
+        builder.addCase(deletePoliticalParty.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(deletePoliticalParty.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
+        })
+
+        // edit political party builder
+        builder.addCase(editPoliticalParty.pending, state => {
+            state.loading = true
+        })
+        builder.addCase(editPoliticalParty.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(editPoliticalParty.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
         })
     },
 })

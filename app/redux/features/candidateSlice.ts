@@ -11,6 +11,7 @@ const initialState = {
     pendingCandidates: [],
     myCandidates: [],
     myProvincialCandidates: [],
+    resultCandidates: [],
 
     loading: false,
     error: '',
@@ -123,6 +124,18 @@ export const getProvincialRelevantCandidates = createAsyncThunk<any, void, { rej
             return response;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message);
+        }
+    }
+)
+
+export const approvedCandidatesForResults = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'candidate/approvedCandidateForResults',
+    async (data: { electionSessionId: string }, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/candidate/approved-candidates-for-results', data);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message })
         }
     }
 )
@@ -246,6 +259,20 @@ const candidateSlice = createSlice({
         builder.addCase(getProvincialRelevantCandidates.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Error fetching relevant provincial candidates';
+        })
+
+        // approved candidates for results builder
+        builder.addCase(approvedCandidatesForResults.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(approvedCandidatesForResults.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.resultCandidates = action.payload?.candidates;
+        })
+        builder.addCase(approvedCandidatesForResults.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
         })
     },
 })

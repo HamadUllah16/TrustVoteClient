@@ -6,9 +6,10 @@ import Link from 'next/link'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import SidebarMenus from './SidebarMenus'
 
 function Sidebar({ children }: { children: React.ReactNode }) {
-    const { firstName, lastName, email, role, status } = useSelector((state: RootState) => state.user.userProfile)
+    const { firstName, lastName, email, role, status, profilePicture } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <Stack
             minWidth={400}
@@ -22,33 +23,41 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                     gap={2}
                     alignItems={'center'}
                 >
-                    <Box
-                        maxHeight={80}
-                        maxWidth={80}
+                    <Stack
+                        height={100}
+                        width={100}
                         borderRadius={'100px'}
                         overflow={'hidden'}
+                        border={'5px solid'}
+                        borderColor={'primary.main'}
+                        position={'relative'}
                     >
                         <Image
-                            src={'/avatar.jpg'}
+                            src={profilePicture ?? '/avatar.jpg'}
                             alt='profile picture'
-                            width={100}
-                            height={100}
+                            fill
+                            style={{ objectFit: 'cover' }}
                         />
-                    </Box>
+                    </Stack>
                     <Stack>
                         <Stack
                             direction={'row'}
                             gap={1}
-                            justifyContent={'space-between'}
                         >
                             <Typography
-                                color={'grey'}
+                                color={'primary.200'}
                                 variant='h6'
                             >
                                 {firstName}
                             </Typography>
+                            <Typography
+                                color={'secondary.200'}
+                                variant='h6'
+                            >
+                                {lastName}
+                            </Typography>
 
-                            <Stack
+                            {/* <Stack
                                 bgcolor={'primary.main'}
                                 px={2}
                                 py={0.5}
@@ -58,7 +67,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                                 <Typography color={'secondary.100'}>
                                     {role}
                                 </Typography>
-                            </Stack>
+                            </Stack> */}
                         </Stack>
                         <Typography
                             color={'grey'}
@@ -93,22 +102,12 @@ function Sidebar({ children }: { children: React.ReactNode }) {
 
 
             <Stack>
-                <Link href={'/settings'}>
-                    <MenuItem sx={{ borderRadius: 1, gap: 2 }}>
-                        <SettingsOutlined fontSize='medium' sx={{ color: 'secondary.100' }} />
-                        <Typography variant='subtitle1' color={'secondary.100'} display={'flex'} gap={1} alignItems={'center'} >
-                            Settings
-                        </Typography>
-                    </MenuItem>
-                </Link>
-                <Link href={'/logout'}>
-                    <MenuItem sx={{ borderRadius: 1, gap: 2 }}>
-                        <LogoutOutlined fontSize='medium' sx={{ color: 'secondary.100' }} />
-                        <Typography variant='subtitle1' color={'secondary.100'} display={'flex'} gap={1} alignItems={'center'} >
-                            Logout
-                        </Typography>
-                    </MenuItem>
-                </Link>
+                <SidebarMenus
+                    navItems={[
+                        { href: '/settings', title: 'Settings', icon: <SettingsOutlined fontSize='medium' /> },
+                        { href: '/logout', title: 'Logout', icon: <LogoutOutlined fontSize='medium' /> }
+                    ]}
+                />
             </Stack>
 
         </Stack>

@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { Toaster } from "react-hot-toast";
 import NetworkStatus from "./components/NetworkStatus";
+import { Stack } from "@mui/material";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,10 +27,18 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider theme={theme}>
         <StoreProvider>
-          <body style={{ backgroundColor: "#101010" }} className={`${inter.className} flex flex-col min-h-screen`}>
-            <Navbar />
+          <body style={{ backgroundColor: "#101010" }} className={`${inter.className} flex gap-8 flex-col min-h-screen`}>
+            {/* <NetworkStatus /> */}
+            <Stack
+              position={'fixed'}
+              top={0}
+              width={'100%'}
+              zIndex={10}
+            >
+              <Navbar />
+            </Stack>
             <Toaster position="top-center" />
-            <main className="flex flex-grow">{children}</main>
+            <main className="flex flex-grow mt-28">{children}</main>
             <Footer />
           </body>
         </StoreProvider>

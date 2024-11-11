@@ -18,9 +18,7 @@ function Modal({ children }) {
                 alignItems={"center"}
                 width={"100%"}
                 height={"100%"}
-                sx={{
-                    backgroundColor: "#DADADA50",
-                }}
+                bgcolor={'#1C1C1C90'}
             >
                 {children}
             </Box>

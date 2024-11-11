@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Skeleton, TableCell, TableRow } from '@mui/material'
+import { Skeleton, Stack, TableCell, TablePagination, TableRow, Typography } from '@mui/material'
 import Image from 'next/image'
 import Modal from './Modal'
 

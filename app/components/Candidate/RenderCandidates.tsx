@@ -6,17 +6,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getApprovedCandidates } from '@/app/redux/features/candidateSlice';
 
-function RenderCandidates() {
-    const { approvedCandidates } = useSelector((state: RootState) => state.candidate);
-
-    const dispatch = useDispatch<AppDispatch>();
-    useEffect(() => {
-        dispatch(getAdminProfile())
-        dispatch(getApprovedCandidates());
-    }, [])
+function RenderCandidates({ approvedCandidates, loading, actions }: { approvedCandidates: any, loading: boolean, actions: null | React.ReactNode }) {
     return (
         <>
-            {approvedCandidates && approvedCandidates.map((candidate: any, index: number) => {
+            {approvedCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
@@ -28,15 +21,15 @@ function RenderCandidates() {
                             <Stack
                                 bgcolor={candidate.status === 'approved' ? 'primary.main' : 'red'}
                                 px={1}
-                                py={0.2}
+                                py={1}
                                 alignItems={'center'}
-                                borderRadius={10}
+                                borderRadius={1}
                             >
                                 {candidate.status}
                             </Stack>
                         </TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.dateOfBirth}</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell>{actions}</TableCell>
                     </TableRow>
                 )
             })}

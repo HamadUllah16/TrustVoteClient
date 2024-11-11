@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import VoteButtonInBallots from './UserComponents/VoteButtonInBallots'
 
-function BallotCard({ candidate }: { candidate: any }) {
+function BallotCard({ candidate, assembly }: { candidate: any, assembly: string }) {
     return (
 
         <Stack
@@ -34,7 +34,7 @@ function BallotCard({ candidate }: { candidate: any }) {
 
             <Stack direction={'row'} gap={1} pt={1}>
                 {/* button that behaves to the election session status accordingly i.e disables */}
-                <VoteButtonInBallots />
+                <VoteButtonInBallots candidate={candidate} assembly={assembly} />
             </Stack>
 
 

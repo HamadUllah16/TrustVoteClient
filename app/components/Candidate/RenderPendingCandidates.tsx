@@ -14,8 +14,7 @@ import dynamic from 'next/dynamic';
 const PDF = dynamic(() => import('../PDF'), { ssr: false });
 
 
-function RenderPendingCandidates() {
-    const { pendingCandidates } = useSelector((state: RootState) => state.candidate);
+function RenderPendingCandidates({ pendingCandidates, loading }: { loading: boolean, pendingCandidates: any }) {
     const [activeAttachment, setActiveAttachment] = useState('manifesto');
     const [show, setShow] = useState(false);
     const [selected, setSelected] = useState({
@@ -33,18 +32,17 @@ function RenderPendingCandidates() {
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-        dispatch(getAdminProfile())
-        dispatch(getPendingCandidates());
     }, [])
     return (
         <>
-            {pendingCandidates && pendingCandidates.map((candidate: any, index: number) => {
+            {pendingCandidates.length > 0 ? pendingCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={candidate._id}>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituencyType}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituency}</TableCell>
                         <TableCell>
                             <Stack
                                 bgcolor={candidate.status === 'pending' ? 'orange' : 'red'}
@@ -75,7 +73,12 @@ function RenderPendingCandidates() {
                         </TableCell>
                     </TableRow>
                 )
-            })}
+            })
+                :
+                <Typography>
+                    No Candidates...
+                </Typography>
+            }
             {show && selected &&
                 <Modal>
 

@@ -1,10 +1,9 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal';
 import { Divider, Stack, TextField, Typography, Button, IconButton, CircularProgress } from '@mui/material';
 import { Cancel } from '@mui/icons-material';
 import { FormikValues, useFormik } from 'formik';
-import handleFileChange from '../handleImageInput';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/redux/store';
@@ -13,6 +12,8 @@ import { addPoliticalParty } from '@/app/redux/features/adminSlice';
 function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDisplay: React.Dispatch<React.SetStateAction<boolean>> }) {
     const { loading } = useSelector((state: RootState) => state.admin)
     const dispatch = useDispatch<AppDispatch>();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [previewUrl, setPreviewUrl] = useState('');
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -21,19 +22,56 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
         },
         onSubmit(values) {
             console.log('Form values:', values);
-            dispatch(addPoliticalParty({ party: values, setDisplay: setDisplay }))
+            const token = localStorage.getItem('x_auth_token')
+            dispatch(addPoliticalParty({ party: values, setDisplay: setDisplay, token }))
         },
         validate(values) {
             const errors: FormikValues = {};
             if (!values.name) {
-                errors.name = 'Required';
+                errors.name = 'Name is required.';
             }
             if (!values.abbreviation) {
-                errors.abbreviation = 'Required';
+                errors.abbreviation = 'Abbreviation is required.';
             }
+            if (!values.symbol) {
+                errors.symbol = 'Symbol is required.'
+            }
+            console.log(errors)
             return errors;
         },
     });
+
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>, fieldName: string, setFieldValue: any, fileType: string) => {
+        const file = event.currentTarget.files?.[0];
+        if (file) {
+            if (fileType === 'pdf' && file.type !== 'application/pdf') {
+                setErrorMessage('Invalid file type. Supported file type is: PDF');
+
+                // clearing out state and name of file
+                formik.setFieldValue(fieldName, '');
+                event.currentTarget.value = '';
+
+                return;
+            }
+            if (fileType === 'image' && !(file.type === 'image/png' || file.type === 'image/jpeg')) {
+                setErrorMessage('Invalid file type. Supported file type is: PNG/JPG');
+
+                // clearing out state and name of file
+                formik.setFieldValue(fieldName, '');
+                event.currentTarget.value = '';
+
+                return
+            }
+            setErrorMessage('');
+            setFieldValue(fieldName, file);
+
+            if (fileType === 'image') {
+                const url = URL.createObjectURL(file);
+                setPreviewUrl(url);
+            }
+        };
+
+    }
 
     return (
         <Modal>
@@ -59,10 +97,11 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                             <Cancel fontSize='medium' sx={{ color: 'primary.main' }} />
                         </IconButton>
                     </Stack>
-                    <Divider />
+                    <Divider sx={{ borderColor: 'secondary.200' }} />
 
                     <Stack gap={2}>
                         <TextField
+                            variant='filled'
                             label='Name'
                             placeholder='Pakistan Peoples Party'
                             name='name'
@@ -72,6 +111,7 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                             helperText={formik.touched.name && formik.errors.name}
                         />
                         <TextField
+                            variant='filled'
                             label='Abbreviation'
                             placeholder='PPP'
                             name='abbreviation'
@@ -79,15 +119,21 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                             onChange={formik.handleChange}
                             error={formik.touched.abbreviation && Boolean(formik.errors.abbreviation)}
                             helperText={formik.touched.abbreviation && formik.errors.abbreviation}
+                            inputProps={{
+                                style: {
+                                    textTransform: 'uppercase'
+                                }
+                            }}
                         />
                         <TextField
+                            variant='filled'
                             name='symbol'
                             type='file'
                             label='Party Symbol'
                             InputLabelProps={{ shrink: true }}
-                            onChange={(event: any) => handleFileChange(event, 'symbol', formik)}
+                            onChange={(event: any) => handleFileChange(event, 'symbol', formik.setFieldValue, 'image')}
                             error={formik.touched.symbol && Boolean(formik.errors.symbol)}
-                            helperText={formik.touched.symbol && formik.errors.symbol}
+                            helperText={formik.touched.symbol && Boolean(formik.errors.symbol)}
                             inputProps={{ accept: '.jpg, .png' }}
                         />
                         {formik.values.symbol &&
@@ -95,7 +141,7 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                                 <Image
                                     height={100}
                                     width={100}
-                                    src={formik.values.symbol}
+                                    src={previewUrl}
                                     alt='symbol picture'
                                 />
                             </Stack>
@@ -103,7 +149,7 @@ function AddPoliticalParty({ display, setDisplay }: { display: boolean, setDispl
                     </Stack>
 
                     <Stack direction={'row'} justifyContent={'flex-end'} mt={2}>
-                        <Button disabled={!(formik.isValid && formik.dirty)} variant='contained' color='primary' type='submit'>
+                        <Button disabled={!(formik.isValid && formik.dirty && !loading)} variant='contained' color='primary' type='submit'>
                             {loading ?
                                 <CircularProgress size={'24px'} />
                                 :

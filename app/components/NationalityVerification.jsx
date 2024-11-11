@@ -89,12 +89,13 @@ function NationalityVerification({ formik }) {
                         }
                     }}
                 >
+                    {/* preview */}
                     {formik.values.cnicFront === "" ?
                         <Typography color={"#5A5A5A"} variant='body2'>Upload front picture of the ID</Typography>
 
                         :
                         <Image
-                            src={profileCompletion ? cnicFront : cnicFrontPreview}
+                            src={cnicFront ?? cnicFrontPreview ?? ''}
                             alt='front of the card'
                             style={{
                                 maxWidth: "100%",
@@ -160,11 +161,13 @@ function NationalityVerification({ formik }) {
                         }
                     }}
                 >
+
+                    {/* preview */}
                     {formik.values.cnicBack === "" ?
                         <Typography color={"#5A5A5A"} variant='body2'>Upload back picture of the ID</Typography>
                         :
                         <Image
-                            src={profileCompletion ? cnicBack : cnicBackPreview}
+                            src={cnicBack ?? cnicBackPreview ?? ''}
                             alt='back of the card'
                             style={{
                                 maxWidth: "100%",

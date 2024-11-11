@@ -12,10 +12,16 @@ import toast from 'react-hot-toast';
 
 // Validation schema
 const validationSchema = Yup.object({
-  dateTime: Yup.date()
-    .min(dayjs(), "Please select a future date and time.")
-    .required("Date and time are required"),
-  sessionName: Yup.string().min(5, 'Minimum 5 characters.').required('Session Name is required.')
+  dateTime: Yup.mixed()
+    .required("Date and time are required")
+    .test(
+      'is-future-date',
+      'Please select a future date and time.',
+      (value) => value && dayjs(value).isAfter(dayjs())
+    ),
+  sessionName: Yup.string()
+    .min(5, 'Minimum 5 characters.')
+    .required('Session Name is required.')
 });
 
 function SchedulingElectionSession() {
@@ -38,7 +44,7 @@ function SchedulingElectionSession() {
         )
       }}
     >
-      {({ values, errors, touched, setFieldValue }) => (
+      {({ values, errors, touched, setFieldValue, isValid, dirty }) => (
         <Form>
           <Stack spacing={2}>
             <Stack gap={1}>
@@ -69,7 +75,7 @@ function SchedulingElectionSession() {
               </LocalizationProvider>
             </Stack>
 
-            <Button type="submit" variant="outlined">
+            <Button disabled={!isValid || !dirty} type="submit" variant="outlined">
               Schedule
             </Button>
           </Stack>

@@ -3,8 +3,10 @@ import { Grid, IconButton, Typography } from '@mui/material'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 function Footer() {
+    const { firstName } = useSelector((state) => state.user.userProfile);
     const pathName = usePathname();
     return (
         <>
@@ -23,7 +25,8 @@ function Footer() {
                     <Grid
                         backgroundColor={"background"}
                         px={"75px"}
-                        py={"15px"}
+                        py={"30px"}
+                        bgcolor={'secondary.main'}
                     >
                         <Grid
                             display={"flex"}
@@ -32,10 +35,6 @@ function Footer() {
                             gap={4}
                             px={3}
                             py={4}
-                            borderRadius={2}
-                            border={'1px solid'}
-                            borderColor={'secondary.200'}
-                            bgcolor={'secondary.main'}
                         >
 
                             <Grid
@@ -48,13 +47,12 @@ function Footer() {
                                         fontWeight={"bolder"}
                                         color={'primary.main'}
                                         p={1}
-                                        sx={{ WebkitTextStroke: '1px black' }}
                                     >
-                                        trust vote
+                                        Trust Vote
                                     </Typography>
                                 </Grid>
                                 <Grid item={1} display={"flex"} flexDirection={"column"} gap={"30px"}>
-                                    <Typography variant='h5'>About</Typography>
+                                    <Typography variant='h5' color={'secondary.100'}>About</Typography>
                                     <Grid
                                     >
                                         <Link href={"#privacypolicy"}>
@@ -73,7 +71,7 @@ function Footer() {
                                 </Grid>
 
                                 <Grid item={1} display={"flex"} flexDirection={"column"} gap={"30px"}>
-                                    <Typography variant='h5'>Help & Support</Typography>
+                                    <Typography variant='h5' color={'secondary.100'}>Help & Support</Typography>
                                     <Grid
                                     >
                                         <Link href={"#faqs"}>
@@ -89,15 +87,17 @@ function Footer() {
                                 </Grid>
 
                                 <Grid item={1} display={"flex"} flexDirection={"column"} gap={"30px"}>
-                                    <Typography variant='h5'>Account</Typography>
+                                    <Typography variant='h5' color={'secondary.100'}>Account</Typography>
                                     <Grid
                                     >
-                                        <Link href={"/login"}>
-                                            <Typography variant='subtitle1' color={"#5A5A5A"}>Login</Typography>
+                                        <Link href={firstName ? '/user/dashboard' : "/login"}>
+                                            <Typography variant='subtitle1' color={"#5A5A5A"}>{firstName ?? 'Login'}</Typography>
                                         </Link>
-                                        <Link href={"/register"}>
-                                            <Typography variant='subtitle1' color={"#5A5A5A"}>Register</Typography>
-                                        </Link>
+                                        {firstName ? null :
+                                            <Link href={"/register"}>
+                                                <Typography variant='subtitle1' color={"#5A5A5A"}>Register</Typography>
+                                            </Link>
+                                        }
                                     </Grid>
                                 </Grid>
 

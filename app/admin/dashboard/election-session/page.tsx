@@ -1,29 +1,23 @@
 'use client'
 import AdminSidebar from '@/app/components/AdminComponents/AdminSidebar'
 import MainWrapper from '@/app/components/MainWrapper'
-import { getAllCandidates, getPendingCandidates } from '@/app/redux/features/candidateSlice'
+import { getApprovedCandidates, getPendingCandidates } from '@/app/redux/features/candidateSlice'
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
-import { Circle } from '@mui/icons-material'
-import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Divider, Stack, Typography } from '@mui/material'
+import React, { useEffect, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import SchedulingElectionSession from '@/app/components/SchedulingElectionSession';
-import { getElectionSession } from '@/app/redux/features/electionSessionSlice'
-import Loading from '@/app/components/Loading'
-import Countdown from '@/app/components/Countdown';
-import dayjs from 'dayjs'
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus'
 import { getVerifiedUsersCount } from '@/app/redux/features/adminSlice'
 
 function ElectionSessionPage() {
-    const { allCandidates, pendingCandidates } = useSelector((state: RootState) => state.candidate)
+    const { approvedCandidates } = useSelector((state: RootState) => state.candidate)
     const { allParties } = useSelector((state: RootState) => state.profileCompletion)
     const { userCount } = useSelector((state: RootState) => state.admin)
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         dispatch(getPendingCandidates());
-        dispatch(getAllCandidates());
+        dispatch(getApprovedCandidates());
         dispatch(allPoliticalParties())
         dispatch(getVerifiedUsersCount())
     }, [])
@@ -46,11 +40,11 @@ function ElectionSessionPage() {
                         <Stack direction={'row'} justifyContent={'space-between'} gap={3}>
                             <Stack direction={'row'} gap={2}>
 
-                                {pendingCandidates && allCandidates &&
+                                {approvedCandidates &&
                                     <Stack border={'1px solid'} borderColor={'secondary.200'} borderRadius={1} p={2}>
                                         <Typography variant='subtitle1' color={'primary.200'}>Nominated Candidates</Typography>
                                         <Typography variant='h5' color={'secondary.100'}>
-                                            {allCandidates.length}
+                                            {approvedCandidates.length}
                                         </Typography>
                                     </Stack>
                                 }

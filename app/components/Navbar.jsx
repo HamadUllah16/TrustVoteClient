@@ -1,6 +1,6 @@
 "use client"
-import { Grid, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Grid, Stack } from '@mui/material'
+import React, { useEffect } from 'react'
 import Link from 'next/link';
 import ProfileMenu from './ProfileMenu';
 import NavItems from './NavItems';
@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from '../redux/features/userSlice';
 import { getCandidateProfile } from '../redux/features/candidateSlice';
 import { getAdminProfile } from '../redux/features/adminSlice';
-import { Toaster } from 'react-hot-toast';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
@@ -58,8 +57,6 @@ function Navbar() {
                         <Grid
                             container
                             borderRadius={2}
-                            px={2}
-                            py={2}
                             display={"flex"}
                             justifyContent={"space-between"}
                             alignItems={"center"}
