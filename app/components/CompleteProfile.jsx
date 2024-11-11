@@ -3,7 +3,7 @@ import { Box, Grid, TextField, Typography, Button, Divider, Stack, IconButton, M
 import { useFormik } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 import NationalityVerification from '@/app/components/NationalityVerification';
-import { Add, Error, Upload } from '@mui/icons-material';
+import { Add, Error, Upload, UploadFile, Verified } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from '../redux/features/userSlice';
 import DateInputField from "./DateInputField";
@@ -13,32 +13,17 @@ import dayjs from 'dayjs';
 import withAuth from '../utils/withAuth';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import Image from 'next/image';
-import imageToBase64 from './Utils/imageToBase64';
 import UserAddressConstituency from './UserAddressConstituency';
 import checkChanged from './checkChanged';
+import ProfilePicture from './ProfilePicture';
 
 
 
 function CompleteProfile() {
     const { userProfile, loading } = useSelector(state => state.user)
     const { isAuthenticated } = useSelector(state => state.auth)
-    const [pfpPreview, setPfpPreview] = useState('');
+
     const router = useRouter();
-    const ref = useRef();
-
-    function handlePfpGrid(ref) {
-        if (ref.current !== null) {
-            ref.current.click();
-        }
-    }
-
-    async function pfpHandler(event) {
-        const file = event.target.files[0];
-        const base64 = await imageToBase64(file)
-        setPfpPreview(base64);
-    }
-
     const dispatch = useDispatch();
     useEffect(() => {
         if (!isAuthenticated) {
@@ -48,6 +33,7 @@ function CompleteProfile() {
 
     const formik = useFormik({
         initialValues: {
+            profilePicture: userProfile.profilePicure ?? '',
             firstName: userProfile.firstName ?? '',
             lastName: userProfile.lastName ?? '',
             email: userProfile?.email ?? '',
@@ -166,180 +152,157 @@ function CompleteProfile() {
                 <Stack
                     justifyContent={"space-between"}
                     gap={3}
-                    p={3}
                     minWidth={300}
-                    bgcolor={'secondary.main'}
-                    borderRadius={2}
-                    border={'1px solid'}
-                    borderColor={'secondary.200'}
                 >
 
-                    <Grid
-                        display={'flex'}
-                        flexDirection={'column'}
-                        gap={2}
-                    >
-                        <Grid
-                            display={'flex'}
-                            gap={2}
-                            flexDirection={'column'}
-                        >
-                            <Typography
-                                variant='h4'
-                                color={'primary.main'}
-                                fontWeight={'bold'}
+                    <Stack direction={'row'} gap={5} alignItems={'center'}>
+
+                        {/* profile picture component */}
+                        <ProfilePicture
+                            formik={formik}
+                            currentPicture={userProfile.profilePicture}
+                            fieldName='profilePicture'
+                        />
+
+                        <Stack gap={2}>
+
+
+                            {/* firstname and lastname inputs */}
+                            <Stack
+                                gap={2}
+                                width={'100%'}
+                                height={'fit-content'}
+                                direction={'row'}
                             >
-                                Complete your profile
-                            </Typography>
-                        </Grid>
-                    </Grid>
+                                <TextField
+                                    variant='filled'
+                                    fullWidth
+                                    label={'First Name'}
+                                    value={formik.values.firstName}
+                                    onChange={formik.handleChange}
+                                    name='firstName'
+                                    error={formik.touched && formik.errors.firstName}
+                                    helperText={formik.touched && formik.errors.firstName}
 
-
-                    <Stack direction={'row'}>
-                        <Stack
-                            border={'1px solid'}
-                            bgcolor={'background.default'}
-                            borderColor={'secondary.200'}
-                            borderRadius={5}
-                            height={100}
-                            width={100}
-                            justifyContent={'center'}
-                            onClick={() => handlePfpGrid(ref)}
-
-                        >
-                            {pfpPreview === '' ?
-                                <IconButton sx={{ width: '100%', height: '100%' }}>
-                                    <Add sx={{ color: 'primary.main' }} />
-                                </IconButton>
-                                :
-
-                                <Image
-                                    width={100}
-                                    height={100}
-                                    src={pfpPreview}
-                                    alt='a profile picture'
                                 />
 
-                            }
+                                <TextField
+                                    variant='filled'
+                                    fullWidth
+                                    label={'Last Name'}
+                                    value={formik.values.lastName}
+                                    onChange={formik.handleChange}
+                                    name='lastName'
+                                    error={formik.touched && formik.errors.lastName}
+                                    helperText={formik.touched && formik.errors.lastName}
+
+                                />
+
+                            </Stack>
+
+                            {/* email and phone inputs */}
+                            <Stack
+                                direction={'row'}
+                                gap={2}
+                            >
+
+                                <TextField
+                                    variant='filled'
+                                    label={'Email'}
+                                    disabled
+                                    fullWidth
+                                    name='email'
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange}
+                                />
+
+                                <TextField
+                                    variant='filled'
+                                    label={'Phone'}
+                                    type='tel'
+                                    fullWidth
+                                    value={formik.values.phone}
+                                    onChange={formik.handleChange}
+                                    name='phone'
+                                    error={formik.touched && formik.errors.phone}
+                                    helperText={formik.touched && formik.errors.phone}
+                                />
+
+                            </Stack>
+
                         </Stack>
-                        <input ref={ref} type='file' onClick={(event) => pfpHandler(event)} name='profile-pic' style={{ display: 'none' }} />
+
                     </Stack>
-
-                    <Box
-                        display={'flex'}
-                        gap={2}
-                        justifyContent={'space-between'}
-                    >
-                        <TextField
-                            variant='filled'
-                            fullWidth
-                            label={'First Name'}
-                            value={formik.values.firstName}
-                            onChange={formik.handleChange}
-                            name='firstName'
-                            error={formik.touched && formik.errors.firstName}
-                            helperText={formik.touched && formik.errors.firstName}
-
-                        />
-
-                        <TextField
-                            variant='filled'
-                            fullWidth
-                            label={'Last Name'}
-                            value={formik.values.lastName}
-                            onChange={formik.handleChange}
-                            name='lastName'
-                            error={formik.touched && formik.errors.lastName}
-                            helperText={formik.touched && formik.errors.lastName}
-
-                        />
-                    </Box>
-
-                    <Divider />
-
-                    <Box
-                        display={'flex'}
-                        gap={2}
-                        justifyContent={'space-between'}
-                    >
-
-                        <TextField
-                            variant='filled'
-                            label={'Email'}
-                            disabled
-                            fullWidth
-                            name='email'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                        />
-
-                        <TextField
-                            variant='filled'
-                            label={'Phone'}
-                            type='tel'
-                            fullWidth
-                            value={formik.values.phone}
-                            onChange={formik.handleChange}
-                            name='phone'
-                            error={formik.touched && formik.errors.phone}
-                            helperText={formik.touched && formik.errors.phone}
-                        />
-                    </Box>
-                    <Divider />
-                    <Grid
-                        display={'flex'}
-                        gap={2}
-                    >
-                        <TextField
-                            variant='filled'
-                            fullWidth
-                            name='cnic'
-                            label={'CNIC Number'}
-                            value={formik.values.cnic}
-                            onChange={formik.handleChange}
-                            error={formik.touched && formik.errors.cnic}
-                            helperText={formik.touched && formik.errors.cnic}
-                        />
-
-                        <TextField
-                            variant='filled'
-                            fullWidth
-                            label='Date of Birth'
-                            type="date"
-                            name="date"
-                            InputLabelProps={{ shrink: true }}
-                            value={formik.values.date}
-                            onChange={formik.handleChange}
-                            error={formik.touched.date && Boolean(formik.errors.date)}
-                            onBlur={formik.handleBlur}
-                            helperText={formik.touched.date && formik.errors.date}
-                        />
-
-                    </Grid>
 
                     <Divider sx={{ borderColor: 'secondary.200' }} />
 
                     <UserAddressConstituency formik={formik} />
 
                     <Divider sx={{ borderColor: 'secondary.200' }} />
-                    <Grid
-                        display={"flex"}
-                        flexDirection={"column"}
+
+                    {/* cnic & dob inputs */}
+                    <Stack
+                        gap={1}
                     >
-                        <Box
-                            display={"flex"}
-                            justifyContent={"space-between"}
+                        <Stack
+                            direction={'row'}
+                            gap={1}
                             alignItems={'center'}
-                            gap={0.5}
-                            width={"100%"}
                         >
                             <Typography variant='subtitle1' color={'primary.main'}>
-                                Upload document snaps
+                                Nationality Verification
                             </Typography>
-                        </Box>
-                    </Grid>
 
-                    <NationalityVerification formik={formik} />
+                            {userProfile.profileCompletion &&
+                                <Verified htmlColor='#22BB33' />
+                            }
+                        </Stack>
+
+                        {userProfile.profileCompletion ?
+                            <Stack
+                                height={100}
+                                width={500}
+                            >
+                                <Typography color={'primary.200'}>
+                                    Your profile is completed and automatically verified. If you see any incorrect personal information, please contact the customer support.
+                                </Typography>
+                            </Stack>
+                            :
+                            <>
+                                <Stack
+                                    direction={'row'}
+                                    gap={2}
+                                >
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        name='cnic'
+                                        label={'CNIC Number'}
+                                        value={formik.values.cnic}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched && formik.errors.cnic}
+                                        helperText={formik.touched && formik.errors.cnic}
+                                    />
+
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        label='Date of Birth'
+                                        type="date"
+                                        name="date"
+                                        InputLabelProps={{ shrink: true }}
+                                        value={formik.values.date}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.date && Boolean(formik.errors.date)}
+                                        onBlur={formik.handleBlur}
+                                        helperText={formik.touched.date && formik.errors.date}
+                                    />
+                                </Stack>
+
+                                <NationalityVerification formik={formik} />
+                            </>
+                        }
+                    </Stack>
 
                     {formik.errors.cnicFront &&
                         <Typography
@@ -365,6 +328,8 @@ function CompleteProfile() {
                             <Error fontSize="small" /> {formik.errors.cnicBack}
                         </Typography>
                     }
+
+                    <Divider sx={{ borderColor: 'secondary.200' }} />
 
                     <Grid
                         display={"flex"}

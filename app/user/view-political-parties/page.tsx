@@ -33,12 +33,6 @@ function AllPoliticalPartiesPage() {
             >
                 <RenderTableHead
                     labels={['#', 'Name', 'Abbreviation', 'Symbol']}
-                    action=
-                    {userProfile.role === 'admin' &&
-                        <IconButton onClick={() => setShowAddPartyModel(true)}>
-                            <Add />
-                        </IconButton>
-                    }
                 >
                     <RenderPoliticalParties />
 

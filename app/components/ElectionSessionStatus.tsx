@@ -23,6 +23,16 @@ export default function ElectionSessionStatus() {
                 <CircularProgress size={'12px'} />
             }
             {
+                electionSession && (electionSession.status === '' || electionSession.status === 'ended') && role === 'admin' &&
+                <Stack gap={1}>
+                    <Typography variant='h6' color={'primary.main'}>
+                        Schedule an Election Session
+                    </Typography>
+                    <SchedulingElectionSession />
+                </Stack>
+            }
+
+            {
                 electionSession._id ?
                     <Stack gap={1} >
                         <Typography variant='h6' color={'primary.main'}>
@@ -106,7 +116,7 @@ export default function ElectionSessionStatus() {
                     </Stack>
                     :
                     <>
-                        {role !== 'admin' &&
+                        {role !== '' && role !== 'admin' && !loading &&
 
                             <Stack flexGrow={1}>
                                 <Typography color={'primary.main'}>
@@ -116,16 +126,6 @@ export default function ElectionSessionStatus() {
                         }
                     </>
             }
-            {
-                electionSession && (electionSession.status === '' || electionSession.status === 'ended') && role === 'admin' &&
-                <Stack gap={1} p={3}>
-                    <Typography variant='h6' color={'primary.main'}>
-                        Schedule an Election Session
-                    </Typography>
-                    <SchedulingElectionSession />
-                </Stack>
-            }
-
         </Stack >
 
     )

@@ -1,9 +1,13 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import { getElectionSession } from '../redux/features/electionSessionSlice';
 
 function Countdown({ scheduledTime }) {
     const [timeRemaining, setTimeRemaining] = useState("");
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // Update the countdown every second
@@ -13,7 +17,7 @@ function Countdown({ scheduledTime }) {
             const diff = targetTime.diff(now);
 
             if (diff <= 0) {
-                setTimeRemaining("Refresh...");
+                dispatch(getElectionSession())
                 clearInterval(interval);
             } else {
                 const days = targetTime.diff(now, 'day');

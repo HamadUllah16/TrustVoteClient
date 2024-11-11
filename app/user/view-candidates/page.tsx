@@ -28,8 +28,7 @@ function ViewCandidatesPage() {
                 action={null}
             >
                 <RenderTableHead
-                    labels={['#', 'Name', 'Votes', 'Constituency Type', 'Constituency', 'Party Affiliation']}
-                    action={null}
+                    labels={['#', 'Name', 'Constituency Type', 'Constituency', 'Party Affiliation']}
                 >
 
                     {/* table body */}

@@ -1,21 +1,39 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import { string } from "yup";
 
-const initialState = {
+
+type ElectionSession = {
+    _id: string;
+    name: string;
+    electionSessionPublicKey: string;
+    status: string;
+    scheduledTime: Date | null;
+};
+
+
+interface ElectionState {
+    electionSession: ElectionSession;
+    allElectionSessions: ElectionSession[];
+    message: string;
+    error: string;
+    loading: boolean;
+}
+
+const initialState: ElectionState = {
     electionSession: {
         _id: '',
         name: '',
         electionSessionPublicKey: '',
         status: '',
         scheduledTime: null,
-
     },
-
+    allElectionSessions: [],
     message: '',
     error: '',
     loading: false
-}
+};
 
 export const scheduleElectionSession = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'electionSession/scheduleElectionSession',
@@ -40,6 +58,18 @@ export const getElectionSession = createAsyncThunk<any, void, { rejectValue: { m
             }
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message });
+        }
+    }
+)
+
+export const getAllElectionSessions = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'electionSession/getAllElectionSession',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/election-session/all');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.message })
         }
     }
 )
@@ -104,6 +134,20 @@ const electionSessionSlice = createSlice({
         builder.addCase(modifyElectionSession.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message || 'Failed to modify the election session.'
+        })
+
+        // all election sessions builder
+        builder.addCase(getAllElectionSessions.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getAllElectionSessions.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.allElectionSessions = action.payload?.allElectionSessions;
+        })
+        builder.addCase(getAllElectionSessions.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
         })
     },
 })

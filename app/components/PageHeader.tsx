@@ -5,7 +5,7 @@ function PageHeader({ title, action, subtitle, children }: { title: string, subt
     return (
         <Stack
             flex={1}
-            gap={2}
+            gap={4}
             py={3}
         >
             <Box>

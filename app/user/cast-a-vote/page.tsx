@@ -14,6 +14,7 @@ import { getElectionSession } from '@/app/redux/features/electionSessionSlice';
 import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteCastingRoutes';
 import Countdown from '@/app/components/Countdown';
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus';
+import PreviousElectionSessions from '@/app/components/PreviousElectionSessions';
 
 function VoteCastingPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
@@ -46,7 +47,11 @@ function VoteCastingPage() {
                 <Divider sx={{ borderColor: 'secondary.200' }} />
 
                 {profileCompletion ?
-                    <ElectionSessionStatus />
+                    <Stack gap={3} justifyContent={'space-between'}>
+                        <ElectionSessionStatus />
+                        <Divider sx={{ borderColor: 'secondary.200' }} />
+                        {/* <PreviousElectionSessions /> */}
+                    </Stack>
                     :
                     <CompleteProfile />
                 }

@@ -1,5 +1,6 @@
 import axiosInstance from "@/app/utils/axiosInstance"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import toast from "react-hot-toast"
 
 interface constituencyState {
     province: string,
@@ -209,7 +210,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(getAllConstituency.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message || 'Could not fetch all constituencies.'
+            state.error = action.payload?.message!;
         })
     },
 })

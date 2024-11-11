@@ -1,9 +1,11 @@
 import axiosInstance from "@/app/utils/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { setIsAuthenticated } from "./authSlice";
+import { getRelevantCandidates } from "./candidateSlice";
 
 const initialState = {
     userProfile: {
+        profilePicture: '',
         role: '',
         firstName: '',
         lastName: '',
@@ -32,7 +34,7 @@ const initialState = {
 
 export const searchCandidatesOffConstituency = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'user/getCandidatesOffConstituency',
-    async (data: { constituency: string }, { rejectWithValue }) => {
+    async (data: { constituency: string, electionSessionId: string }, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.post('/candidate/candidates-off-constituency', data);
             return response;
@@ -52,6 +54,7 @@ export const castVote = createAsyncThunk
         async (data: any, { rejectWithValue, dispatch }) => {
             try {
                 const response = await axiosInstance.post('/user/cast-a-vote', data);
+                dispatch(getRelevantCandidates())
                 dispatch(getUserProfile());
                 return response;
             } catch (error: any) {

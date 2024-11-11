@@ -8,7 +8,7 @@ import { Circle } from '@mui/icons-material'
 import { balochistanProvincialConstituency, kpkProvincialConstituency, punjabProvincialConstituency, sindhProvincialConstituency } from '../redux/features/provincialConstituenciesSlice'
 
 function UserAddressConstituency({ formik }: { formik: any }) {
-    const provinces = ['Punjab', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan', 'Islamabad Capital Territory']
+    const provinces = ['punjab', 'sindh', 'khyber pakhtunkhwa', 'balochistan', 'islamabad capital territory']
     const { kpk, balochistan, punjab, sindh, capital } = useSelector((state: RootState) => state.constituency)
     const { ps, pb, pk, pp } = useSelector((state: RootState) => state.provincialConstituency)
     const { constituency, province, provincialConstituency } = useSelector((state: RootState) => state.user.userProfile);
@@ -68,7 +68,7 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                 <Autocomplete
                     options={provinces}
                     defaultValue={province}
-                    onChange={(event, value) => formik.setFieldValue('province', value?.toLowerCase())}
+                    onChange={(event, value) => formik.setFieldValue('province', value)}
                     fullWidth
                     renderInput={(params) => (
                         <TextField
@@ -76,6 +76,11 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                             variant='filled'
                             {...params}
                             label='Constituency Province'
+                            sx={{
+                                '& .MuiInputBase-input': {
+                                    textTransform: 'capitalize', // Capitalizes the first letter of each word
+                                },
+                            }}
                         />
                     )}
                 />
@@ -87,7 +92,7 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                     <>
                         <Autocomplete
                             defaultValue={constituency}
-                            options={constituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`)}
+                            options={constituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`) || []}
                             fullWidth
                             onChange={(event, value) => formik.setFieldValue('constituency', value)}
                             renderInput={(params) => (
@@ -102,7 +107,7 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                         {formik.values.province !== 'islamabad capital territory' &&
                             <Autocomplete
                                 defaultValue={provincialConstituency}
-                                options={provincialConstituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`)}
+                                options={provincialConstituencies?.constituencies?.map((item: any) => `${item.area} ${item.constituency}`) || []}
                                 fullWidth
                                 onChange={(event, value) => formik.setFieldValue('provincialConstituency', value)}
                                 renderInput={(params) => (

@@ -13,7 +13,6 @@ function RenderTableData({ tableData, loading, action }: { action: React.ReactNo
                         <TableRow key={data._id}>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : index + 1}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : `${data.firstName}  ${data.lastName}`}</TableCell>
-                            <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : data.votes?.voters?.length}</TableCell>
                             <TableCell sx={{ textTransform: 'capitalize', color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : data.constituencyType}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : data.constituency}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : data.partyAffiliation}</TableCell>
