@@ -26,6 +26,7 @@ function PreviousElectionSessions() {
             {recentElections.length > 0 && recentElections.map((election) => {
                 return (
                     <Stack
+                        key={election._id}
                         direction={'row'}
                     >
                         <Stack

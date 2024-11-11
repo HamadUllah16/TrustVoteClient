@@ -132,7 +132,7 @@ function ElectionResults() {
                         >
                             {allElectionSessions.length > 0 ? allElectionSessions.map((eachElectionSession) => {
                                 return (
-                                    <MenuItem value={eachElectionSession._id}>{eachElectionSession.name} {eachElectionSession.status === 'active' ? 'active' : ''}</MenuItem>
+                                    <MenuItem key={eachElectionSession._id} value={eachElectionSession._id}>{eachElectionSession.name} {eachElectionSession.status === 'active' ? 'active' : ''}</MenuItem>
                                 )
                             })
                                 :
