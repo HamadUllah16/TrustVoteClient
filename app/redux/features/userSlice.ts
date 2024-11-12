@@ -5,6 +5,7 @@ import { getRelevantCandidates } from "./candidateSlice";
 
 const initialState = {
     userProfile: {
+        _id: '',
         profilePicture: '',
         role: '',
         firstName: '',

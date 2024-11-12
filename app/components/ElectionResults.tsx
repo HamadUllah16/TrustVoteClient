@@ -8,7 +8,7 @@ import { getAllConstituency } from '@/app/redux/features/constituencySlice'
 import { allProvincialConstituencies } from '@/app/redux/features/provincialConstituenciesSlice'
 import { searchCandidatesOffConstituency } from '@/app/redux/features/userSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
-import { approvedCandidatesForResults, getApprovedCandidates } from '@/app/redux/features/candidateSlice'
+import { approvedCandidatesForResults, getApprovedCandidates, updateCandidateVote } from '@/app/redux/features/candidateSlice'
 import { getAllElectionSessions } from '../redux/features/electionSessionSlice'
 import PageHeader from './PageHeader'
 import RenderElectionResultsData from './RenderElectionResultsData'
@@ -125,6 +125,7 @@ function ElectionResults() {
                             variant='filled'
                             label='Election Session'
                             placeholder='Election Session XXXX'
+                            defaultValue={allElectionSessions.length > 0 ? allElectionSessions[0].name : ''}
                             onChange={(e) => setCurrentElectionSession(e.target.value)}
                             sx={{
                                 width: 250

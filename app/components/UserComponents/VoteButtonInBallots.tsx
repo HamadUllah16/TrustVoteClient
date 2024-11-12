@@ -6,11 +6,12 @@ import { Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
+import socket from '../Utils/socket'
 
-function VoteButtonInBallots({ candidate, assembly }: { candidate: any, assembly: string }) {
+function VoteButtonInBallots({ candidate }: { candidate: any }) {
     const dispatch = useDispatch<AppDispatch>();
     const { status, electionSessionPublicKey } = useSelector((state: RootState) => state.electionSession.electionSession)
-    const { naVote, paVote } = useSelector((state: RootState) => state.user.userProfile);
+    const { naVote, paVote, _id } = useSelector((state: RootState) => state.user.userProfile);
     const { loading } = useSelector((state: RootState) => state.user);
     const [disabled, setDisabled] = useState(true);
 
@@ -18,10 +19,10 @@ function VoteButtonInBallots({ candidate, assembly }: { candidate: any, assembly
         if (status === 'scheduled' || status === 'paused' || status === 'ended') {
             return true
         }
-        else if (assembly === 'national' && naVote) {
+        else if (candidate.constituencyType === 'national assembly' && naVote) {
             return false;
         }
-        else if (assembly === 'provincial' && paVote) {
+        else if (candidate.constituencyType === 'provincial assembly' && paVote) {
             return false;
         }
         else {
@@ -36,7 +37,9 @@ function VoteButtonInBallots({ candidate, assembly }: { candidate: any, assembly
             success: 'Vote Casted Successfully.',
             error: 'Error while casting a vote.'
         }
-        )
+        ).then(() => {
+            socket.emit('newVote', { voterId: _id, candidateId: candidate._id })
+        })
     }
 
     useEffect(() => {
