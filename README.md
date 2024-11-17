@@ -19,7 +19,6 @@ TrustVote is a decentralized electronic voting platform that uses blockchain tec
 | TailwindCSS,            | Socket.io                     |
 | Material UI             | Solana Web3.js (Solana SDK)   |
 
-
 ---
 
 ## 📦 Installation & Setup
@@ -66,20 +65,21 @@ npm run dev
 
 Visit http://localhost:3000 to access the application.
 
+---
 ## 📂 Project Structure
 
 trustvote-client/
-├── public/                # Static assets
-├── src/
-│   ├── components/        # Reusable UI components
-│   ├── /page-name         # Next.js pages (routes)
-│   ├── /redux             # React Context for global state
-│   ├── utils/             # Helper functions
-│   ├── /redux/features    # API calls (Axios)
-│   ├── styles/            # Global styles (Tailwind)
-├── .env.local             # Environment variables
-├── next.config.js         # Next.js configuration
-└── package.json           # Project dependencies
+├─ public/                 Static assets
+├─ src/
+│  ├── components/         Reusable UI components
+│  ├── /page-name          Next.js pages (routes)
+│  ├── /redux              React Context for global state
+│  ├── utils/              Helper functions
+│  ├── /redux/features     API calls (Axios)
+│  ├── styles/             Global styles (Tailwind)
+├─ .env.local              Environment variables
+├─ next.config.js          Next.js configuration
+└─ package.json            Project dependencies
 ---
 
 ## 🤝 Contributing
