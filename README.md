@@ -29,13 +29,13 @@ TrustVote is a decentralized electronic voting platform that uses blockchain tec
 - [Git](https://git-scm.com/)
 - [Yarn](https://yarnpkg.com/) (or npm)
 
-### Clone the Repository
+## Clone the Repository
 ```bash
 git clone https://github.com/HamadUllah16/trustvote-client.git
 cd trustvote-client
 ```
 
-###Install Dependencies
+## Install Dependencies
 
 ```bash
  yarn install
@@ -43,7 +43,7 @@ cd trustvote-client
 npm install
 ```
 
-###Configure Environment Variables
+## Configure Environment Variables
 
 Create a .env.local file in the root directory and add the following:
 
@@ -54,7 +54,7 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
-###Run the Development Server
+## Run the Development Server
 
 ```bash
 yarn dev
@@ -66,7 +66,7 @@ npm run dev
 
 Visit http://localhost:3000 to access the application.
 
-###📂 Project Structure
+## 📂 Project Structure
 
 trustvote-client/
 ├── public/                # Static assets
@@ -80,8 +80,9 @@ trustvote-client/
 ├── .env.local             # Environment variables
 ├── next.config.js         # Next.js configuration
 └── package.json           # Project dependencies
+---
 
-###🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome! To get started:
     Fork this repository.
