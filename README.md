@@ -67,7 +67,7 @@ Visit http://localhost:3000 to access the application.
 
 ---
 ## 📂 Project Structure
-
+```
 trustvote-client/
 ├─ public/                 Static assets
 ├─ src/
@@ -80,6 +80,7 @@ trustvote-client/
 ├─ .env.local              Environment variables
 ├─ next.config.js          Next.js configuration
 └─ package.json            Project dependencies
+```
 ---
 
 ## 🤝 Contributing
