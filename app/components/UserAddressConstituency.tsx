@@ -70,6 +70,14 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                     defaultValue={province}
                     onChange={(event, value) => formik.setFieldValue('province', value)}
                     fullWidth
+                    renderOption={(props, option) => (
+                        <li
+                            {...props}
+                            style={{ textTransform: 'capitalize' }}
+                        >
+                            {option}
+                        </li>
+                    )}
                     renderInput={(params) => (
                         <TextField
                             name='province'
@@ -80,6 +88,9 @@ function UserAddressConstituency({ formik }: { formik: any }) {
                                 '& .MuiInputBase-input': {
                                     textTransform: 'capitalize', // Capitalizes the first letter of each word
                                 },
+                                '& .MuiAutocomplete-root': {
+                                    textTransform: 'capitalize'
+                                }
                             }}
                         />
                     )}

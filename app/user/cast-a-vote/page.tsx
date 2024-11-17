@@ -15,6 +15,7 @@ import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteC
 import Countdown from '@/app/components/Countdown';
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus';
 import PreviousElectionSessions from '@/app/components/PreviousElectionSessions';
+import withAuth from '@/app/utils/withAuth';
 
 function VoteCastingPage() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
@@ -61,4 +62,4 @@ function VoteCastingPage() {
     )
 }
 
-export default VoteCastingPage
+export default withAuth(VoteCastingPage)

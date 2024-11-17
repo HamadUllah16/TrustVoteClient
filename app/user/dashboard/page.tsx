@@ -46,6 +46,9 @@ function UserHomePage() {
         router.push('/user/login');
         return null;
     }
+    if (!profileCompletion) {
+        router.push('/user/settings/update-profile')
+    }
 
     return (
         <MainWrapper>

@@ -53,7 +53,6 @@ export const getElectionSession = createAsyncThunk<any, void, { rejectValue: { m
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_ENDPOINT}/election-session/recent-election-session`);
             if (response.status === 200) {
-                console.log(response)
                 return response.data;
             }
         } catch (error: any) {

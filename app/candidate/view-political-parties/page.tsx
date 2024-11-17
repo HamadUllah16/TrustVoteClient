@@ -1,17 +1,13 @@
 'use client'
-import { Divider, IconButton, Stack, Table, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Add } from '@mui/icons-material';
-import AddPoliticalParty from '@/app/components/AdminComponents/AddPoliticalParty';
 import RenderPoliticalParties from '@/app/components/AdminComponents/RenderPoliticalParties';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import UserSidebar from '@/app/components/UserComponents/UserSidebar';
 import MainWrapper from '@/app/components/MainWrapper';
 import RenderTableHead from '@/app/components/RenderTableHead';
-import RenderTableData from '@/app/components/RenderTableData';
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice';
 import PageHeader from '@/app/components/PageHeader';
+import CandidateSidebar from '@/app/components/Candidate/CandidateSidebar';
 import withAuth from '@/app/utils/withAuth';
 
 function AllPoliticalPartiesPage() {
@@ -25,7 +21,7 @@ function AllPoliticalPartiesPage() {
     return (
         <MainWrapper>
 
-            <UserSidebar />
+            <CandidateSidebar />
 
             <PageHeader
                 title='Political Parties'
@@ -45,4 +41,4 @@ function AllPoliticalPartiesPage() {
     )
 }
 
-export default withAuth(AllPoliticalPartiesPage);
+export default withAuth(AllPoliticalPartiesPage)

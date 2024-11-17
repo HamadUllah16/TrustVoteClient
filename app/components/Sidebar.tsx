@@ -1,5 +1,5 @@
 'use client'
-import { FormatListBulleted, HowToReg, LogoutOutlined, RecentActors, SettingsOutlined } from '@mui/icons-material'
+import { FormatListBulleted, HowToReg, LogoutOutlined, RecentActors, SettingsOutlined, Verified } from '@mui/icons-material'
 import { Box, Divider, MenuItem, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,7 +12,8 @@ function Sidebar({ children }: { children: React.ReactNode }) {
     const { firstName, lastName, email, role, status, profilePicture } = useSelector((state: RootState) => state.user.userProfile)
     return (
         <Stack
-            minWidth={400}
+            maxWidth={400}
+            width={'fit-content'}
             minHeight={'100%'}
             gap={5}
             py={3}
@@ -56,6 +57,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                             >
                                 {lastName}
                             </Typography>
+                            <Verified htmlColor='#22BB33' />
 
                             {/* <Stack
                                 bgcolor={'primary.main'}

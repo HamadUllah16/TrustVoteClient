@@ -1,6 +1,4 @@
 import { Dataset, Flag, HowToVote, People } from '@mui/icons-material'
-import { Stack, Typography, MenuItem } from '@mui/material'
-import Link from 'next/link'
 import React from 'react'
 import Sidebar from '../Sidebar'
 import SidebarMenus from '../SidebarMenus'

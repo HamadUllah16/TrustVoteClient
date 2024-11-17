@@ -183,6 +183,7 @@ function CompleteProfile() {
                                     name='firstName'
                                     error={formik.touched && formik.errors.firstName}
                                     helperText={formik.touched && formik.errors.firstName}
+                                    disabled={userProfile.profileCompletion}
 
                                 />
 
@@ -195,6 +196,7 @@ function CompleteProfile() {
                                     name='lastName'
                                     error={formik.touched && formik.errors.lastName}
                                     helperText={formik.touched && formik.errors.lastName}
+                                    disabled={userProfile.profileCompletion}
 
                                 />
 

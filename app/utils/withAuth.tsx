@@ -62,7 +62,7 @@ export default function withAuth(Component: any) {
 
         const roleBasedPaths = {
             admin: '/admin',
-            voter: ['/user', '/home'],
+            voter: '/user',
             candidate: '/candidate',
         };
 
@@ -73,7 +73,7 @@ export default function withAuth(Component: any) {
             return <Component {...props} />;
         }
 
-        if (userProfile.role === 'voter' && roleBasedPaths.voter.some(path => pathName.startsWith(path))) {
+        if (userProfile.role === 'voter' && pathName.startsWith(roleBasedPaths.voter)) {
             return <Component {...props} />;
         }
 
@@ -82,6 +82,7 @@ export default function withAuth(Component: any) {
         }
 
         // If none of the conditions match, return unauthorized
-        return <Unauthorized />;
+        router.push('/unauthorized')
+        // return <Unauthorized />;
     };
 }

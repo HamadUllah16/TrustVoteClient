@@ -72,7 +72,7 @@ function LoginForm({ formik, loading, children, checkExistsLoading, exists }: { 
                                     endAdornment={
                                         <InputAdornment position="end">
                                             {checkExistsLoading ?
-                                                <CircularProgress />
+                                                <CircularProgress size={'12px'} />
                                                 :
                                                 exists ?
                                                     <Check color='success' />

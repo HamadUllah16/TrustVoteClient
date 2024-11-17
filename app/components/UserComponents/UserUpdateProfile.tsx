@@ -6,19 +6,25 @@ import Sidebar from '../Sidebar'
 import { Grid, Stack } from '@mui/material'
 import ProfileCompletionVerificationStatus from '../ProfileCompletionVerificationStatus'
 import Grid2 from '@mui/material/Unstable_Grid2'
+import SidebarMenus from '../SidebarMenus'
+import { AccountCircle } from '@mui/icons-material'
 
 function UserUpdateProfile() {
     return (
         <MainWrapper>
             <Sidebar>
-                null
+                <SidebarMenus
+                    navItems={[
+                        { href: '/update-profile', title: 'Profile Settings', icon: <AccountCircle /> }
+                    ]}
+                />
             </Sidebar>
             <PageHeader
                 title='Profile Update'
-                subtitle={'A completed profile is required to vote for candidates.'}
+                subtitle={'Update your profile. A complete profile makes you eligible for voting.'}
                 action={null}
             >
-                <Grid container justifyContent={'space-between'}>
+                <Grid container p={2} justifyContent={'space-between'}>
                     <Grid sm={7}>
                         <CompleteProfile />
                     </Grid>
