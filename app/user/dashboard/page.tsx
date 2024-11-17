@@ -1,5 +1,5 @@
-'use client'
-import { Typography, Stack } from "@mui/material";
+'use client';
+import { Typography, Stack, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,20 +10,22 @@ import withAuth from "../../utils/withAuth";
 import CompleteProfile from "../../components/CompleteProfile";
 import UserSidebar from "../../components/UserComponents/UserSidebar";
 import MainWrapper from "../../components/MainWrapper";
+import socket from '@/app/components/Utils/socket';
 
 function UserHomePage() {
-    const { firstName, profileCompletion } = useSelector((state: RootState) => state.user.userProfile);
+    const { firstName, profileCompletion, _id } = useSelector((state: RootState) => state.user.userProfile);
     const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const [loading, setLoading] = useState(true); // Loading state to block rendering
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
+    // Fetch user profile on component mount
     useEffect(() => {
         const token = localStorage.getItem('x_auth_token');
 
         if (!token) {
             router.push('/user/login');
-            return; // Stop further execution
+            return;
         }
 
         if (!isAuthenticated) {
@@ -31,25 +33,26 @@ function UserHomePage() {
                 .then(() => setLoading(false))
                 .catch(() => {
                     setLoading(false);
-                    router.push('/user/login'); // Redirect in case of error
+                    router.push('/user/login');
                 });
         }
-    }, [dispatch, router]);
+    }, [dispatch, router, isAuthenticated]);
 
     if (loading && !isAuthenticated) {
-        return <Loading />; // Show loading spinner while checking auth
+        return <Loading />;
     }
 
     if (!isAuthenticated) {
         router.push('/user/login');
-        return null; // Avoid rendering anything until the redirect is complete
+        return null;
+    }
+    if (!profileCompletion) {
+        router.push('/user/settings/update-profile')
     }
 
     return (
-        <MainWrapper >
-
+        <MainWrapper>
             <UserSidebar />
-
             <Stack
                 flex={1}
                 color={'primary.200'}
@@ -58,18 +61,15 @@ function UserHomePage() {
                 justifyContent={'center'}
             >
                 <Typography>
-                    Welcome to Trust Vote <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>{firstName}</span>
+                    Welcome to Trust Vote{' '}
+                    <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
+                        {firstName}
+                    </span>
                 </Typography>
-                {!profileCompletion &&
-                    (
-                        <CompleteProfile />
-                    )
-
-                }
+                {!profileCompletion && <CompleteProfile />}
             </Stack>
         </MainWrapper>
     );
 }
-
 
 export default withAuth(UserHomePage);

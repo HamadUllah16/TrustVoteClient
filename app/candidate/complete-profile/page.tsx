@@ -1,4 +1,5 @@
 import CandidateCompletion from '@/app/components/Candidate/CandidateCompletion'
+import withAuth from '@/app/utils/withAuth'
 import { Stack } from '@mui/material'
 import React from 'react'
 
@@ -23,4 +24,4 @@ function CandidateProfileCompletion() {
     )
 }
 
-export default CandidateProfileCompletion
+export default withAuth(CandidateProfileCompletion)

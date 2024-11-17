@@ -1,7 +1,7 @@
+'use client'
 import React from 'react'
-import CompleteProfile from '@/app/components/CompleteProfile';
-import { Stack } from '@mui/material';
 import UserUpdateProfile from '@/app/components/UserComponents/UserUpdateProfile';
+import withAuth from '@/app/utils/withAuth';
 
 function UpdateProfile() {
     return (
@@ -9,4 +9,4 @@ function UpdateProfile() {
     )
 }
 
-export default UpdateProfile
+export default withAuth(UpdateProfile)

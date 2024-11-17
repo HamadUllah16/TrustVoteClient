@@ -33,9 +33,6 @@ function RenderBallots() {
                     <RenderBallotCandidates
                         candidates={myCandidates}
                         loading={loading}
-                        action={
-                            <VoteButtonInBallots />
-                        }
                     />
                 </RenderTableHead>
                 :

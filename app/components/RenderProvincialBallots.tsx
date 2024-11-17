@@ -25,9 +25,6 @@ function RenderProvincialBallots() {
                     <RenderBallotCandidates
                         candidates={myProvincialCandidates}
                         loading={loading}
-                        action={
-                            <VoteButtonInBallots />
-                        }
                     />
                 </RenderTableHead>
                 :

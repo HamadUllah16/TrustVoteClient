@@ -8,10 +8,10 @@ function CandidateSidebar() {
         <Sidebar>
             <SidebarMenus
                 navItems={[
-                    { href: '/candidate/dashboard/me', title: 'My Profile', icon: <Person fontSize='medium' /> },
-                    { href: '/candidate/dashboard/election-session', title: 'Election Session', icon: <HowToVote fontSize='medium' /> },
-                    { href: '/candidate/dashboard/view-politial-parties', title: 'View Political Parties', icon: <Groups fontSize='medium' /> },
-                    { href: '/candidate/dashboard/results', title: 'Results', icon: <Dataset fontSize='medium' /> }
+                    { href: '/candidate/dashboard', title: 'My Profile', icon: <Person fontSize='medium' /> },
+                    { href: '/candidate/election-session', title: 'Election Session', icon: <HowToVote fontSize='medium' /> },
+                    { href: '/candidate/view-political-parties', title: 'View Political Parties', icon: <Groups fontSize='medium' /> },
+                    { href: '/candidate/results', title: 'Results', icon: <Dataset fontSize='medium' /> }
                 ]}
             />
         </Sidebar>

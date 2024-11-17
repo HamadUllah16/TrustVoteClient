@@ -12,6 +12,7 @@ interface navItem {
 
 function SidebarMenus({ navItems }: { navItems: navItem[] }) {
     const pathname = usePathname()
+
     return (
         <Stack>
             {navItems.map((nav: navItem, index: number) => {
@@ -19,7 +20,7 @@ function SidebarMenus({ navItems }: { navItems: navItem[] }) {
                     <Link href={nav.href} key={index}>
                         <MenuItem
                             sx={{
-                                bgcolor: pathname.startsWith(nav.href) ? 'primary.main' : '',
+                                bgcolor: pathname.endsWith(nav.href) ? 'primary.main' : '',
                                 border: '1px solid transparent',
                                 color: 'secondary.100',
                                 display: 'flex',

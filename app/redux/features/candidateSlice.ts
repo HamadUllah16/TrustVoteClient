@@ -144,7 +144,24 @@ const candidateSlice = createSlice({
     name: 'candidate',
     initialState: initialState,
     reducers: {
-
+        updateCandidateVote: (state, action) => {
+            console.log('updateCandidateVote invoked')
+            const voterId = action.payload?.voterId;
+            const candidateId = action.payload?.candidateId;
+            if (state.resultCandidates.length > 0) {
+                let candidate: any;
+                candidate = state.resultCandidates.find((candidate: any) => candidate._id === candidateId);
+                if (candidate) {
+                    candidate.votes[0].voters.push(voterId)
+                }
+                else {
+                    console.log('no candidate found or voter already voted. ')
+                }
+            }
+            else {
+                console.log('result candidates are empty, fetch them')
+            }
+        }
     },
     extraReducers(builder) {
         // create candidate profile builder
@@ -278,3 +295,5 @@ const candidateSlice = createSlice({
 })
 
 export default candidateSlice.reducer;
+
+export const { updateCandidateVote } = candidateSlice.actions;

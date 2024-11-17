@@ -8,7 +8,7 @@ import { getAllConstituency } from '@/app/redux/features/constituencySlice'
 import { allProvincialConstituencies } from '@/app/redux/features/provincialConstituenciesSlice'
 import { searchCandidatesOffConstituency } from '@/app/redux/features/userSlice'
 import { AppDispatch, RootState } from '@/app/redux/store'
-import { approvedCandidatesForResults, getApprovedCandidates } from '@/app/redux/features/candidateSlice'
+import { approvedCandidatesForResults, getApprovedCandidates, updateCandidateVote } from '@/app/redux/features/candidateSlice'
 import { getAllElectionSessions } from '../redux/features/electionSessionSlice'
 import PageHeader from './PageHeader'
 import RenderElectionResultsData from './RenderElectionResultsData'
@@ -21,11 +21,10 @@ function ElectionResults() {
     const [currentElectionSession, setCurrentElectionSession] = useState('');
     const dispatch = useDispatch<AppDispatch>();
 
-    const { allElectionSessions } = useSelector((state: RootState) => state.electionSession);
+    const { allElectionSessions, electionSession } = useSelector((state: RootState) => state.electionSession);
     const { resultCandidates } = useSelector((state: RootState) => state.candidate);
     const { allConstituencies, loading } = useSelector((state: RootState) => state.constituency);
     const { all } = useSelector((state: RootState) => state.provincialConstituency);
-    const { searchedCandidates } = useSelector((state: RootState) => state.user);
 
     const allNationalConstituencies = useMemo(() =>
         allConstituencies.flatMap((province: any) =>
@@ -40,13 +39,23 @@ function ElectionResults() {
         [all]
     );
 
+    const constituencies = (assembly: string | null) => {
+        if (assembly === 'national assembly') {
+            return allNationalConstituencies
+        }
+        if (assembly === 'provincial assembly') {
+            return allProvincial
+        }
+        return ([...allNationalConstituencies, ...allProvincial])
+    }
+
     const handlePageChange = () => {
         setPage(page + 1);
     }
 
-    const sortedCandidates = sortCandidatesByVotes(resultCandidates, userAssembly);
-    const sortedSearchedCandidate = sortCandidatesByVotes(searchedCandidates, userAssembly)
 
+    const sortedCandidates = sortCandidatesByVotes(resultCandidates, userAssembly);
+    const sortedSearchedCandidate = sortedCandidates.filter((a: any) => a.constituency === specificConstituency)
 
     function sortCandidatesByVotes(
         candidates: typeof resultCandidates,
@@ -83,7 +92,7 @@ function ElectionResults() {
         if (currentElectionSession !== '') {
             dispatch(approvedCandidatesForResults({ electionSessionId: currentElectionSession }));
         }
-        if (userAssembly === 'national assembly') {
+        if (allConstituencies.length === 0 && currentElectionSession !== '') {
             dispatch(getAllConstituency());
         }
     }, [userAssembly, currentTable, currentElectionSession]);
@@ -92,23 +101,11 @@ function ElectionResults() {
         if (allElectionSessions.length === 0) {
             dispatch(getAllElectionSessions())
         }
-        if (userAssembly === 'provincial assembly' && currentElectionSession !== '') {
+        if (all.length === 0 && currentElectionSession !== '') {
             dispatch(allProvincialConstituencies());
         }
     }, [userAssembly, currentTable, currentElectionSession, dispatch]);
 
-    const handleSearchCandidates = useCallback(() => {
-        if (specificConstituency && currentElectionSession !== '') {
-            dispatch(searchCandidatesOffConstituency({
-                constituency: specificConstituency,
-                electionSessionId: currentElectionSession
-            }));
-        }
-    }, [specificConstituency, dispatch]);
-
-    useEffect(() => {
-        handleSearchCandidates();
-    }, [handleSearchCandidates]);
 
     return (
         <Stack overflow={'scroll'} flexGrow={1}>
@@ -125,6 +122,7 @@ function ElectionResults() {
                             variant='filled'
                             label='Election Session'
                             placeholder='Election Session XXXX'
+                            defaultValue={allElectionSessions.length > 0 ? allElectionSessions[0].name : ''}
                             onChange={(e) => setCurrentElectionSession(e.target.value)}
                             sx={{
                                 width: 250
@@ -156,7 +154,10 @@ function ElectionResults() {
                                 placeholder='National Assembly'
                                 variant='filled'
                                 select
-                                onChange={e => setUserAssembly(e.target.value)}
+                                onChange={e => {
+                                    setUserAssembly(e.target.value)
+                                    setSpecificConstituency('');
+                                }}
                                 value={userAssembly}
                                 sx={{ minWidth: 300, maxWidth: 400 }}
                             >
@@ -165,7 +166,8 @@ function ElectionResults() {
                             </TextField>
                             {/* {userAssembly && ( */}
                             <Autocomplete
-                                options={userAssembly === 'national assembly' ? allNationalConstituencies : allProvincial}
+                                options={constituencies(userAssembly)}
+                                defaultValue={specificConstituency}
                                 onChange={(event, value) => userSearchedConstituencyHandler(value)}
                                 fullWidth
                                 sx={{ maxWidth: 350 }}
