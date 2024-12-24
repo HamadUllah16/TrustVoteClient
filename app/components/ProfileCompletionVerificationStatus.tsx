@@ -6,7 +6,7 @@ import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 
 function ProfileCompletionVerificationStatus() {
-    const { email, constituency, phone, profileCompletion } = useSelector(
+    const { email, constituency, provincialConstituency, phone, profileCompletion } = useSelector(
         (state: RootState) => state.user.userProfile
     );
 
@@ -17,7 +17,7 @@ function ProfileCompletionVerificationStatus() {
         let progressCount = 0;
         if (email) progressCount += 25;
         if (phone) progressCount += 25;
-        if (constituency) progressCount += 25;
+        if (constituency && provincialConstituency) progressCount += 25;
         if (profileCompletion) progressCount += 25;
         return progressCount;
     };
@@ -69,9 +69,9 @@ function ProfileCompletionVerificationStatus() {
                 </Stack>
 
                 <Stack direction={'row'} gap={1}>
-                    <Check htmlColor={'#22BB33'} />
+                    <Check htmlColor={constituency && provincialConstituency ? '#22BB33' : 'gray'} />
                     <Typography color={'primary.100'}>
-                        {constituency ? 'Constituency selected.' : 'Add constituency.'}
+                        {constituency && provincialConstituency ? 'Constituency selected.' : 'Add constituency.'}
 
                     </Typography>
                 </Stack>

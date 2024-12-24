@@ -57,7 +57,9 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                             >
                                 {lastName}
                             </Typography>
-                            <Verified htmlColor='#22BB33' />
+                            {status === 'verified' &&
+                                <Verified htmlColor='#22BB33' />
+                            }
 
                             {/* <Stack
                                 bgcolor={'primary.main'}

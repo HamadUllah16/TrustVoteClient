@@ -8,7 +8,7 @@ function AdminSidebar() {
         <Sidebar>
             <SidebarMenus
                 navItems={[
-                    { href: '/admin/dashboard/election-session', title: 'Election Session', icon: <HowToVote fontSize='medium' /> },
+                    { href: '/admin/dashboard', title: 'Election Session', icon: <HowToVote fontSize='medium' /> },
                     { href: '/admin/dashboard/candidates/list', title: 'Nominated Candidates', icon: <RecentActors fontSize='medium' /> },
                     { href: '/admin/dashboard/candidates/pending-candidates', title: 'Pending Candidates', icon: <PendingActions fontSize='medium' /> },
                     { href: '/admin/dashboard/constituency', title: 'Constituency', icon: <WhereToVote fontSize='medium' /> },

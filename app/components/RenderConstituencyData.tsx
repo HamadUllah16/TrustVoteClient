@@ -7,7 +7,7 @@ import Modal from './Modal'
 function RenderConstituencyData({ tableData, loading, action }: { action: React.ReactNode | null, tableData: any, loading: boolean }) {
     return (
         <>
-            {tableData && Object.keys(tableData).length > 0 &&
+            {tableData && Object.keys(tableData).length > 0 ?
                 tableData.constituencies.map((constituency: { area: string, constituency: string }, index: number) => {
                     return (
                         <TableRow key={tableData._id}>
@@ -21,6 +21,10 @@ function RenderConstituencyData({ tableData, loading, action }: { action: React.
                         </TableRow>
                     )
                 })
+                :
+                <TableRow>
+                    <TableCell colSpan={8} align="center">No data available</TableCell>
+                </TableRow>
             }
         </>
     )

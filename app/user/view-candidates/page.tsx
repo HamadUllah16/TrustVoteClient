@@ -6,16 +6,16 @@ import MainWrapper from '@/app/components/MainWrapper';
 import RenderTableHead from '@/app/components/RenderTableHead';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import { getAllCandidates } from '@/app/redux/features/candidateSlice';
+import { getApprovedCandidates } from '@/app/redux/features/candidateSlice';
 import RenderTableData from '@/app/components/RenderTableData';
 import PageHeader from '@/app/components/PageHeader';
 
 function ViewCandidatesPage() {
-    const { allCandidates, loading } = useSelector((state: RootState) => state.candidate)
+    const { approvedCandidates, loading } = useSelector((state: RootState) => state.candidate)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
-        dispatch(getAllCandidates());
+        dispatch(getApprovedCandidates());
     }, [])
     return (
         <MainWrapper>
@@ -33,7 +33,7 @@ function ViewCandidatesPage() {
 
                     {/* table body */}
                     <RenderTableData
-                        tableData={allCandidates}
+                        tableData={approvedCandidates}
                         loading={loading}
                         action={null}
                     />

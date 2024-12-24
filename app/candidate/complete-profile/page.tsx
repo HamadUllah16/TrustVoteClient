@@ -1,3 +1,4 @@
+'use client'
 import CandidateCompletion from '@/app/components/Candidate/CandidateCompletion'
 import withAuth from '@/app/utils/withAuth'
 import { Stack } from '@mui/material'
