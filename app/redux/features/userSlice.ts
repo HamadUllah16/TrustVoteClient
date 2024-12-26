@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { setIsAuthenticated } from "./authSlice";
 import { getRelevantCandidates } from "./candidateSlice";
 
+
 const initialState = {
     userProfile: {
         _id: '',
