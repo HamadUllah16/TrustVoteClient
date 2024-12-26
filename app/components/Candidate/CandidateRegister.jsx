@@ -66,7 +66,7 @@ function CandidateRegister() {
                         gap={1}
                     >
                         <Stack width={'fit-content'} position={'fixed'}>
-                            <IconButton href='/'>
+                            <IconButton onClick={() => router.push('/')}>
                                 <ArrowBack sx={{ color: 'primary.main' }} />
                             </IconButton>
                         </Stack>

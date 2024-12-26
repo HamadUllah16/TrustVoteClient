@@ -7,7 +7,7 @@ import Modal from './Modal'
 function RenderElectionResultsData({ tableData, loading, action }: { action: React.ReactNode | null, tableData: any, loading: boolean }) {
     return (
         <>
-            {tableData &&
+            {tableData && tableData.length > 0 ?
                 tableData.map((data: any, index: number) => {
                     return (
                         <TableRow key={data._id}>
@@ -26,6 +26,10 @@ function RenderElectionResultsData({ tableData, loading, action }: { action: Rea
 
                     )
                 })
+                :
+                <TableRow>
+                    <TableCell colSpan={8} align="center">No data available</TableCell>
+                </TableRow>
             }
         </>
     )

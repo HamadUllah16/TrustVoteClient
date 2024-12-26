@@ -47,6 +47,19 @@ export const scheduleElectionSession = createAsyncThunk<any, void, { rejectValue
     }
 )
 
+export const tryElectionSessionTransaction = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'electionSession/tryElectionSessionTransaction',
+    async (data: any, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/election-session/try-election-session-transaction', data);
+
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message });
+        }
+    }
+)
+
 export const getElectionSession = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'electionSession/getElectionSession',
     async (_, { rejectWithValue }) => {

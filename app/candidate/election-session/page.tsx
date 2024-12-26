@@ -3,7 +3,7 @@ import CandidateSidebar from '@/app/components/Candidate/CandidateSidebar'
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus'
 import MainWrapper from '@/app/components/MainWrapper'
 import PageHeader from '@/app/components/PageHeader'
-import withAuth from '@/app/utils/withAuth'
+import withCompleteCandidateProfile from '@/app/utils/withCompleteCandidateProfile'
 import React from 'react'
 
 function CandidateElectionSessionPage() {
@@ -22,4 +22,4 @@ function CandidateElectionSessionPage() {
     )
 }
 
-export default withAuth(CandidateElectionSessionPage)
+export default withCompleteCandidateProfile(CandidateElectionSessionPage)

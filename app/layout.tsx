@@ -29,16 +29,10 @@ export default function RootLayout({
         <StoreProvider>
           <body style={{ backgroundColor: "#101010" }} className={`${inter.className} flex gap-8 flex-col min-h-screen`}>
             {/* <NetworkStatus /> */}
-            <Stack
-              position={'fixed'}
-              top={0}
-              width={'100%'}
-              zIndex={10}
-            >
-              <Navbar />
-            </Stack>
+
+            <Navbar />
             <Toaster position="top-center" />
-            <main className="flex flex-grow mt-28">{children}</main>
+            <main className="flex flex-grow">{children}</main>
             <Footer />
           </body>
         </StoreProvider>

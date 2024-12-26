@@ -1,17 +1,30 @@
-import { CircularProgress, IconButton, Stack, Typography } from '@mui/material'
+import { Button, CircularProgress, IconButton, Stack, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import SchedulingElectionSession from './SchedulingElectionSession'
-import { Circle, Pause } from '@mui/icons-material'
+import { Circle, Pause, Warning } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { getElectionSession, modifyElectionSession } from '../redux/features/electionSessionSlice';
+import { getElectionSession, modifyElectionSession, tryElectionSessionTransaction } from '../redux/features/electionSessionSlice';
 import Countdown from './Countdown';
 import IconMenu from './IconMenuElectionSession';
+import toast from 'react-hot-toast';
 
 export default function ElectionSessionStatus() {
     const { electionSession, loading } = useSelector((state: RootState) => state.electionSession);
     const { role } = useSelector((state: RootState) => state.user.userProfile);
+    const GRACE_PERIOD_MS = 30000; //waiting time for transaction to perform.
     const dispatch = useDispatch<AppDispatch>();
+
+    function retryTransaction() {
+        toast.promise(
+            dispatch(tryElectionSessionTransaction({ electionSessionId: electionSession._id }))
+                .unwrap(), {
+            loading: 'Loading...',
+            success: 'Election Session Synchronized.',
+            error: 'Could not fix the issue.'
+        }
+        )
+    }
 
     useEffect(() => {
         dispatch(getElectionSession())
@@ -63,8 +76,31 @@ export default function ElectionSessionStatus() {
                                 </Typography>
                             </Stack>
 
-                            {electionSession.status === 'scheduled' &&
-                                <Countdown scheduledTime={electionSession.scheduledTime} />
+                            {
+                                electionSession.status === 'scheduled' && electionSession.scheduledTime !== null &&
+                                    new Date(electionSession.scheduledTime).getTime() + GRACE_PERIOD_MS < Date.now() ?
+                                    <Stack
+                                        bgcolor={'secondary.200'}
+                                        p={2}
+                                        borderRadius={1}
+                                        alignItems={'center'}
+                                    >
+                                        <Stack direction={'row'} gap={1}>
+                                            <Warning fontSize='medium' color='error' />
+                                            <Typography variant='subtitle2' color={'error'}>
+                                                Error occurred while scheduling this Session, please try again.
+                                            </Typography>
+                                        </Stack>
+
+                                        <Button onClick={retryTransaction}>
+                                            Retry
+                                        </Button>
+                                    </Stack>
+                                    :
+                                    electionSession.status === 'active' || 'ended' ?
+                                        null
+                                        :
+                                        <Countdown scheduledTime={electionSession.scheduledTime} />
                             }
 
                             <Stack p={2}>

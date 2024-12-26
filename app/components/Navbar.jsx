@@ -53,36 +53,50 @@ function Navbar() {
                 pathName.startsWith('/user/login') ||
                 pathName.startsWith('/candidate/register') ||
                 pathName.startsWith('/candidate/login') ? null : (
-                <Stack bgcolor={'background'} px={'75px'} py={'15px'} transition={'all 0.3s ease'}>
-                    <Grid
-                        container
-                        borderRadius={2}
-                        display={'flex'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
+                <Stack
+                    py={4}
+                >
+
+                    <Stack
+                        position={'fixed'}
+                        top={0}
+                        width={'100%'}
+                        zIndex={10}
+                        bgcolor={'background'}
+                        px={'75px'}
+                        py={'15px'}
+                        transition={'all 0.3s ease'}
                     >
-                        <Link href={'/'}>
-                            <Image
-                                src={'/logo-dark.jpg'}
-                                width={50}
-                                height={50}
-                                alt='logo'
-                                style={{
-                                    borderRadius: '12px',
-                                    rotate: '90deg',
-                                }}
-                            />
-                        </Link>
+                        <Grid
+                            container
+                            borderRadius={2}
+                            display={'flex'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                        >
+                            <Link href={'/'}>
+                                <Image
+                                    src={'/logo-dark.jpg'}
+                                    width={50}
+                                    height={50}
+                                    alt='logo'
+                                    style={{
+                                        borderRadius: '12px',
+                                        rotate: '90deg',
+                                    }}
+                                />
+                            </Link>
 
-                        <Grid display={'flex'} gap={3} alignItems={'center'} position={'relative'}>
+                            <Grid display={'flex'} gap={3} alignItems={'center'} position={'relative'}>
 
-                            {/* Navigation Items */}
-                            <NavItems />
+                                {/* Navigation Items */}
+                                <NavItems />
 
-                            {/* User Profile Menu */}
-                            {isAuthenticated && <ProfileMenu />}
+                                {/* User Profile Menu */}
+                                {isAuthenticated && <ProfileMenu />}
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Stack>
                 </Stack>
             )}
         </>

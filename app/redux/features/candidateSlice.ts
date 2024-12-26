@@ -36,7 +36,7 @@ export const createCandidateProfile = createAsyncThunk<any, void, { rejectValue:
 
 export const updateCandidateProfile = createAsyncThunk(
     'candidate/completeCandidateProfile',
-    async (data: any, { rejectWithValue }) => {
+    async (data: any, { rejectWithValue, dispatch }) => {
         try {
             const response = await axios.put(`${process.env.NEXT_PUBLIC_ENDPOINT}/candidate/update-profile`, data.profile, {
                 headers: {
@@ -45,7 +45,8 @@ export const updateCandidateProfile = createAsyncThunk(
                 }
             });
             if (response.status === 200) {
-                data.router.push('/candidate');
+                dispatch(getCandidateProfile());
+                // setUserProfile({ profile: data.profile })
                 return response.data;
             }
         } catch (error) {

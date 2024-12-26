@@ -8,7 +8,7 @@ import RenderTableHead from '@/app/components/RenderTableHead';
 import { allPoliticalParties } from '@/app/redux/features/profileCompletionSlice';
 import PageHeader from '@/app/components/PageHeader';
 import CandidateSidebar from '@/app/components/Candidate/CandidateSidebar';
-import withAuth from '@/app/utils/withAuth';
+import withCompleteCandidateProfile from '@/app/utils/withCompleteCandidateProfile';
 
 function AllPoliticalPartiesPage() {
     const [showAddPartyModal, setShowAddPartyModel] = useState(false);
@@ -41,4 +41,4 @@ function AllPoliticalPartiesPage() {
     )
 }
 
-export default withAuth(AllPoliticalPartiesPage)
+export default withCompleteCandidateProfile(AllPoliticalPartiesPage)

@@ -4,7 +4,7 @@ import CandidateVoteCount from '@/app/components/Candidate/CandidateVoteCount'
 import ProfileStats from '@/app/components/Candidate/ProfileStats'
 import MainWrapper from '@/app/components/MainWrapper'
 import PageHeader from '@/app/components/PageHeader'
-import withAuth from '@/app/utils/withAuth'
+import withCompleteCandidateProfile from '@/app/utils/withCompleteCandidateProfile'
 import React from 'react'
 
 function MyCandidateProfile() {
@@ -30,4 +30,4 @@ function MyCandidateProfile() {
     )
 }
 
-export default withAuth(MyCandidateProfile)
+export default withCompleteCandidateProfile(MyCandidateProfile)

@@ -24,12 +24,12 @@ function withCompleteCandidateProfile(Component: any) {
         useEffect(() => {
             if (!loading && isAuthenticated && !user.loading && !user.userProfile.profileCompletion) {
                 // If not loading, authenticated, but profile is not complete, redirect
-                router.push('/candidate/complete-profile');
+                router.push('/candidate/settings/update-profile');
             }
         }, [loading, isAuthenticated, user.userProfile.profileCompletion, router]);
 
         if (loading || !isAuthenticated) {
-            return null; // Show nothing or a loading spinner while loading or not authenticated
+            return "Loading..."; // Show nothing or a loading spinner while loading or not authenticated
         }
 
         return <Component {...props} />;

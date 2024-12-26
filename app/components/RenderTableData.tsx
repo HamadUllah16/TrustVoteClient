@@ -7,7 +7,7 @@ import Modal from './Modal'
 function RenderTableData({ tableData, loading, action }: { action: React.ReactNode | null, tableData: any, loading: boolean }) {
     return (
         <>
-            {tableData &&
+            {tableData && tableData.length > 0 ?
                 tableData.map((data: any, index: number) => {
                     return (
                         <TableRow key={data._id}>
@@ -25,6 +25,10 @@ function RenderTableData({ tableData, loading, action }: { action: React.ReactNo
 
                     )
                 })
+                :
+                <TableRow>
+                    <TableCell colSpan={8} align="center">No data available</TableCell>
+                </TableRow>
             }
         </>
     )

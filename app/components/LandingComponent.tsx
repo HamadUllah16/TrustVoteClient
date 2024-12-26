@@ -1,10 +1,14 @@
-import { Box, Grid, Link, MenuItem, Stack, Typography } from '@mui/material'
+'use client'
+import { Button, Grid, Link, Stack, Typography } from '@mui/material'
 import React from 'react'
 import LandingPageNavItems from './LandingPageNavItems'
 import Image from 'next/image'
+import LandingProfileCards from './LandingProfileCards';
+import { useRouter } from 'next/navigation';
 const voterBg = '/voter-with-ballot.jpg';
 
 function LandingComponent() {
+    const router = useRouter();
     return (
         <Stack flexGrow={1} gap={10} px={'75px'} py={'15px'} flex={1}>
             <Stack
@@ -90,105 +94,33 @@ function LandingComponent() {
             </Grid>
 
             {/* -------------------------------------third screen--------------------------- */}
-            <Stack direction={'row'} gap={5} justifyContent={'center'} alignItems={'center'}>
-
-                <Stack
-                    justifyContent={'space-between'}
-                    bgcolor={'primary.main'}
-                    height={400}
-                    width={400}
-                    borderRadius={2}
-                    position={'relative'}
-                    overflow={'hidden'}
-                    className='hover:cursor-pointer'
-                    sx={{
-                        ':hover .zoom-image': {
-                            transform: 'scale(0.95)'
-                        }
-                    }}
+            <Stack direction={'row'} gap={5} justifyContent={'center'} alignItems={'center'} flexWrap={'wrap'}>
+                <LandingProfileCards
+                    title='Voter Profile'
+                    subtitle='Voter Profiles are used to vote for Candidates representing any of the Constituencies and Assemblies.'
+                    image={voterBg}
                 >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            width: '100%',
-                            height: '100%',
-                            transition: 'transform 0.3s ease-in-out',
-                        }}
-                        className='zoom-image'
-                    >
-                        <Image
-                            src={voterBg}
-                            alt='voter with a ballot paper'
-                            fill
-                            style={{ objectFit: 'cover', borderRadius: '12px' }}
-                        />
-                    </Box>
-                    <Stack
-                        p={3}
-                        flexGrow={1}
-                        justifyContent={'space-between'}
-                        gap={2}
-                        zIndex={1000}
-                        // bgcolor={'#2B2B2D50'}
-                        bgcolor={'#0C0C0C99'}
-                    >
-                        <Typography
-                            variant='h6'
-                            fontWeight={'1000'}
-                            color={'primary.main'}
-                        >
-                            Voter Profile
-                        </Typography>
+                    <Button onClick={() => router.push('/user/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                    <Button onClick={() => router.push('/user/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
+                </LandingProfileCards>
 
-                        <Typography
-                            color={'primary.100'}
-                        >
-                            Voter Profiles are used to vote for Candidates representing any of the Constituencies and Assembly.
-                        </Typography>
-                    </Stack>
-                </Stack>
-
-                <Stack
-                    justifyContent={'space-between'}
-                    height={400}
-                    width={400}
-                    bgcolor={'secondary.200'}
-                    p={3}
-                    borderRadius={2}
+                <LandingProfileCards
+                    title={'Candidate Profile'}
+                    subtitle='Candidates need a complete and verified profile to be elected for an Election.'
+                    image={voterBg}
                 >
-                    <Typography
-                        variant='h6'
-                        fontWeight={'bold'}
-                        color={'primary.main'}
-                    >
-                        Candidate Profile
-                    </Typography>
+                    <Button onClick={() => router.push('/candidate/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                    <Button onClick={() => router.push('/candidate/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
+                </LandingProfileCards>
 
-                    <Typography>
-                        Candidates need a complete and verified profile to be elected for an Election Session.
-                    </Typography>
-                </Stack>
 
-                <Stack
-                    justifyContent={'space-between'}
-                    height={400}
-                    width={400}
-                    bgcolor={'secondary.200'}
-                    p={3}
-                    borderRadius={2}
+                <LandingProfileCards
+                    title='Admin Profile'
+                    subtitle='Admin Profile has the authority to schedule voting session, add constituencies, list political parties and approve candidate profiles.'
+                    image={voterBg}
                 >
-                    <Typography
-                        variant='h6'
-                        fontWeight={'bold'}
-                        color={'primary.main'}
-                    >
-                        Admin Profile
-                    </Typography>
-
-                    <Typography>
-                        Admin Profile has the authority to to add constituencies, list political parties and approve candidate profiles.
-                    </Typography>
-                </Stack>
+                    <Button onClick={() => router.push('/admin/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                </LandingProfileCards>
 
             </Stack>
 
