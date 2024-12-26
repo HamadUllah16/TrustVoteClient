@@ -99,37 +99,28 @@ function LandingComponent() {
                     title='Voter Profile'
                     subtitle='Voter Profiles are used to vote for Candidates representing any of the Constituencies and Assemblies.'
                     image={voterBg}
-                    children={
-                        <>
-                            <Button onClick={() => router.push('/user/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
-                            <Button onClick={() => router.push('/user/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
-                        </>
-                    }
-
-                />
+                >
+                    <Button onClick={() => router.push('/user/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                    <Button onClick={() => router.push('/user/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
+                </LandingProfileCards>
 
                 <LandingProfileCards
                     title={'Candidate Profile'}
                     subtitle='Candidates need a complete and verified profile to be elected for an Election.'
                     image={voterBg}
-                    children={
-                        <>
-                            <Button onClick={() => router.push('/candidate/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
-                            <Button onClick={() => router.push('/candidate/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
-                        </>
-                    }
-                />
+                >
+                    <Button onClick={() => router.push('/candidate/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                    <Button onClick={() => router.push('/candidate/register')} variant='contained' sx={{ height: 'fit-content' }}>Register</Button>
+                </LandingProfileCards>
+
 
                 <LandingProfileCards
                     title='Admin Profile'
                     subtitle='Admin Profile has the authority to schedule voting session, add constituencies, list political parties and approve candidate profiles.'
                     image={voterBg}
-                    children={
-                        <>
-                            <Button onClick={() => router.push('/admin/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
-                        </>
-                    }
-                />
+                >
+                    <Button onClick={() => router.push('/admin/login')} variant='contained' sx={{ height: 'fit-content' }}>Login</Button>
+                </LandingProfileCards>
 
             </Stack>
 
