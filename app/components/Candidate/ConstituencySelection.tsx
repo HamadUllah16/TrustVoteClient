@@ -16,6 +16,7 @@ const ConstituencySearch = ({ formikStep2 }: { formikStep2: any }) => {
     const { kpk, punjab, sindh, balochistan, capital } = useSelector((state: RootState) => state.constituency);
     const { pk, pp, ps, pb } = useSelector((state: RootState) => state.provincialConstituency);
     const [inputValue, setInputValue] = useState('');
+    const { status } = useSelector((state: RootState) => state.user.userProfile)
     const dispatch = useDispatch<AppDispatch>();
 
     function renderConstituencies(constituencies: { area: string, constituency: string }[]) {

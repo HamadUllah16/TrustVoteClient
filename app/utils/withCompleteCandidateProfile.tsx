@@ -29,7 +29,7 @@ function withCompleteCandidateProfile(Component: any) {
         }, [loading, isAuthenticated, user.userProfile.profileCompletion, router]);
 
         if (loading || !isAuthenticated) {
-            return null; // Show nothing or a loading spinner while loading or not authenticated
+            return "Loading..."; // Show nothing or a loading spinner while loading or not authenticated
         }
 
         return <Component {...props} />;

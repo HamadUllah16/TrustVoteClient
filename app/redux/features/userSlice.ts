@@ -22,6 +22,14 @@ const initialState = {
         naVote: '',
         paVote: '',
         partyAffiliation: '',
+        dateOfBirth: '',
+        gender: '',
+        cnicNumber: '',
+        constituencyType: '',
+        manifesto: '',
+        codeOfConduct: false,
+        assetDeclaration: '',
+        educationalCertificates: ''
     },
     searchedCandidates: [],
 
