@@ -11,7 +11,7 @@ import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteC
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus';
 import withAuth from '@/app/utils/withAuth';
 
-function VoteCastingPage() {
+function CastAVote() {
     const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const dispatch = useDispatch<AppDispatch>();
 
@@ -54,4 +54,4 @@ function VoteCastingPage() {
     )
 }
 
-export default withAuth(VoteCastingPage)
+export default withAuth(CastAVote)
