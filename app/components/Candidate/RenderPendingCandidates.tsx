@@ -208,7 +208,7 @@ function RenderPendingCandidates({ pendingCandidates, loading }: { loading: bool
                         </Stack>
 
                         <Stack justifyContent={'end'} gap={2} direction={'row'}>
-                            <Button variant='contained' onClick={() => dispatch(approveOrRejectCandidate({ id: selected._id, status: 'approved', setShow }))}>
+                            <Button variant='contained' onClick={() => dispatch(approveOrRejectCandidate({ id: selected._id, status: 'verified', setShow }))}>
                                 Approve
                             </Button>
                         </Stack>

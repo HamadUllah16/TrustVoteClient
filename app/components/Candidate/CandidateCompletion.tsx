@@ -13,6 +13,7 @@ import { getAllConstituency } from '@/app/redux/features/constituencySlice'
 import ProfilePicture from '../ProfilePicture'
 import { setUserProfile } from '@/app/redux/features/userSlice'
 import { Info, Verified } from '@mui/icons-material'
+import Image from 'next/image'
 
 
 function CandidateCompletion() {
@@ -142,100 +143,12 @@ function CandidateCompletion() {
         };
     }
 
+    useEffect(() => {
+        dispatch(allPoliticalParties());
+    }, [])
+
     return (
         <>
-            <form onSubmit={formikStep1.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <Divider />
-                <Stack direction={'row'} gap={2} alignItems={'center'}>
-                    <ProfilePicture
-                        fieldName='profilePicture'
-                        formik={formikStep1}
-                        currentPicture={userProfile.profilePicture}
-                    />
-                    <Stack gap={2}>
-
-                        <Stack direction={'row'} gap={2} sx={{ width: '100%' }}>
-                            <TextField
-                                variant='filled'
-                                fullWidth
-                                label='First Name'
-                                name="firstName"
-                                value={formikStep1.values.firstName}
-                                onChange={formikStep1.handleChange}
-                                error={formikStep1.touched.firstName && Boolean(formikStep1.errors.firstName)}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.touched.firstName && formikStep1.errors.firstName}
-                                disabled={userProfile.status === 'pending'}
-                            />
-                            <TextField
-                                variant='filled'
-                                fullWidth
-                                label='Last Name'
-                                name="lastName"
-                                value={formikStep1.values.lastName}
-                                onChange={formikStep1.handleChange}
-                                error={formikStep1.touched.lastName && Boolean(formikStep1.errors.lastName)}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.touched.lastName && formikStep1.errors.lastName}
-                                disabled={userProfile.status === 'pending'}
-                            />
-
-                            <TextField
-                                variant='filled'
-                                fullWidth
-                                label='Phone Number'
-                                name="phone"
-                                value={formikStep1.values.phone}
-                                onChange={formikStep1.handleChange}
-                                error={formikStep1.touched.phone && Boolean(formikStep1.errors.phone)}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.touched.phone && formikStep1.errors.phone}
-                                disabled={userProfile.status === 'pending'}
-                            />
-                        </Stack>
-
-                        <Stack direction={'row'} gap={2}>
-                            <TextField
-                                variant='filled'
-                                fullWidth
-                                label='Date of Birth'
-                                type="date"
-                                name="dateOfBirth"
-                                InputLabelProps={{ shrink: true }}
-                                value={formikStep1.values.dateOfBirth}
-                                onChange={formikStep1.handleChange}
-                                error={formikStep1.touched.dateOfBirth && Boolean(formikStep1.errors.dateOfBirth)}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.touched.dateOfBirth && formikStep1.errors.dateOfBirth}
-                                disabled={userProfile.status === 'pending'}
-                            />
-                            <TextField
-                                variant='filled'
-                                fullWidth
-                                select
-                                label='Gender'
-                                name="gender"
-                                value={formikStep1.values.gender}
-                                onChange={formikStep1.handleChange}
-                                error={formikStep1.touched.gender && Boolean(formikStep1.errors.gender)}
-                                onBlur={formikStep1.handleBlur}
-                                helperText={formikStep1.touched.gender && formikStep1.errors.gender}
-                                disabled={userProfile.status === 'pending'}
-                            >
-                                <MenuItem value="male">Male</MenuItem>
-                                <MenuItem value="female">Female</MenuItem>
-                                <MenuItem value="other">Other</MenuItem>
-                            </TextField>
-                        </Stack>
-                    </Stack>
-                </Stack>
-                <Grid display="flex" justifyContent="end" gap={2}>
-                    <Button disabled={!(formikStep1.isValid && formikStep1.dirty)} type="submit" variant="contained" color="primary">
-                        Save
-                    </Button>
-                </Grid>
-            </form>
-
             {userProfile.status === 'pending' ?
                 <Stack gap={2} p={5} bgcolor={'secondary.200'} borderRadius={2} alignItems={'center'}>
                     <Info sx={{ color: 'primary.main' }} fontSize='large' />
@@ -246,6 +159,98 @@ function CandidateCompletion() {
                 </Stack>
                 :
                 <>
+                    <form onSubmit={formikStep1.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <Divider />
+                        <Stack direction={'row'} gap={2} alignItems={'center'}>
+                            <ProfilePicture
+                                fieldName='profilePicture'
+                                formik={formikStep1}
+                                currentPicture={userProfile.profilePicture}
+                            />
+                            <Stack gap={2}>
+
+                                <Stack direction={'row'} gap={2} sx={{ width: '100%' }}>
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        label='First Name'
+                                        name="firstName"
+                                        value={formikStep1.values.firstName}
+                                        onChange={formikStep1.handleChange}
+                                        error={formikStep1.touched.firstName && Boolean(formikStep1.errors.firstName)}
+                                        onBlur={formikStep1.handleBlur}
+                                        helperText={formikStep1.touched.firstName && formikStep1.errors.firstName}
+                                        disabled={userProfile.status === 'pending'}
+                                    />
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        label='Last Name'
+                                        name="lastName"
+                                        value={formikStep1.values.lastName}
+                                        onChange={formikStep1.handleChange}
+                                        error={formikStep1.touched.lastName && Boolean(formikStep1.errors.lastName)}
+                                        onBlur={formikStep1.handleBlur}
+                                        helperText={formikStep1.touched.lastName && formikStep1.errors.lastName}
+                                        disabled={userProfile.status === 'pending'}
+                                    />
+
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        label='Phone Number'
+                                        name="phone"
+                                        value={formikStep1.values.phone}
+                                        onChange={formikStep1.handleChange}
+                                        error={formikStep1.touched.phone && Boolean(formikStep1.errors.phone)}
+                                        onBlur={formikStep1.handleBlur}
+                                        helperText={formikStep1.touched.phone && formikStep1.errors.phone}
+                                        disabled={userProfile.status === 'pending'}
+                                    />
+                                </Stack>
+
+                                <Stack direction={'row'} gap={2}>
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        label='Date of Birth'
+                                        type="date"
+                                        name="dateOfBirth"
+                                        InputLabelProps={{ shrink: true }}
+                                        value={formikStep1.values.dateOfBirth}
+                                        onChange={formikStep1.handleChange}
+                                        error={formikStep1.touched.dateOfBirth && Boolean(formikStep1.errors.dateOfBirth)}
+                                        onBlur={formikStep1.handleBlur}
+                                        helperText={formikStep1.touched.dateOfBirth && formikStep1.errors.dateOfBirth}
+                                        disabled={userProfile.status === 'pending'}
+                                    />
+                                    <TextField
+                                        variant='filled'
+                                        fullWidth
+                                        select
+                                        label='Gender'
+                                        name="gender"
+                                        value={formikStep1.values.gender}
+                                        onChange={formikStep1.handleChange}
+                                        error={formikStep1.touched.gender && Boolean(formikStep1.errors.gender)}
+                                        onBlur={formikStep1.handleBlur}
+                                        helperText={formikStep1.touched.gender && formikStep1.errors.gender}
+                                        disabled={userProfile.status === 'pending'}
+                                    >
+                                        <MenuItem value="male">Male</MenuItem>
+                                        <MenuItem value="female">Female</MenuItem>
+                                        <MenuItem value="other">Other</MenuItem>
+                                    </TextField>
+                                </Stack>
+                            </Stack>
+                        </Stack>
+                        <Grid display="flex" justifyContent="end" gap={2}>
+                            <Button disabled={!(formikStep1.isValid && formikStep1.dirty)} type="submit" variant="contained" color="primary">
+                                Save
+                            </Button>
+                        </Grid>
+                    </form>
+
 
                     <form onSubmit={formikStep2.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                         <Typography variant='h4' gutterBottom color={'primary.main'}>
@@ -323,7 +328,13 @@ function CandidateCompletion() {
                             >
                                 {allParties && allParties.map((party: any, index: number) => {
                                     return (
-                                        <MenuItem key={index} value={party.name}>{party.name}</MenuItem>
+                                        <MenuItem key={index} value={party.name} sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between'
+                                        }}>
+                                            <p>{party.name}</p>
+                                            <Image src={party.symbol} width={20} height={20} alt='a symbol' />
+                                        </MenuItem>
                                     )
                                 })}
                             </TextField>
@@ -409,7 +420,12 @@ function CandidateCompletion() {
                                 <Checkbox
                                     name="codeOfConduct"
                                     checked={formikStep3.values.codeOfConduct}
-                                    onChange={formikStep3.handleChange}
+                                    onChange={(e) => {
+                                        formikStep3.setFieldValue(
+                                            'codeOfConduct',
+                                            e.target.checked
+                                        );
+                                    }}
                                 />
                             }
                             label={<Typography variant='caption' color={'primary.100'}>I agree to the code of conduct.</Typography>}
@@ -418,12 +434,8 @@ function CandidateCompletion() {
                             {errorMessage}
                         </Typography>
                         <Grid display="flex" justifyContent="end" >
-                            <Button disabled={!(formikStep3.dirty && formikStep3.isValid && !loading)} type="submit" variant="contained" color="primary">
-                                {loading ?
-                                    <CircularProgress size={'24px'} />
-                                    :
-                                    'Save'
-                                }
+                            <Button disabled={!(formikStep3.dirty && formikStep3.isValid)} type="submit" variant="contained" color="primary">
+                                Save
                             </Button>
                         </Grid>
                     </form>

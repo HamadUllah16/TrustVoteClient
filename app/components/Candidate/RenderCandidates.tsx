@@ -13,13 +13,13 @@ function RenderCandidates({ approvedCandidates, loading, actions }: { approvedCa
                 return (
                     <TableRow key={index + 1}>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
-                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName + " " + candidate.lastName}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituency}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.gender}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>
                             <Stack
-                                bgcolor={candidate.status === 'approved' ? 'primary.main' : 'red'}
+                                bgcolor={candidate.status === 'verified' ? 'primary.main' : 'red'}
                                 px={1}
                                 py={1}
                                 alignItems={'center'}
