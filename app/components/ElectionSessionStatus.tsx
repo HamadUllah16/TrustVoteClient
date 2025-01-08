@@ -46,7 +46,7 @@ export default function ElectionSessionStatus() {
             }
 
             {
-                electionSession._id && role === 'admin' ?
+                electionSession._id ?
                     <Stack gap={1} >
                         <Typography variant='h6' color={'primary.main'}>
                             {electionSession.status === 'ended' ?
@@ -77,7 +77,7 @@ export default function ElectionSessionStatus() {
                             </Stack>
 
                             {
-                                electionSession.status === 'scheduled' && electionSession.scheduledTime !== null &&
+                                electionSession.status === 'scheduled' && role === 'admin' && electionSession.scheduledTime !== null &&
                                     new Date(electionSession.scheduledTime).getTime() + GRACE_PERIOD_MS < Date.now() ?
                                     <Stack
                                         bgcolor={'secondary.200'}
@@ -97,10 +97,8 @@ export default function ElectionSessionStatus() {
                                         </Button>
                                     </Stack>
                                     :
-                                    electionSession.status === 'active' || 'ended' ?
-                                        null
-                                        :
-                                        <Countdown scheduledTime={electionSession.scheduledTime} />
+                                    electionSession.status === 'scheduled' &&
+                                    <Countdown scheduledTime={electionSession.scheduledTime} />
                             }
 
                             <Stack p={2}>
@@ -152,7 +150,7 @@ export default function ElectionSessionStatus() {
                     </Stack>
                     :
                     <>
-                        {role !== 'admin' && !loading &&
+                        {!loading &&
 
                             <Stack flexGrow={1}>
                                 <Typography color={'primary.main'}>
