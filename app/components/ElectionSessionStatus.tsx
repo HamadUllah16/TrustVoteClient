@@ -1,10 +1,10 @@
-import { Button, CircularProgress, IconButton, Stack, Typography } from '@mui/material'
+import { Button, CircularProgress, Stack, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import SchedulingElectionSession from './SchedulingElectionSession'
-import { Circle, Pause, Warning } from '@mui/icons-material'
+import { Circle, Warning } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { getElectionSession, modifyElectionSession, tryElectionSessionTransaction } from '../redux/features/electionSessionSlice';
+import { getElectionSession, tryElectionSessionTransaction } from '../redux/features/electionSessionSlice';
 import Countdown from './Countdown';
 import IconMenu from './IconMenuElectionSession';
 import toast from 'react-hot-toast';
@@ -46,7 +46,7 @@ export default function ElectionSessionStatus() {
             }
 
             {
-                electionSession._id ?
+                electionSession._id && role === 'admin' ?
                     <Stack gap={1} >
                         <Typography variant='h6' color={'primary.main'}>
                             {electionSession.status === 'ended' ?
@@ -152,7 +152,7 @@ export default function ElectionSessionStatus() {
                     </Stack>
                     :
                     <>
-                        {role !== '' && role !== 'admin' && !loading &&
+                        {role !== 'admin' && !loading &&
 
                             <Stack flexGrow={1}>
                                 <Typography color={'primary.main'}>

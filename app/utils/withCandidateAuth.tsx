@@ -22,7 +22,7 @@ export default function withCandidateAuth(Component: any) {
         }, [isAuthenticated, dispatch]);
 
         useEffect(() => {
-            if (role !== 'candidate' && role !== '') {
+            if (role !== 'candidate') {
                 router.replace('/unauthorized')
             } else {
                 setLoading(false)

@@ -8,7 +8,7 @@ const initialState = {
     userProfile: {
         _id: '',
         profilePicture: '',
-        role: '',
+        role: '' as 'admin' | 'voter' | 'candidate',
         firstName: '',
         lastName: '',
         email: '',

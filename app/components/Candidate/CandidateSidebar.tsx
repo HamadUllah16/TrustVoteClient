@@ -8,7 +8,7 @@ function CandidateSidebar() {
         <Sidebar>
             <SidebarMenus
                 navItems={[
-                    { href: '/candidate/dashboard', title: 'My Profile', icon: <Person fontSize='medium' /> },
+                    { href: '/candidate', title: 'My Profile', icon: <Person fontSize='medium' /> },
                     { href: '/candidate/election-session', title: 'Election Session', icon: <HowToVote fontSize='medium' /> },
                     { href: '/candidate/view-political-parties', title: 'View Political Parties', icon: <Groups fontSize='medium' /> },
                     { href: '/candidate/results', title: 'Results', icon: <Dataset fontSize='medium' /> }

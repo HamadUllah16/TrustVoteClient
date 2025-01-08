@@ -139,7 +139,7 @@ function ProfileMenu() {
                             }}
                         >
                             <Link
-                                href={`${currentPath}/dashboard`}
+                                href={`${currentPath}`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -148,7 +148,7 @@ function ProfileMenu() {
                                 <MenuItem
                                     sx={{
                                         borderRadius: 1.5,
-                                        backgroundColor: pathName.startsWith('/user/dashboard') ? 'primary.main' : 'secondary.main',
+                                        backgroundColor: pathName === '/user' ? 'primary.main' : 'secondary.main',
                                         color: 'secondary.100',
                                         ':hover': {
                                             bgcolor: 'secondary.200',
@@ -197,7 +197,7 @@ function ProfileMenu() {
 
 
                             <Link
-                                href={`${currentPath}/dashboard`}
+                                href={`${currentPath}`}
                                 onClick={() => setShow(false)}
                                 style={{
                                     textDecoration: 'none',
@@ -210,7 +210,7 @@ function ProfileMenu() {
                                         gap: 2,
                                         alignItems: 'center',
                                         borderRadius: 1,
-                                        backgroundColor: pathName.startsWith(`${currentPath}/dashboard`) ? 'primary.main' : 'secondary.main',
+                                        backgroundColor: pathName === currentPath ? 'primary.main' : 'secondary.main',
                                         color: 'secondary.100',
                                         ':hover': {
 

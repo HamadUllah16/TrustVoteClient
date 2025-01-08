@@ -82,12 +82,21 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                         </Typography>
 
                         {status &&
-                            <Stack textAlign={'center'} borderRadius={0.5} p={0.5} color={'white'} bgcolor={status === 'approved' ? '#008cff' : 'orange'}>
+                            <Stack
+                                textAlign={'center'}
+                                borderRadius={0.5}
+                                p={0.5}
+                                color={status === 'verified' ? 'green' : status === 'pending' ? 'orange' : 'white'}
+                                bgcolor={status === 'verified' ? 'lightgreen' : status === 'pending' ? 'lightorange' : '#f44336'}
+                            >
                                 <Typography>
                                     {status !== '' &&
-                                        status === 'approved' ? 'Nominated'
+                                        status === 'verified' ? 'Nominated'
                                         :
-                                        'Pending'
+                                        status === 'pending' ?
+                                            'Pending'
+                                            :
+                                            'Unverified'
                                     }
                                 </Typography>
                             </Stack>
