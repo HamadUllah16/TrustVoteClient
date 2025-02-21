@@ -17,6 +17,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
             minHeight={'100%'}
             gap={5}
             py={3}
+            className='lg:flex md:hidden sm:hidden max-sm:hidden'
         >
             <Stack gap={4} minHeight={'50vh'}>
                 <Stack
@@ -70,8 +71,8 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                             >
                                 <Typography color={'secondary.100'}>
                                     {role}
-                                </Typography>
-                            </Stack> */}
+                                    </Typography>
+                                    </Stack> */}
                         </Stack>
                         <Typography
                             color={'grey'}

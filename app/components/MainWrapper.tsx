@@ -4,7 +4,10 @@ import React from 'react'
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
     return (
-        <Stack px={'75px'} py={'15px'} gap={4} flex={1}>
+        <Stack className='gap-4 flex-grow
+        lg:px-20 lg:py-4
+        md:px-2 md:py-4
+        '>
             <Stack
                 direction={'row'}
                 minWidth={400}
@@ -15,7 +18,6 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
                 borderColor={'secondary.200'}
                 borderRadius={2}
                 bgcolor={'secondary.main'}
-                divider={<Divider orientation='vertical' sx={{ borderColor: 'secondary.200' }} />}
             >
                 {children}
             </Stack>
