@@ -62,17 +62,16 @@ function Navbar() {
                         top={0}
                         width={'100%'}
                         zIndex={10}
-                        bgcolor={'background'}
-                        px={'75px'}
-                        py={'15px'}
                         transition={'all 0.3s ease'}
+                        className='bg-white bg-opacity-5 backdrop-filter backdrop-blur-md
+                        md:px-20 md:py-4
+                        sm:px-4 sm:py-4
+                        max-sm:px-4 max-sm:py-4
+                        '
                     >
-                        <Grid
+                        <Stack
                             container
-                            borderRadius={2}
-                            display={'flex'}
-                            justifyContent={'space-between'}
-                            alignItems={'center'}
+                            className='flex flex-row justify-between gap-5'
                         >
                             <Link href={'/'}>
                                 <Image
@@ -95,7 +94,7 @@ function Navbar() {
                                 {/* User Profile Menu */}
                                 {isAuthenticated && <ProfileMenu />}
                             </Grid>
-                        </Grid>
+                        </Stack>
                     </Stack>
                 </Stack>
             )}

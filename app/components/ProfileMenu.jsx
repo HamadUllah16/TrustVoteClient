@@ -258,7 +258,7 @@ function ProfileMenu() {
                                 </MenuItem>
                             </Link>
 
-                            <Link
+                            {/* <Link
                                 href={`${currentPath}/settings`}
                                 onClick={() => setShow(false)}
                                 style={{
@@ -287,7 +287,8 @@ function ProfileMenu() {
                                         Settings
                                     </Typography>
                                 </MenuItem>
-                            </Link>
+                            </Link> */}
+
                             <Link
                                 href={'/logout'}
                                 onClick={() => setShow(false)}

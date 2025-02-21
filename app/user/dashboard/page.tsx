@@ -1,75 +1,57 @@
-'use client';
-import { Typography, Stack, Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getUserProfile } from "../../redux/features/userSlice";
-import Loading from "../../components/Loading";
-import { AppDispatch, RootState } from "../../redux/store";
-import withAuth from "../../utils/withAuth";
-import CompleteProfile from "../../components/CompleteProfile";
-import UserSidebar from "../../components/UserComponents/UserSidebar";
-import MainWrapper from "../../components/MainWrapper";
-import socket from '@/app/components/Utils/socket';
+'use client'
+import React, { useEffect } from 'react'
+import { Typography, Stack, Divider } from "@mui/material";
+import UserSidebar from '@/app/components/UserComponents/UserSidebar';
+import MainWrapper from '@/app/components/MainWrapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/redux/store';
+import CompleteProfile from '@/app/components/CompleteProfile';
+import { getElectionSession } from '@/app/redux/features/electionSessionSlice';
+import RenderVoteCastingRoutes from '@/app/components/UserComponents/RenderVoteCastingRoutes';
+import ElectionSessionStatus from '@/app/components/ElectionSessionStatus';
+import withAuth from '@/app/utils/withAuth';
 
-function UserHomePage() {
-    const { firstName, profileCompletion, _id } = useSelector((state: RootState) => state.user.userProfile);
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
+function VoteCastingPage() {
+    const { profileCompletion } = useSelector((state: RootState) => state.user.userProfile)
     const dispatch = useDispatch<AppDispatch>();
 
-    // Fetch user profile on component mount
     useEffect(() => {
-        const token = localStorage.getItem('x_auth_token');
-
-        if (!token) {
-            router.push('/user/login');
-            return;
-        }
-
-        if (!isAuthenticated) {
-            dispatch(getUserProfile())
-                .then(() => setLoading(false))
-                .catch(() => {
-                    setLoading(false);
-                    router.push('/user/login');
-                });
-        }
-    }, [dispatch, router, isAuthenticated]);
-
-    if (loading && !isAuthenticated) {
-        return <Loading />;
-    }
-
-    if (!isAuthenticated) {
-        router.push('/user/login');
-        return null;
-    }
-    if (!profileCompletion) {
-        router.push('/user/settings/update-profile')
-    }
-
+        dispatch(getElectionSession())
+    }, [])
     return (
         <MainWrapper>
+
             <UserSidebar />
+
             <Stack
                 flex={1}
-                color={'primary.200'}
-                py={2}
-                alignItems={'center'}
-                justifyContent={'center'}
+                gap={2}
+                py={3}
             >
-                <Typography>
-                    Welcome to Trust Vote{' '}
-                    <span style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
-                        {firstName}
-                    </span>
-                </Typography>
-                {!profileCompletion && <CompleteProfile />}
+                <Stack direction={'row'} gap={1} justifyContent={'space-between'}>
+
+                    <Typography variant='h4' fontWeight={'bold'} color={'primary.main'}>
+                        Cast A Vote
+                    </Typography>
+
+                    <RenderVoteCastingRoutes />
+
+                </Stack>
+                <Divider sx={{ borderColor: 'secondary.200' }} />
+
+                {profileCompletion ?
+                    <Stack gap={3} justifyContent={'space-between'}>
+                        <ElectionSessionStatus />
+                        <Divider sx={{ borderColor: 'secondary.200' }} />
+                        {/* <PreviousElectionSessions /> */}
+                    </Stack>
+                    :
+                    <CompleteProfile />
+                }
+
             </Stack>
         </MainWrapper>
-    );
+    )
 }
 
-export default withAuth(UserHomePage);
+export default withAuth(VoteCastingPage)

@@ -9,6 +9,7 @@ import MainWrapper from '../components/MainWrapper';
 import CandidateSidebar from '../components/Candidate/CandidateSidebar';
 import ProfileStats from '../components/Candidate/ProfileStats';
 import CandidateVoteCount from '../components/Candidate/CandidateVoteCount';
+import PageHeader from '../components/PageHeader';
 
 function CandidateHome() {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,11 +20,17 @@ function CandidateHome() {
         <MainWrapper>
             <CandidateSidebar />
 
-            <Stack py={2} gap={4} flex={1}>
-                <ProfileStats />
-                <CandidateVoteCount />
 
-            </Stack>
+            <PageHeader
+                action={null}
+                title='My Candidate Profile'
+                subtitle=''
+            >
+                <Stack py={2} gap={4} flex={1}>
+                    <ProfileStats />
+                    <CandidateVoteCount />
+                </Stack>
+            </PageHeader>
         </MainWrapper>
     )
 }

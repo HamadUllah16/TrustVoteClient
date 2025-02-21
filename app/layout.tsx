@@ -34,6 +34,9 @@ export default function RootLayout({
             <Toaster position="top-center" />
             <main className="flex flex-grow">{children}</main>
             <Footer />
+            <div className="w-full h-20 lg:hidden sm:visible max-sm:visible">
+
+            </div>
           </body>
         </StoreProvider>
       </ThemeProvider>

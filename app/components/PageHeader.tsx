@@ -7,6 +7,7 @@ function PageHeader({ title, action, subtitle, children }: { title: string, subt
             flex={1}
             gap={4}
             py={3}
+            className='overflow-scroll'
         >
             <Box>
                 <Stack direction={'row'} gap={1} justifyContent={'space-between'}>
