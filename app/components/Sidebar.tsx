@@ -7,6 +7,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import SidebarMenus from './SidebarMenus'
+import { usePathname } from 'next/navigation'
 
 function Sidebar({ children }: { children: React.ReactNode }) {
     const { firstName, lastName, email, role, status, profilePicture } = useSelector((state: RootState) => state.user.userProfile)
@@ -118,7 +119,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
             <Stack>
                 <SidebarMenus
                     navItems={[
-                        { href: '/settings', title: 'Settings', icon: <SettingsOutlined fontSize='medium' /> },
+                        // { href: '/settings', title: 'Settings', icon: <SettingsOutlined fontSize='medium' /> },
                         { href: '/logout', title: 'Logout', icon: <LogoutOutlined fontSize='medium' /> }
                     ]}
                 />

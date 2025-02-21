@@ -5,12 +5,14 @@ import React from 'react'
 function MainWrapper({ children }: { children: React.ReactNode }) {
     return (
         <Stack className='gap-4 flex-grow
-        lg:px-20 lg:py-4
-        md:px-2 md:py-4
+        xl:px-20 xl:py-4
+        lg:px-2 lg:py-4
+        w-dvw
         '>
             <Stack
                 direction={'row'}
                 minWidth={400}
+                width={'100%'}
                 minHeight={'100%'}
                 px={3}
                 gap={3}

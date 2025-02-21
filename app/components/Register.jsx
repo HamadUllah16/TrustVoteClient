@@ -59,7 +59,12 @@ function Register() {
             p={2}
             border={'1px solid black'}
         >
-            <Stack>
+            <Stack className='
+            lg:w-fit lg:justify-start lg:items-start
+            md:w-full md:justify-center md:items-center
+            sm:w-full sm:justify-center sm:items-center
+            max-sm:w-full max-sm:justify-center max-sm:items-center
+            '>
                 <Image
                     src={'/logo-dark.jpg'}
                     height={50}
@@ -71,7 +76,7 @@ function Register() {
                     }}
                 />
                 <Stack
-                    px={'75px'}
+                    className='lg:px-20 md:px-2 sm:px-2 max-sm:px-2'
                     justifyContent={"center"}
                     gap={2}
                     divider={<Divider sx={{ borderColor: 'secondary.200' }} />}
@@ -127,7 +132,7 @@ function Register() {
                 </Stack>
             </Stack>
 
-            <Stack flexGrow={1} borderRadius={2} bgcolor={'primary.main'}>
+            <Stack className='lg:flex md:hidden sm:hidden max-sm:hidden ' flexGrow={1} borderRadius={2} bgcolor={'primary.main'}>
 
             </Stack>
         </Stack>

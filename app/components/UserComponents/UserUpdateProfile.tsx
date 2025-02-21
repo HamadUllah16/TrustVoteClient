@@ -24,15 +24,15 @@ function UserUpdateProfile() {
                 subtitle={'Update your profile. A complete profile makes you eligible for voting.'}
                 action={null}
             >
-                <Grid container p={2} justifyContent={'space-between'}>
-                    <Grid sm={7}>
+                <Stack p={2} className='lg:flex-row md:flex-col-reverse sm:flex-col-reverse max-sm:flex-col-reverse justify-between gap-5'>
+                    <Stack >
                         <CompleteProfile />
-                    </Grid>
+                    </Stack>
 
-                    <Grid sm={4}>
+                    <Stack>
                         <ProfileCompletionVerificationStatus />
-                    </Grid>
-                </Grid>
+                    </Stack>
+                </Stack>
             </PageHeader>
         </MainWrapper>
     )

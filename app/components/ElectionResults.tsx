@@ -114,7 +114,7 @@ function ElectionResults() {
                 subtitle={'View and Filter candidates based on Assembly, and Constituency.'}
                 action={null}>
 
-                <Stack direction={'row'} justifyContent={'space-between'} gap={1}>
+                <Stack className='lg:flex-row md:flex-col gap-4 justify-between'>
 
                     <Stack>
                         <TextField
@@ -124,9 +124,7 @@ function ElectionResults() {
                             placeholder='Election Session XXXX'
                             defaultValue={allElectionSessions.length > 0 ? allElectionSessions[0].name : ''}
                             onChange={(e) => setCurrentElectionSession(e.target.value)}
-                            sx={{
-                                width: 250
-                            }}
+                            className='lg:w-64 md:w-full'
                         >
                             {allElectionSessions.length > 0 ? allElectionSessions.map((eachElectionSession) => {
                                 return (
@@ -141,8 +139,9 @@ function ElectionResults() {
 
                     {currentElectionSession &&
 
-                        <Stack direction={'row'} gap={1} width={'100%'} justifyContent={'end'}>
+                        <Stack className='w-full justify-end gap-1 lg:flex-row md:flex-col'>
                             <Button
+                                size='large'
                                 variant={(userAssembly === '' && specificConstituency === '') ? 'contained' : 'outlined'}
                                 onClick={resetFiltersHandler}
                             >
@@ -159,7 +158,7 @@ function ElectionResults() {
                                     setSpecificConstituency('');
                                 }}
                                 value={userAssembly}
-                                sx={{ minWidth: 300, maxWidth: 400 }}
+                                className='lg:w-64 md:w-full'
                             >
                                 <MenuItem value='national assembly'>National Assembly</MenuItem>
                                 <MenuItem value='provincial assembly'>Provincial Assembly</MenuItem>
@@ -170,7 +169,7 @@ function ElectionResults() {
                                 defaultValue={specificConstituency}
                                 onChange={(event, value) => userSearchedConstituencyHandler(value)}
                                 fullWidth
-                                sx={{ maxWidth: 350 }}
+                                className='lg:w-90 md:w-full'
                                 renderInput={(params) => (
                                     <TextField {...params} variant='filled' label='Constituency' />
                                 )}

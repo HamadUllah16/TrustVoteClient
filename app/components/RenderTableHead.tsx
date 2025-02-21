@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Stack, Divider, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
+import { Typography, Stack, Divider, Table, TableHead, TableRow, TableCell, TableBody, Box, TableContainer } from "@mui/material";
 
 function RenderTableHead({ labels, children }: { labels: string[], children: React.ReactNode }) {
     return (
@@ -14,33 +14,35 @@ function RenderTableHead({ labels, children }: { labels: string[], children: Rea
             pb={2}
             maxHeight={800}
         >
-            <Table>
-                <TableHead sx={{ bgcolor: 'primary.main' }}>
-                    <TableRow>
-                        {labels.map((label: string, index: number) => {
-                            return (
-                                <TableCell
-                                    key={index}
-                                    sx={{ color: 'primary.100' }}
-                                >
-                                    <Typography
-                                        variant='body1'
-                                        fontWeight={'bold'}
+            <TableContainer>
+                <Table>
+                    <TableHead sx={{ bgcolor: 'primary.main' }}>
+                        <TableRow>
+                            {labels.map((label: string, index: number) => {
+                                return (
+                                    <TableCell
+                                        key={index}
+                                        sx={{ color: 'primary.100' }}
                                     >
-                                        {label}
-                                    </Typography>
-                                </TableCell>
-                            )
-                        })}
-                    </TableRow>
-                </TableHead>
+                                        <Typography
+                                            variant='body1'
+                                            fontWeight={'bold'}
+                                        >
+                                            {label}
+                                        </Typography>
+                                    </TableCell>
+                                )
+                            })}
+                        </TableRow>
+                    </TableHead>
 
 
-                <TableBody>
-                    {/* data rendering components*/}
-                    {children}
-                </TableBody>
-            </Table>
+                    <TableBody>
+                        {/* data rendering components*/}
+                        {children}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Stack>
     )
 }

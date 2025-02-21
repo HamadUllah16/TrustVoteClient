@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -18,9 +18,14 @@ function MobileNav({ navItems }: { navItems: { href: string, title: string, icon
                             key={item.href}
                             onClick={() => router.push(item.href)}
                             variant={isActive ? 'contained' : 'text'}
-                            className='w-full h-full rounded-none'
+                            className='w-full h-full rounded-none flex flex-col'
                         >
                             {item.icon}
+                            <Typography sx={{
+                                fontSize: 8
+                            }}>
+                                {item.title}
+                            </Typography>
                         </Button>
                     )
                 })}
