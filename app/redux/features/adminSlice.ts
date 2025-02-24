@@ -52,9 +52,9 @@ export const loginAdmin = createAsyncThunk<any, any, { rejectValue: { message: s
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_ENDPOINT}/admin/login`, data.credentials)
             if (response.status === 200) {
-                data.router.push('/admin/dashboard');
                 dispatch(setIsAuthenticated(true));
                 dispatch(getAdminProfile());
+                data.router.push('/admin/dashboard');
                 return response.data;
             }
         } catch (error: any) {
@@ -68,12 +68,15 @@ export const loginAdmin = createAsyncThunk<any, any, { rejectValue: { message: s
 export const getAdminProfile = createAsyncThunk(
     'admin/getAdminProfile',
     async (_, { rejectWithValue, dispatch }) => {
+        console.log('Get admin profile called')
         try {
+            console.log('Sending response')
             const response = await axiosInstance.get('/admin/get-admin-profile')
             dispatch(setIsAuthenticated(true));
             dispatch(setUserProfile(response.data));
             return response.data;
         } catch (error) {
+            console.log('failed')
             return rejectWithValue(error);
         }
     })

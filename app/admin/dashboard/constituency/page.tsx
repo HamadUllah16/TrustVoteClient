@@ -122,11 +122,11 @@ function ConstituencyPage() {
                                             error={formik.touched.province && Boolean(formik.errors.province)}
                                         >
                                             {formik.values.assembly === 'national assembly' &&
-                                                <MenuItem value='capital'>Islamabd & Capital Territories</MenuItem>
+                                                <MenuItem value='islamabad capital territory'>Islamabd & Capital Territories</MenuItem>
                                             }
                                             <MenuItem value='punjab'>Punjab</MenuItem>
                                             <MenuItem value="sindh">Sindh</MenuItem>
-                                            <MenuItem value='kpk'>Khyber Pakhtunkhwa</MenuItem>
+                                            <MenuItem value='khyber pakhtunkhwa'>Khyber Pakhtunkhwa</MenuItem>
                                             <MenuItem value='balochistan'>Balochistan</MenuItem>
                                         </TextField>
                                     }

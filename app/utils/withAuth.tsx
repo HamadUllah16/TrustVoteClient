@@ -1,6 +1,6 @@
 'use client'
 import { AppDispatch, RootState } from "@/app/redux/store"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserProfile, setShowLogin } from "../redux/features/userSlice"
 import { getCandidateProfile } from "../redux/features/candidateSlice"
@@ -35,6 +35,22 @@ export default function withAuth(Component: any) {
                     default:
                         break;
                 }
+            }
+            else if (isAuthenticated && token && userProfile.email === "") {
+                switch (role) {
+                    case 'voter':
+                        dispatch(getUserProfile());
+                        break;
+                    case 'candidate':
+                        dispatch(getCandidateProfile());
+                        break;
+                    case 'admin':
+                        dispatch(getAdminProfile());
+                        break;
+                    default:
+                        break;
+                }
+
             } else if (!token) {
                 // if token is missing
                 switch (role) {
@@ -80,9 +96,10 @@ export default function withAuth(Component: any) {
         if (userProfile.role === 'candidate' && pathName.startsWith(roleBasedPaths.candidate)) {
             return <Component {...props} />;
         }
-
-        // If none of the conditions match, return unauthorized
-        router.push('/unauthorized')
-        // return <Unauthorized />;
+        // else (
+        //     // If none of the conditions match, return unauthorized
+        //     router.push('/unauthorized')
+        //     // return <Unauthorized />;
+        // )
     };
 }
