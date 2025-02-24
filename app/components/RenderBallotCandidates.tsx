@@ -8,10 +8,10 @@ function RenderBallotCandidates({ candidates, loading }: { candidates: any[], lo
     return (
         <>
             {candidates.length &&
-                candidates.map((candidate: { _id: string, firstName: string, lastName: string, constituency: string, partyAffiliation: string, constituencyType: string }, index: number) => {
+                candidates.map((candidate: { candidateId: string, _id: string, firstName: string, lastName: string, constituency: string, partyAffiliation: string, constituencyType: string }, index: number) => {
                     return (
                         <TableRow key={candidate._id}>
-                            <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : index + 1}</TableCell>
+                            <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : candidate?.candidateId}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : candidate.firstName + " " + candidate.lastName}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : candidate.constituency}</TableCell>
                             <TableCell sx={{ color: 'secondary.100' }}>{loading ? <Skeleton sx={{ bgcolor: 'secondary.100' }} /> : candidate.partyAffiliation}</TableCell>

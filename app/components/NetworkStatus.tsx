@@ -31,7 +31,7 @@ function NetworkStatus() {
             sx={{
                 transition: 'all 0.5s ease',
                 opacity: isOnline ? 0 : 1,
-                transform: isOnline ? 'translateY(-100%)' : 'translateY(0)',
+                transform: isOnline ? 'translateY(10%)' : 'translateY(0)',
                 position: 'fixed',
                 top: 0,
                 left: 0,

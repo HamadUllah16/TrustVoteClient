@@ -38,7 +38,7 @@ function RenderPendingCandidates({ pendingCandidates, loading }: { loading: bool
             {pendingCandidates.length > 0 ? pendingCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={candidate._id}>
-                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate?.candidateId}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituencyType}</TableCell>

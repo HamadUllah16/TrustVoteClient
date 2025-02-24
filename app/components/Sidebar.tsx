@@ -18,7 +18,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
             minHeight={'100%'}
             gap={5}
             py={3}
-            className='lg:flex md:hidden sm:hidden max-sm:hidden'
+            className='lg:flex md:hidden sm:hidden max-sm:hidden pr-6 border-r border-[#2B2B2D]'
         >
             <Stack gap={4} minHeight={'50vh'}>
                 <Stack
