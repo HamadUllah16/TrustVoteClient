@@ -2,6 +2,8 @@ import axiosInstance from "@/app/utils/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { setIsAuthenticated } from "./authSlice";
 import { getRelevantCandidates } from "./candidateSlice";
+import toast from "react-hot-toast";
+import { LinkProps } from "next/link";
 
 
 const initialState = {

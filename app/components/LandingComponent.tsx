@@ -41,10 +41,10 @@ function LandingComponent() {
                         </Typography>
                     </div>
                     <div className='flex gap-5'>
-                        <Button variant='contained' size='large'>
+                        <Button onClick={() => router.push('/user/login')} variant='contained' size='large'>
                             Register
                         </Button>
-                        <Button size='large' variant='outlined'>
+                        <Button onClick={() => router.push('/user/register')} size='large' variant='outlined'>
                             Login
                         </Button>
                     </div>

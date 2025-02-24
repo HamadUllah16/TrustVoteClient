@@ -248,7 +248,7 @@ function CandidateCompletion() {
                             </Stack>
                         </Stack>
                         <Grid display="flex" justifyContent="end" gap={2}>
-                            <Button disabled={!(formikStep1.isValid && formikStep1.dirty)} type="submit" variant="contained" color="primary">
+                            <Button disabled={!(formikStep1.isValid && formikStep1.dirty && !loading)} type="submit" variant="contained" color="primary">
                                 Save
                             </Button>
                         </Grid>
@@ -355,7 +355,7 @@ function CandidateCompletion() {
                                     {errorMessage}
                                 </Typography>
                                 <Grid display="flex" justifyContent="end" gap={2}>
-                                    <Button disabled={!(formikStep2.isValid && formikStep2.dirty)} type="submit" variant="contained" color="primary">
+                                    <Button disabled={!(formikStep2.isValid && formikStep2.dirty && !loading)} type="submit" variant="contained" color="primary">
                                         Save
                                     </Button>
                                 </Grid>
@@ -445,7 +445,7 @@ function CandidateCompletion() {
                                     {errorMessage}
                                 </Typography>
                                 <Grid display="flex" justifyContent="end" >
-                                    <Button disabled={!(formikStep3.dirty && formikStep3.isValid)} type="submit" variant="contained" color="primary">
+                                    <Button disabled={!(formikStep3.dirty && formikStep3.isValid && !loading)} type="submit" variant="contained" color="primary">
                                         Save
                                     </Button>
                                 </Grid>

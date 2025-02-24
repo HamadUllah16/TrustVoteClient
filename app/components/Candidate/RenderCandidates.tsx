@@ -1,10 +1,6 @@
 'use client'
-import { getAdminProfile } from '@/app/redux/features/adminSlice';
-import { AppDispatch, RootState } from '@/app/redux/store';
-import { Stack, TableBody, TableCell, TableRow } from '@mui/material'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getApprovedCandidates } from '@/app/redux/features/candidateSlice';
+import { Stack, TableCell, TableRow } from '@mui/material'
+import React from 'react'
 
 function RenderCandidates({ approvedCandidates, loading, actions }: { approvedCandidates: any, loading: boolean, actions: null | React.ReactNode }) {
     return (
@@ -12,7 +8,7 @@ function RenderCandidates({ approvedCandidates, loading, actions }: { approvedCa
             {approvedCandidates.map((candidate: any, index: number) => {
                 return (
                     <TableRow key={index + 1}>
-                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{index + 1}</TableCell>
+                        <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate?.candidateId}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.firstName + " " + candidate.lastName}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.partyAffiliation}</TableCell>
                         <TableCell sx={{ color: 'secondary.100', textTransform: 'capitalize' }}>{candidate.constituency}</TableCell>

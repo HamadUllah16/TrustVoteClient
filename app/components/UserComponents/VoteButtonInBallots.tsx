@@ -32,15 +32,29 @@ function VoteButtonInBallots({ candidate }: { candidate: any }) {
     const voteCastingHandler = () => {
         toast.promise(
             dispatch(castVote({ candidateId: candidate._id, votingSessionPublicKey: electionSessionPublicKey }))
-                .unwrap(), {
-            loading: 'Loading...',
-            success: 'Vote Casted Successfully.',
-            error: 'Error while casting a vote.'
-        }
-        ).then(() => {
-            socket.emit('newVote', { voterId: _id, candidateId: candidate._id })
-        })
+                .unwrap(),
+            {
+                loading: 'Loading...',
+                success: ({ tx }) => (
+                    <div>
+                        Vote Casted Successfully.{' '}
+                        <a
+                            href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
+                            Verify
+                        </a>
+                    </div>
+                ),
+                error: 'Error while casting a vote.'
+            }
+        ).then((txSignature) => {
+            socket.emit('newVote', { voterId: _id, candidateId: candidate._id, txSignature })
+        });
     }
+
 
     useEffect(() => {
         setDisabled(disableButton());
