@@ -4,15 +4,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FormikValues, useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { AppDispatch, RootState } from '@/app/redux/store';
-import { loginAdmin } from '@/app/redux/features/adminSlice';
+import { getAdminProfile, loginAdmin } from '@/app/redux/features/adminSlice';
 import LoginForm from '../LoginForm';
 import toast from 'react-hot-toast';
 import { loginUserEmailCheck, setExists } from '@/app/redux/features/authSlice';
 
 function Login() {
-    const { loading, checkExistsLoading, exists } = useSelector((state: RootState) => state.auth);
+    const { loading, checkExistsLoading, isAuthenticated, exists } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
+
+    // Redirect to dashboard if authenticated
+    useEffect(() => {
+        if (isAuthenticated && !loading) {
+            router.push('/admin/dashboard');
+        }
+    }, [isAuthenticated, loading, router]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('x_auth_token');
+
+        if (token && !isAuthenticated && !loading) {
+            dispatch(getAdminProfile());
+        }
+    }, [isAuthenticated, loading, dispatch]);
 
     const formik = useFormik({
         initialValues: {

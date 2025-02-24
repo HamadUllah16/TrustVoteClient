@@ -9,6 +9,7 @@ import React, { useEffect, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ElectionSessionStatus from '@/app/components/ElectionSessionStatus'
 import { getVerifiedUsersCount } from '@/app/redux/features/adminSlice'
+import withAuth from '@/app/utils/withAuth'
 
 function ElectionSessionPage() {
     const { approvedCandidates } = useSelector((state: RootState) => state.candidate)
@@ -77,4 +78,4 @@ function ElectionSessionPage() {
     )
 }
 
-export default ElectionSessionPage
+export default withAuth(ElectionSessionPage)

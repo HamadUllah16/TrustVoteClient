@@ -149,7 +149,7 @@ const constituencySlice = createSlice({
         })
         builder.addCase(sindhConstituency.fulfilled, (state, action) => {
             state.loading = false;
-            state.punjab = action.payload.data;
+            state.sindh = action.payload.data;
             state.message = action.payload.message;
         })
         builder.addCase(sindhConstituency.rejected, (state, action) => {
